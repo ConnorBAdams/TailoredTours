@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Button from '../components/button'
 
-const HomeScreen = props => {
+const AccountCreationScreen = props => {
     const navigation = useNavigation();
 
     return (
     <View style={styles.container}>
-        <Text style={{marginBottom:'25%'}}>Home Screen!</Text>
-        <Button title="Go to map" onPress={() => navigation.navigate('Map')} />
-        <Button title="Go to log in" onPress={() => navigation.navigate('Login')} />
+        <Text style={{marginBottom:'25%'}}>Account Creation Screen!</Text>
     </View>
     );
 }
@@ -24,10 +21,10 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    margin: '15%',
+    marginBottom: '15%',
     alignContent: 'center',
   }
 });
 
 
-export default HomeScreen;
+export default AccountCreationScreen;
