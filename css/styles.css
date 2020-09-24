@@ -175,6 +175,13 @@ a.white {
 	vertical-align: top;
 }
 
+.btn-solid-lg .far {
+	margin-right: 0.5rem;
+	font-size: 1.25rem;
+	line-height: 0;
+	vertical-align: top;
+}
+
 .btn-solid-lg .fab.fa-google-play {
 	font-size: 1rem;
 }
