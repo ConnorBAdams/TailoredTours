@@ -24,10 +24,11 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i" rel="stylesheet">
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/fontawesome-all.css" rel="stylesheet">
+    <link href="css/all.css" rel="stylesheet">
     <link href="css/swiper.css" rel="stylesheet">
 	<link href="css/magnific-popup.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
+
 
 	<!-- Favicon  -->
     <link rel="icon" href="images/favicon.png">
@@ -66,26 +67,18 @@
                     <a class="nav-link page-scroll" href="#header">HOME <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#features">APP FEATURES</a>
+                    <a class="nav-link page-scroll" href="#team">TEAM</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#preview">VIDEO PREVIEW</a>
+                    <a class="nav-link page-scroll" href="#features">FEATURES</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#preview">VIDEO</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#deliverables">DELIVERABLES</a>
                 </li>
             </ul>
-            <span class="nav-item social-icons">
-                <span class="fa-stack">
-                    <a href="#your-link">
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fab fa-facebook-f fa-stack-1x"></i>
-                    </a>
-                </span>
-                <span class="fa-stack">
-                    <a href="#your-link">
-                        <i class="fas fa-circle fa-stack-2x"></i>
-                        <i class="fab fa-twitter fa-stack-1x"></i>
-                    </a>
-                </span>
-            </span>
         </div>
     </nav> <!-- end of navbar -->
     <!-- end of navigation -->
@@ -100,14 +93,15 @@
                         <div class="text-container">
                             <h1>TOUR APP <br>FOR <span id="js-rotating">STUDENTS, FANS, EVERYONE</span></h1>
                             <p class="p-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at bibendum sem. Nulla facilisi. Donec hendrerit est et dui gravida mattis. Suspendisse malesuada eros in metus feugiat, nec vulputate orci ultrices. Nunc eget turpis pretium, convallis ex pellentesque, elementum turpis.</p>
-                            <a class="btn-solid-lg page-scroll" href="#your-link"><i class="fab fa-apple"></i>APP STORE</a>
-                            <a class="btn-solid-lg page-scroll" href="#your-link"><i class="fab fa-google-play"></i>PLAY STORE</a>
+                            <a class="btn-solid-lg page-scroll" href="https://github.com/ConnorBAdams/PersonalizedCampus"><i class="fab fa-github"></i>GITHUB REPO</a>
+                          <!--  <a class="btn-solid-lg page-scroll" href="#your-link"><i class="fab fa-apple"></i>APP STORE</a>
+                            <a class="btn-solid-lg page-scroll" href="#your-link"><i class="fab fa-google-play"></i>PLAY STORE</a> -->
                         </div>
                     </div> <!-- end of col -->
-                    <div class="col-lg-6">
+                  <!--  <div class="col-lg-6">
                         <div class="image-container">
                             <img class="img-fluid" src="images/header-iphone.png" alt="alternative">
-                        </div> <!-- end of image-container -->
+                        </div> --> <!-- end of image-container -->
                     </div> <!-- end of col -->
                 </div> <!-- end of row -->
             </div> <!-- end of container -->
@@ -117,7 +111,7 @@
 
 
     <!-- Team -->
-    <div class="slider-1">
+    <div class="slider-1" id="team">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -125,7 +119,10 @@
                     <!-- Card Slider -->
                     <div class="slider-container">
                         <div class="swiper-container card-slider">
-                          <h2>Meet The Team</h2>
+                          <div class="col-lg-12">
+                              <h2>MEET THE TEAM</h2>
+                              <div class="p-heading p-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at bibendum sem. Nulla facilisi.</div>
+                          </div>
                             <div class="swiper-wrapper">
 
                                 <!-- Slide -->
@@ -182,7 +179,7 @@
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                             <!-- end of add arrows -->
-
+                            <a class="btn-solid-lg page-scroll" href="#team"><i class="fab fa-user-friends"></i>LEARN MORE ABOUT US</a>
                         </div> <!-- end of swiper-container -->
                     </div> <!-- end of slider-container -->
                     <!-- end of card slider -->
@@ -191,8 +188,39 @@
             </div> <!-- end of row -->
         </div> <!-- end of container -->
     </div> <!-- end of slider-1 -->
+
     <!-- end of testimonials -->
 
+    <!-- Video -->
+    <div id="preview" class="basic-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>VIDEO PREVIEW</h2>
+                    <div class="p-heading p-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at bibendum sem. Nulla facilisi.</div>
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <!-- Video Preview -->
+                    <div class="image-container">
+                        <div class="video-wrapper">
+                            <a class="popup-youtube" href="https://www.youtube.com/watch?v=RRNanbmD1xk" data-effect="fadeIn">
+                                <img class="img-fluid" src="images/video-frame.jpg" alt="alternative">
+                                <span class="video-play-button">
+                                    <span></span>
+                                </span>
+                            </a>
+                        </div> <!-- end of video-wrapper -->
+                    </div> <!-- end of image-container -->
+                    <!-- end of video preview -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-1 -->
+    <!-- end of video -->
 
     <!-- Features -->
     <div id="features" class="tabs">
@@ -452,163 +480,17 @@
     <!-- end of features -->
 
 
-    <!-- Video -->
-    <div id="preview" class="basic-1">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2>VIDEO PREVIEW</h2>
-                    <div class="p-heading p-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at bibendum sem. Nulla facilisi.</div>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-            <div class="row">
-                <div class="col-lg-12">
-
-                    <!-- Video Preview -->
-                    <div class="image-container">
-                        <div class="video-wrapper">
-                            <a class="popup-youtube" href="https://www.youtube.com/watch?v=RRNanbmD1xk" data-effect="fadeIn">
-                                <img class="img-fluid" src="images/video-frame.jpg" alt="alternative">
-                                <span class="video-play-button">
-                                    <span></span>
-                                </span>
-                            </a>
-                        </div> <!-- end of video-wrapper -->
-                    </div> <!-- end of image-container -->
-                    <!-- end of video preview -->
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of basic-1 -->
-    <!-- end of video -->
-
-
-    <!-- Screenshots -->
-    <div class="slider-2">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-
-                    <!-- Image Slider -->
-                    <div class="slider-container">
-                        <div class="swiper-container image-slider">
-                            <div class="swiper-wrapper">
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-1.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-1.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-2.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-2.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-3.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-3.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-4.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-4.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-5.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-5.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-6.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-6.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-7.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-7.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-8.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-8.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-9.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-9.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                                <!-- Slide -->
-                                <div class="swiper-slide">
-                                    <a href="images/screenshot-10.png" class="popup-link" data-effect="fadeIn">
-                                        <img class="img-fluid" src="images/screenshot-10.png" alt="alternative">
-                                    </a>
-                                </div>
-                                <!-- end of slide -->
-
-                            </div> <!-- end of swiper-wrapper -->
-
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            <!-- end of add arrows -->
-
-                        </div> <!-- end of swiper-container -->
-                    </div> <!-- end of slider-container -->
-                    <!-- end of image slider -->
-
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of slider-2 -->
-    <!-- end of screenshots -->
-
-
-    <!-- Download -->
-    <div class="basic-4">
+    <!-- Deliverables -->
+    <div id="deliverables" class="basic-4">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-xl-5">
                     <div class="text-container">
-                        <h2>Download <span class="blue">TailoredTours (Coming Soon!)</span></h2>
-                        <p class="p-large">Target the right customers for your business with the help of Leno's patented technology and increase conversion figures in less than 2 weeks</p>
-                        <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>APP STORE</a>
-                        <a class="btn-solid-lg" href="#your-link"><i class="fab fa-google-play"></i>PLAY STORE</a>
+                        <h2>PROJECT DELIVERABLES</h2>
+                        <p class="p-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras at bibendum sem. Nulla facilisi.</p>
+                        <a class="btn-solid-lg" href="https://github.com/ConnorBAdams/PersonalizedCampus"><i class="fab fa-github"></i>GITHUB REPO</a>
+                        <a class="btn-solid-lg" href="#your-link"><i class="fab fa-file"></i>OTHER DOCUMENTS</a>
                     </div> <!-- end of text-container -->
-                </div> <!-- end of col -->
-                <div class="col-lg-6 col-xl-7">
-                    <div class="image-container">
-                        <img class="img-fluid" src="images/download.png" alt="alternative">
-                    </div> <!-- end of img-container -->
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
         </div> <!-- end of container -->
