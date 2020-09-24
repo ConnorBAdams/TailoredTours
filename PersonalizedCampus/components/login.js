@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button'
 import globalStyles from '../styles'
 
