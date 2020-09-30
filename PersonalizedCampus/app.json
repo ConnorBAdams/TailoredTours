@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "TailoredTours",
-    "slug": "TailoredTours",
+    "name": "PersonalizedCampus",
+    "slug": "PersonalizedCampus",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Logo-Icon.png",
+    "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/Logo-Full.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,9 +16,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "android": {
-      "package": "com.cs495.tailoredtours"
-    },
     "ios": {
       "supportsTablet": true
     },

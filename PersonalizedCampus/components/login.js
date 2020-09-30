@@ -34,7 +34,6 @@ const LoginModule = props => {
                     textContentType='password'
                     secureTextEntry={true}
                     onChangeText={text => setPassword(text)} />
-                    {/* This is where the Google Auth goes */}
                     <Button title='Submit' onPress={() =>{setModalVisible(false)}} />
                     <Button title='Cancel' onPress={() =>{setModalVisible(false)}} />
                 </View>
