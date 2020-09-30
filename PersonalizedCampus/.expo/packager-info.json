@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://ux-qn5.anonymous.personalizedcampus.exp.direct",
-  "packagerNgrokUrl": "https://packager.ux-qn5.anonymous.personalizedcampus.exp.direct",
-  "ngrokPid": 29200,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "devToolsPort": 19002,
   "packagerPort": 19001,
-  "packagerPid": 32308
+  "packagerPid": 31160
 }
