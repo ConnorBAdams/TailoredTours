@@ -8,6 +8,9 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+PersonalizedCampus/config.js
+PersonalizedCampus/google-services.json
+PersonalizedCampus/GoogleService-Info.plist
 
 # macOS
 .DS_Store
