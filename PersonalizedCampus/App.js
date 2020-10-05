@@ -6,6 +6,7 @@ import HomeScreen from './screens/homeScreen'
 import LoginScreen from './screens/loginScreen'
 import AccountCreationScreen from './screens/accountCreationScreen';
 import MapScreen from './screens/mapScreen';
+import TourCreationScreen from './screens/tourCreationScreen';
 import * as firebase from 'firebase';
 
 
@@ -34,6 +35,7 @@ export default function App() {
       <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Account Creation" component={AccountCreationScreen} />
+      <Stack.Screen name="Tour Creation" component={TourCreationScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

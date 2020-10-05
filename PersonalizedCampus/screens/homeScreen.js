@@ -12,8 +12,10 @@ const HomeScreen = props => {
         <View style={styles.imageContainer}>
           <Image source={logo} style={styles.logo} />
         </View>
-        <Button title="Go to map" onPress={() => navigation.navigate('Map')} />
-        <Button title="Go to log in" onPress={() => navigation.navigate('Login')} />
+        <View style={styles.buttonContainer}>
+          <Button title="Take Tour" buttonStyle={styles.takeTourButton} textStyle={styles.takeTourText} onPress={() => navigation.navigate('Map')} />
+          <Button title="Make Tour" buttonStyle={styles.makeTourButton} textStyle={styles.makeTourText} onPress={() => navigation.navigate('Login')} />
+        </View>
     </View>
     );
 }
@@ -25,19 +27,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
+  imageContainer: {
     flex: 1,
-    margin: '15%',
-    alignContent: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+  },
+  takeTourButton: {
+    height: '25%',
+    width: '65%',
+  },
+  takeTourText: {
+    fontSize: 40
+  },
+  makeTourButton: {
+    height: '20%',
+    marginTop: '40%',
+    marginBottom: '10%'
+  },
+  makeTourText: {
+    fontSize: 20
   },
   logo: {
     margin: 40,
     width: '100%',
     height: undefined,
     aspectRatio: 16/9
-  },
-  imageContainer: {
-    flex: 1
   }
 });
 

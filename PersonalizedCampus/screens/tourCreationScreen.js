@@ -1,26 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import LoginModule from '../components/login'
 import Button from '../components/button'
-import firebase from 'firebase'
+import MapComponent from '../components/map'
 
-const LoginScreen = props => {
+const TourCreationScreen = props => {
     const navigation = useNavigation();
-
-  checkIfLoggedIn = () =>{
-     firebase.auth().onAuthStateChanged(user => {
-       if (user){
-        navigation.navigate('TourCreation')
-       } else {
-
-       }
-     })
-  }
 
     return (
     <View style={styles.container}>
-        <LoginModule />
+        <Text> This is a placeholder for logged in, probably should just be map screen</Text>
     </View>
     );
 }
@@ -31,8 +20,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  button: {
+    flex: 1,
+    margin: '15%',
+    alignContent: 'center',
   }
 });
 
 
-export default LoginScreen;
+export default TourCreationScreen;
