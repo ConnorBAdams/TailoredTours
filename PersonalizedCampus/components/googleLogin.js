@@ -4,6 +4,7 @@ import Button from './button';
 import globalStyles from '../styles';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
+import {androidClientId, iosClientId} from '../config'
 
 const GoogleLoginModule = props => {
 
@@ -54,8 +55,8 @@ const GoogleLoginModule = props => {
     async function signInWithGoogleAsync() {
         try {
             const result = await Google.logInAsync({
-                androidClientId: '584187795626-3e0glmuduaj35st3h1ss16uekp8i65eg.apps.googleusercontent.com',
-                iosClientId: '584187795626-fdfap9h2efpe10hob7tg5m03ikbdah59.apps.googleusercontent.com',
+                androidClientId: androidClientId,
+                iosClientId: iosClientId,
                 scopes: ['profile', 'email'],
         });
       
