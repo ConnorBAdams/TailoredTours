@@ -13,7 +13,7 @@ const HomeScreen = props => {
           <Image source={logo} style={styles.logo} />
         </View>
         <Button title="Go to map" onPress={() => navigation.navigate('Map')} />
-        <Button title="Go to log in" onPress={() => navigation.navigate('Login')} />
+        <Button title="Go to log in" onPress={() => navigation.navigate('Log in')} />
     </View>
     );
 }
