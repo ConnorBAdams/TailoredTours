@@ -15,12 +15,13 @@ const LoginModule = props => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.modalContainer}>
             <View style={styles.modalView}>
                 {!createAccount &&  <Text style={styles.modalText}>Log In</Text> || 
                 createAccount && <Text style={styles.modalText}>Create Account</Text> }
                 
                 <TextInput style={globalStyles.inputField}
-                placeholder="Username" 
+                placeholder="Email" 
                 autoCompleteType='username'
                 textContentType='username'
                 onChangeText={text => setUsername(text) }/>
@@ -37,15 +38,17 @@ const LoginModule = props => {
                 textContentType='password'
                 secureTextEntry={true}
                 onChangeText={text => setPassword(text)} />}
-                <GoogleLoginModule />
-            </View>
-            <View style={styles.conditionalConfirmation}>
                 {/* Confirm log in or acc creation */}
                 {!createAccount && <Button title="Log in" onPress={() => {}} /> || 
                 createAccount && <Button title="Create Account" onPress={() => {}} /> }
+                <Text style={{marginTop:'10%'}}>Or maybe</Text>
+                <GoogleLoginModule style={{marginTop: '5%'}} />
+            </View>
+            </View>
+            <View style={styles.conditionalConfirmation}>
                 {/* Switch between create and log in */}
-                {!createAccount &&  <Text style={{marginTop: '25%'}}>Need an account?</Text>  || 
-                createAccount && <Text style={{marginTop: '25%'}}>Already have an account?</Text> }
+                {!createAccount &&  <Text>Don't have an account?</Text>  || 
+                createAccount && <Text>Already have an account?</Text> }
                 
                 {!createAccount &&  <Button title="Create account" onPress={() => {setCreateAccount(!createAccount)}} />  || 
                 createAccount && <Button title="Log in" onPress={() => {setCreateAccount(!createAccount)}} /> }
@@ -79,6 +82,9 @@ const styles = StyleSheet.create({
         elevation: 5,
         marginTop: 22,
     },
+    modalContainer: {
+        height: '70%'
+    },
     textStyle: {
         color: 'white',
         fontWeight: 'bold',
@@ -88,6 +94,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontSize: 25,
         textAlign: 'center',
+    },
+    conditionalConfirmation: {
+        alignItems: 'center',
+        alignContent: 'center',
+        textAlign: 'center',
+        marginTop: '20%',
     }
 });
 
