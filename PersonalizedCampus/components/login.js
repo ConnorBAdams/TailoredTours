@@ -1,80 +1,52 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button'
 import globalStyles from '../styles'
 
 // Creating this component to serve as a plug and play way of logging people in
 
 const LoginModule = props => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState(''); 
     // Not sure if storing passwords this way is problematic from a security standpoint
 
     return (
-        <View>
-            <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}>
-                <TouchableOpacity 
-                style={styles.container} 
-                activeOpacity={1} 
-                onPressOut={() => {setModalVisible(false)}}>
-                <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Log In</Text>
-                    <TextInput style={globalStyles.inputField}
-                    placeholder="Username" 
-                    autoCompleteType='username'
-                    textContentType='username'
-                    onChangeText={text => setUsername(text) }/>
-                    <TextInput style={globalStyles.inputField}
-                    placeholder="Password" 
-                    autoCompleteType='password'
-                    textContentType='password'
-                    secureTextEntry={true}
-                    onChangeText={text => setPassword(text)} />
-                    {/* This is where the Google Auth goes */}
-                    <Button title='Submit' onPress={() =>{setModalVisible(false)}} />
-                    <Button title='Cancel' onPress={() =>{setModalVisible(false)}} />
-                </View>
-                </TouchableOpacity>
-            </Modal>
-        <Button title="Log in" onPress={() => {setModalVisible(true)}} />
+        <View style={styles.container}>
+            <TextInput style={globalStyles.inputField}
+                label="Email"
+                placeholder="Email"
+                returnKeyType="next"
+                value={email.value}
+                onChangeText={text => setEmail(text)}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                textContentType="emailAddress"
+                keyboardType="email-address"
+                // onSubmitEditing={() => this.secondInput.focus()}
+            />
+            <TextInput style={globalStyles.inputField}
+                // ref={ref => { this.secondInput = ref; }}
+                label="Password"
+                placeholder="Password"
+                returnKeyType="done"
+                value={password.value}
+                onChangeText={text => setPassword(text)}
+                secureTextEntry={true}
+            />
+            <Button title="Log in" />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 0,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-        width: 0,
-        height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        marginTop: 22,
     },
     textStyle: {
         color: 'white',
         fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    modalText: {
-        marginBottom: 10,
-        fontSize: 25,
         textAlign: 'center',
     }
 });

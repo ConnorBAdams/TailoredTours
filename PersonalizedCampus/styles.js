@@ -34,7 +34,8 @@ const globalStyles = StyleSheet.create({
         borderColor: secondaryColor,
         borderWidth: 1,
         height: 40,
-        width: 150,
+        width: 200,
+        padding: 4,
     },
 
 });
