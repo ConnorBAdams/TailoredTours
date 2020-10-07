@@ -2,19 +2,45 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button';
 import globalStyles from '../styles';
-import firebase from 'firebase';
+import firebase, { auth } from 'firebase';
 import {androidClientId, iosClientId} from '../config'
 
 const ManualCreateAccountModule = props => {
     const [FName, setFName] = useState('');
     const [LName, setLName] = useState('');
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState(''); 
     const [confirmPassword, setConfirmPassword] = useState(''); 
 
     const verifyPasswords = () => {
-        // TODO: This functions needs to verify the account creation passwords
-        // They need to be secure enough and match
+        if (password != confirmPassword) {
+            return false
+        } // TODO: Regex verification, they need to be secure enough and match
+        return true
+    }
+
+    const validEmail = () => {
+        if (!email) {
+            return false
+        } // TODO: Regex verification
+        return true 
+    }
+
+    const createAccount = async () => {
+        if (!validEmail) {
+            return
+        } else if (!verifyPasswords) {
+            return
+        } else {
+            try {
+                let response = await auth().createUserWithEmailAndPassword(email, password)
+                if (response ) {
+                    console.log(response)
+                }
+            } catch (e) {
+                console.error(e.message)
+            }
+        }
     }
 
     return (
@@ -49,7 +75,7 @@ const ManualCreateAccountModule = props => {
                 placeholder="Email" 
                 autoCompleteType='username'
                 textContentType='username'
-                onChangeText={text => setUsername(text) }/>
+                onChangeText={text => setEmail(text) }/>
             <TextInput style={globalStyles.inputField}
                 placeholder="Password" 
                 autoCompleteType='password'
@@ -61,8 +87,8 @@ const ManualCreateAccountModule = props => {
                 autoCompleteType='password'
                 textContentType='password'
                 secureTextEntry={true}
-                onChangeText={text => setPassword(text)} />
-            <Button title="Create Account" onPress={() => {}} />
+                onChangeText={text => setConfirmPassword(text)} />
+            <Button title="Create Account" onPress={() => createAccount()} />
         </View>
     );
 }
