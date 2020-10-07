@@ -34,8 +34,17 @@ const ManualCreateAccountModule = props => {
         } else {
             try {
                 let response = await auth().createUserWithEmailAndPassword(email, password)
-                if (response ) {
-                    console.log(response)
+                console.log(response)
+                if(response.additionalUserInfo.isNewUser)
+                {
+                    firebase.database().ref('/users/' + response.user.uid)
+                    .set({
+                        email: response.user.email,
+                        first_name: FName,
+                        last_name: LName,
+                        created_at: Date.now(),
+                        last_logged_in: Date.now()
+                    })
                 }
             } catch (e) {
                 console.error(e.message)
