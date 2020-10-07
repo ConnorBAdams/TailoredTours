@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Button from './button';
 import globalStyles from '../styles';
 import firebase, { auth } from 'firebase';
@@ -47,6 +47,7 @@ const ManualCreateAccountModule = props => {
                     })
                 }
             } catch (e) {
+                Alert.alert(e.message)
                 console.error(e.message)
             }
         }

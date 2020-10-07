@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
 import firebase from 'firebase'
@@ -21,7 +21,7 @@ const HomeScreen = props => {
     }
 
     return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
         <View style={styles.imageContainer}>
           <Image source={logo} style={styles.logo} />
         </View>
@@ -29,7 +29,7 @@ const HomeScreen = props => {
           <Button title="Take Tour" buttonStyle={styles.takeTourButton} textStyle={styles.takeTourText} onPress={() => navigation.navigate('Map')} />
           <Button title="Make Tour" buttonStyle={styles.makeTourButton} textStyle={styles.makeTourText} onPress={() => checkIfLoggedIn()} />
         </View>
-    </View>
+    </SafeAreaView>
     );
 }
 
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageContainer: {
+    marginTop: 25,
     flex: 1,
   },
   buttonContainer: {

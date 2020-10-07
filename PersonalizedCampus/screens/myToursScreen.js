@@ -7,14 +7,12 @@ import SignOutModule from '../components/signOut'
 import Button from '../components/button'
 import DrawerHeader from '../components/drawerHeader'
 
-const TourCreationScreen = props => {
+const MyToursScreen = props => {
     return (
         <SafeAreaView style={styles.container}>
-        <DrawerHeader name="Home" openDrawer={props.navigation.openDrawer}/>
+        <DrawerHeader name="My Tours" openDrawer={props.navigation.openDrawer}/>
         <View style={styles.internalContainer}>
-        <Text> This is a placeholder for logged in, probably should just be map screen</Text>
-        <Text>Thinking of showing tour creator, created tour stats, and some other info accessible through a side nav panel</Text>
-
+        <Text> This is a placeholder my tours</Text>
         </View>
       </SafeAreaView>
     );
@@ -27,13 +25,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    },
+        },
     internalContainer: {
-        flex: 1,
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+            flex: 1,
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
     button: {
         flex: 1,
         margin: '15%',
@@ -50,4 +48,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default TourCreationScreen;
+export default MyToursScreen;

@@ -16,13 +16,20 @@ const ManualLoginModule = props => {
         } else if (!password) {
             return
         } else {
-            let response = await auth().signInWithEmailAndPassword(email, password)
-            console.log(response)
-            if (response.user) {
-                firebase.database().ref('/users/' + result.user.uid).update({
-                    last_logged_in: Date.now()
-                })
+            try
+            {
+                let response = await auth().signInWithEmailAndPassword(email, password)
+                console.log(response)
+                if (response.user) {
+                    firebase.database().ref('/users/' + result.user.uid).update({
+                        last_logged_in: Date.now()
+                    })
+                }
+            } catch (e) {
+                Alert.alert(e.message)
+                console.log(e)
             }
+
         }
     }
 
