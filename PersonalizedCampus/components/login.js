@@ -2,45 +2,24 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button'
 import GoogleLoginModule from './googleLogin'
+import ManualLoginModule from './maualLogin';
+import ManualCreateAccountModule from './manualCreateAccount';
 import globalStyles from '../styles'
 
 // Creating this component to serve as a plug and play way of logging people in
 
 const LoginModule = props => {
     const [createAccount, setCreateAccount] = useState(false);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState(''); 
-    const [confirmPassword, setConfirmPassword] = useState(''); 
+
     // Not sure if storing passwords this way is problematic from a security standpoint
 
     return (
         <View style={styles.container}>
             <View style={styles.modalContainer}>
             <View style={styles.modalView}>
-                {!createAccount &&  <Text style={styles.modalText}>Log In</Text> || 
-                createAccount && <Text style={styles.modalText}>Create Account</Text> }
-                
-                <TextInput style={globalStyles.inputField}
-                placeholder="Email" 
-                autoCompleteType='username'
-                textContentType='username'
-                onChangeText={text => setUsername(text) }/>
-                <TextInput style={globalStyles.inputField}
-                placeholder="Password" 
-                autoCompleteType='password'
-                textContentType='password'
-                secureTextEntry={true}
-                onChangeText={text => setPassword(text)} />
-                {createAccount && 
-                <TextInput style={globalStyles.inputField}
-                placeholder="Confirm Password" 
-                autoCompleteType='password'
-                textContentType='password'
-                secureTextEntry={true}
-                onChangeText={text => setPassword(text)} />}
+                {!createAccount && <ManualLoginModule /> || 
+                createAccount && <ManualCreateAccountModule /> }
                 {/* Confirm log in or acc creation */}
-                {!createAccount && <Button title="Log in" onPress={() => {}} /> || 
-                createAccount && <Button title="Create Account" onPress={() => {}} /> }
                 <Text style={{marginTop:'10%'}}>Or maybe</Text>
                 <GoogleLoginModule style={{marginTop: '5%'}} />
             </View>

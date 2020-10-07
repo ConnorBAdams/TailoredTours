@@ -2,10 +2,23 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
+import firebase from 'firebase'
 
 const HomeScreen = props => {
     const navigation = useNavigation();
     var logo = props.active ? require('../assets/Logo-Full.png') : require('../assets/Logo-Full.png');
+
+    const checkIfLoggedIn = () => {
+      firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+              // user is logged in 
+              navigation.navigate('Tour Creation')
+          } else {
+              // user isn't logged in, 
+              navigation.navigate('Login')
+          }
+      })
+    }
 
     return (
     <View style={styles.container}>
@@ -14,7 +27,7 @@ const HomeScreen = props => {
         </View>
         <View style={styles.buttonContainer}>
           <Button title="Take Tour" buttonStyle={styles.takeTourButton} textStyle={styles.takeTourText} onPress={() => navigation.navigate('Map')} />
-          <Button title="Make Tour" buttonStyle={styles.makeTourButton} textStyle={styles.makeTourText} onPress={() => navigation.navigate('Login')} />
+          <Button title="Make Tour" buttonStyle={styles.makeTourButton} textStyle={styles.makeTourText} onPress={() => checkIfLoggedIn()} />
         </View>
     </View>
     );

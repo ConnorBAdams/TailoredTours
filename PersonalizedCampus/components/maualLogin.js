@@ -1,14 +1,12 @@
 import React from 'react';
-import { StyleSheet, Image, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button';
 import globalStyles from '../styles';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
 import {androidClientId, iosClientId} from '../config'
 
-const GoogleLoginModule = props => {
-
-    var googleLogo = props.active ? require('../assets/google2.png') : require('../assets/google2.png');
+const ManualLoginModule = props => {
 
     isUserEqual = (googleUser, firebaseUser) => {
         if (firebaseUser) {
@@ -42,22 +40,13 @@ const GoogleLoginModule = props => {
             .auth()
             .signInWithCredential(credential)
             .then(async function(result){
-                if(result.additionalUserInfo.isNewUser)
-                {
-                    firebase.database().ref('/users/' + result.user.uid)
-                    .set({
-                        email: result.user.email,
-                        locale: result.additionalUserInfo.profile.locale,
-                        first_name: result.additionalUserInfo.profile.given_name,
-                        last_name: result.additionalUserInfo.profile.family_name,
-                        created_at: Date.now(),
-                        last_logged_in: Date.now()
-                    })
-                } else {
-                    firebase.database().ref('/users/' + result.user.uid).update({
-                        last_logged_in: Date.now()
-                    })
-                }
+                firebase.database().ref('/users/' + result.user.uid)
+                .set({
+                    email: result.user.email,
+                    locale: result.additionalUserInfo.profile.locale,
+                    first_name: result.additionalUserInfo.profile.given_name,
+                    last_name: result.additionalUserInfo.profile.family_name
+                })
             })
             .catch(function(error) {
               // Handle Errors here.
@@ -98,11 +87,20 @@ const GoogleLoginModule = props => {
     }
 
     return (
-        <View style={props.style}>
-            <TouchableOpacity  onPress={()=>signInWithGoogleAsync()} >
-                <Image style={styles.googleButton} source={googleLogo} />
-            </TouchableOpacity>
-            {/* <Button title='Sign in with Google' /> */}
+        <View style={props.style, styles.container}>
+            <Text style={styles.modalText}>Log In</Text>
+            <TextInput style={globalStyles.inputField}
+                placeholder="Email" 
+                autoCompleteType='username'
+                textContentType='username'
+                onChangeText={text => setUsername(text) }/>
+                <TextInput style={globalStyles.inputField}
+                placeholder="Password" 
+                autoCompleteType='password'
+                textContentType='password'
+                secureTextEntry={true}
+                onChangeText={text => setPassword(text)} />
+                <Button title="Log in" onPress={() => {}} />
         </View>
     );
 }
@@ -113,11 +111,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    googleButton: {
-        height: 46,
-        width: 191
-    }
+    modalText: {
+        marginBottom: 10,
+        fontSize: 25,
+        textAlign: 'center',
+    },
 });
 
 
-export default GoogleLoginModule;
+export default ManualLoginModule;
