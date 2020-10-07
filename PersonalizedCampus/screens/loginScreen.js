@@ -24,7 +24,11 @@ const LoginScreen = props => {
 
     return (
     <View style={styles.container}>
-        <LoginModule checkIfLoggedIn={checkIfLoggedIn} />
+        <Text style={{marginBottom:'5%'}}>Welcome to TailoredTours.</Text>
+        <LoginModule />
+        <Button title='Create account' onPress={() => navigation.navigate('Create an account')} />
+        <Text style={{marginTop:'3%', marginBottom: '3%'}}>Or</Text>
+        <Button title='Sign in with Google' />
     </View>
     );
 }

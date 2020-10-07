@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button'
 import GoogleLoginModule from './googleLogin'
 import ManualLoginModule from './maualLogin';
@@ -41,7 +41,7 @@ const LoginModule = props => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 0,
         justifyContent: 'center',
         alignItems: 'center',
     },
