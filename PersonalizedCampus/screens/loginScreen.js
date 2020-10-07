@@ -24,11 +24,8 @@ const LoginScreen = props => {
 
     return (
     <View style={styles.container}>
-        <Text style={{marginBottom:'5%'}}>Welcome to TailoredTours.</Text>
+        <Text style={styles.titleText}>Welcome to Tailored Tours.</Text>
         <LoginModule />
-        <Button title='Create account' onPress={() => navigation.navigate('Create an account')} />
-        <Text style={{marginTop:'3%', marginBottom: '3%'}}>Or</Text>
-        <Button title='Sign in with Google' />
     </View>
     );
 }
@@ -39,6 +36,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  }, 
+  titleText: {
+    marginBottom: '5%', 
+    fontSize: 20
   }
 });
 

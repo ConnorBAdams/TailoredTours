@@ -6,6 +6,8 @@ import firebase from 'firebase';
 import {androidClientId, iosClientId} from '../config'
 
 const ManualCreateAccountModule = props => {
+    const [FName, setFName] = useState('');
+    const [LName, setLName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState(''); 
     const [confirmPassword, setConfirmPassword] = useState(''); 
@@ -18,6 +20,31 @@ const ManualCreateAccountModule = props => {
     return (
         <View style={props.style, styles.container}>
             <Text style={styles.modalText}>Create Account</Text>
+            <TextInput style={globalStyles.inputField}
+                label="FName"
+                placeholder="First name"
+                returnKeyType="next"
+                value={FName.value}
+                onChangeText={text => setFName(text)}
+                autoCapitalize="words"
+                autoCompleteType="name"
+                textContentType="name"
+                keyboardType="default"
+                // onSubmitEditing={() => this.secondInput.focus()}
+            />
+            <TextInput style={globalStyles.inputField}
+                // ref={ref => { this.secondInput = ref; }}
+                label="LName"
+                placeholder="Last name"
+                returnKeyType="next"
+                value={LName.value}
+                onChangeText={text => setLName(text)}
+                autoCapitalize="words"
+                autoCompleteType="name"
+                textContentType="name"
+                keyboardType="default"
+                // onSubmitEditing={() => this.thirdInput.focus()}
+            />
             <TextInput style={globalStyles.inputField}
                 placeholder="Email" 
                 autoCompleteType='username'

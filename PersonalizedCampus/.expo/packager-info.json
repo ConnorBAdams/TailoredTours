@@ -1,1 +1,10 @@
-{}
+{
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://if-kpc.anonymous.personalizedcampus.exp.direct",
+  "packagerNgrokUrl": "https://packager.if-kpc.anonymous.personalizedcampus.exp.direct",
+  "ngrokPid": 25040,
+  "packagerPort": 19001,
+  "packagerPid": 26844,
+  "webpackServerPort": null,
+  "devToolsPort": 19002
+}

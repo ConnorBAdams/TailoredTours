@@ -20,8 +20,8 @@ const LoginModule = props => {
                 {!createAccount && <ManualLoginModule /> || 
                 createAccount && <ManualCreateAccountModule /> }
                 {/* Confirm log in or acc creation */}
-                <Text style={{marginTop:'10%'}}>Or maybe</Text>
-                <GoogleLoginModule style={{marginTop: '5%'}} />
+                {!createAccount && <Text style={{marginTop:'10%'}}>Or maybe</Text> }
+                {!createAccount && <GoogleLoginModule style={{marginTop: '5%'}} /> }
             </View>
             </View>
             <View style={styles.conditionalConfirmation}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         marginTop: 22,
     },
     modalContainer: {
-        height: '70%'
+        height: 500
     },
     textStyle: {
         color: 'white',
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         textAlign: 'center',
-        marginTop: '20%',
+        marginTop: 25,
     }
 });
 
