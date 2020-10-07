@@ -11,9 +11,9 @@ const HomeScreen = props => {
     <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image source={logo} style={styles.logo} />
-        </View>
         <Button title="Go to map" onPress={() => navigation.navigate('Map')} />
         <Button title="Go to log in" onPress={() => navigation.navigate('Log in')} />
+        </View>
     </View>
     );
 }
@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     margin: '15%',
-    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
     margin: 40,
@@ -37,6 +38,8 @@ const styles = StyleSheet.create({
     aspectRatio: 16/9
   },
   imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 1
   }
 });
