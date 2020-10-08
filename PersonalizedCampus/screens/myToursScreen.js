@@ -10,9 +10,9 @@ import DrawerHeader from '../components/drawerHeader'
 const MyToursScreen = props => {
     return (
         <SafeAreaView style={styles.container}>
-        <DrawerHeader name="My Tours" openDrawer={props.navigation.openDrawer}/>
-        <View style={styles.internalContainer}>
-        <Text> This is a placeholder my tours</Text>
+            <DrawerHeader name="My Tours" openDrawer={props.navigation.openDrawer}/>
+            <View style={styles.internalContainer}>
+            <Text> This is a placeholder my tours</Text>
         </View>
       </SafeAreaView>
     );

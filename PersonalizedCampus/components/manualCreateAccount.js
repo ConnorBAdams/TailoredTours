@@ -14,6 +14,7 @@ const ManualCreateAccountModule = props => {
 
     const verifyPasswords = () => {
         if (password != confirmPassword) {
+            Alert.alert("Your passwords do not match!")
             return false
         } // TODO: Regex verification, they need to be secure enough and match
         return true

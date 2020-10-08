@@ -43,8 +43,8 @@ const SignedInScreen = props => {
           </DrawerContentScrollView>
           )
         }}>
-            <Drawer.Screen name="Tour Creation" component={TourCreationScreen} />
             <Drawer.Screen name="My Tours" component={MyToursScreen} />
+            <Drawer.Screen name="Tour Creation" component={TourCreationScreen} />
         </Drawer.Navigator>
         </NavigationContainer>
     );
