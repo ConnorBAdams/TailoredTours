@@ -32,11 +32,6 @@ const styles = StyleSheet.create({
             alignItems: 'center',
             justifyContent: 'center',
         },
-    button: {
-        flex: 1,
-        margin: '15%',
-        alignContent: 'center',
-    },
     header:{
         width:"100%",
         height:60,

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import 'react-native-gesture-handler';
-import SignOutModule from '../components/signOut'
 import Button from '../components/button'
 import DrawerHeader from '../components/drawerHeader'
 import MyToursScreen from './myToursScreen'
@@ -13,6 +12,16 @@ import firebase from 'firebase'
 const Drawer = createDrawerNavigator();
 
 const SignedInScreen = props => {
+  useEffect(() => {checkIfLoggedIn() });
+
+  const checkIfLoggedIn = () => {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+            // user is not logged in 
+            navigation.navigate('Login')
+        }
+    })
+  }
 
   const signOut = () => {
     firebase.auth().signOut()
