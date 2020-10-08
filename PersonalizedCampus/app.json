@@ -17,10 +17,16 @@
       "**/*"
     ],
     "android": {
-      "package": "com.cs495.tailoredtours"
+      "package": "com.cs495.tailoredtours",
+      "googleServicesFile": "./google-services.json"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.584187795626-fdfap9h2efpe10hob7tg5m03ikbdah59"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
