@@ -1,20 +1,35 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
+import firebase from 'firebase'
 
 const HomeScreen = props => {
     const navigation = useNavigation();
     var logo = props.active ? require('../assets/Logo-Full.png') : require('../assets/Logo-Full.png');
 
+    const checkIfLoggedIn = () => {
+      firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+              // user is logged in 
+              navigation.navigate('Tour Creation')
+          } else {
+              // user isn't logged in, 
+              navigation.navigate('Login')
+          }
+      })
+    }
+
     return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
         <View style={styles.imageContainer}>
           <Image source={logo} style={styles.logo} />
-        <Button title="Go to map" onPress={() => navigation.navigate('Map')} />
-        <Button title="Go to log in" onPress={() => navigation.navigate('Log in')} />
         </View>
-    </View>
+        <View style={styles.buttonContainer}>
+          <Button title="Take Tour" buttonStyle={styles.takeTourButton} textStyle={styles.takeTourText} onPress={() => navigation.navigate('Map')} />
+          <Button title="Make Tour" buttonStyle={styles.makeTourButton} textStyle={styles.makeTourText} onPress={() => checkIfLoggedIn()} />
+        </View>
+    </SafeAreaView>
     );
 }
 
@@ -25,22 +40,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
+  imageContainer: {
+    marginTop: 25,
     flex: 1,
-    margin: '15%',
+  },
+  buttonContainer: {
+    flex: 1,
+    width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  takeTourButton: {
+    height: '25%',
+    width: '65%',
+  },
+  takeTourText: {
+    fontSize: 40
+  },
+  makeTourButton: {
+    height: '20%',
+    marginTop: '40%',
+    marginBottom: '10%'
+  },
+  makeTourText: {
+    fontSize: 20
   },
   logo: {
     margin: 40,
     width: '100%',
     height: undefined,
     aspectRatio: 16/9
-  },
-  imageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
   }
 });
 
