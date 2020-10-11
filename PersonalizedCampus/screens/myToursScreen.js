@@ -27,10 +27,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         },
     internalContainer: {
-            flex: 1,
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
         },
     header:{
         width:"100%",

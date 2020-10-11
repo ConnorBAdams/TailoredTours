@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Button from './button';
 import globalStyles from '../styles';
 import * as Google from 'expo-google-app-auth';

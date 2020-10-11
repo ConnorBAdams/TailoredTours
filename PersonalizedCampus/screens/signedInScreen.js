@@ -25,7 +25,7 @@ const SignedInScreen = props => {
 
   const signOut = () => {
     firebase.auth().signOut()
-    props.navigation.navigate('Login')
+    props.navigation.navigate('Home')
   } 
 
   const returnHome = () => {
@@ -34,7 +34,7 @@ const SignedInScreen = props => {
 
     return (
         <NavigationContainer independent={true}>
-        <Drawer.Navigator initialRouteName="Tour Creation" drawerContent={props => {
+        <Drawer.Navigator initialRouteName="My Tours" drawerContent={props => {
           return (
             <DrawerContentScrollView {...props}>
             <DrawerItem label="Main Screen" onPress={() => returnHome()} />
