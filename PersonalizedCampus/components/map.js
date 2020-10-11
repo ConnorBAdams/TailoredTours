@@ -5,12 +5,40 @@ import MapView from 'react-native-maps';
 import { Marker, Circle } from 'react-native-maps';
 import globalStyles from '../styles'
 import Button from '../components/button'
+import MarkerEditorComponent from './markerEditor'
 
 const MapComponent = props => {
     const [mapType, setMapType] = useState('standard')
+    const [modalVisible, setModalVisible] = useState(false)
+    const [selectedNode, setSelectedNode] = useState(null)
+
+    const toggleModal = () => {
+        if (modalVisible === false) {
+            setModalVisible(true)
+        } else {
+            setModalVisible(false)
+        }
+    }
+
+    const updateNode = (title, descr) => {
+        node = selectedNode
+        node.name = title
+        node.description = descr
+        setSelectedNode(node)
+    }
+
+    const editMarker = marker => {
+        if (modalVisible === false) {
+            setSelectedNode(marker)
+            setModalVisible(true)
+        } else {
+            setModalVisible(false)
+        }
+    }
 
     return (
         <View style={styles.container}>
+            {modalVisible && <MarkerEditorComponent onSubmit={updateNode} toggle={toggleModal} node={selectedNode} visible={modalVisible} />}
             <View style={styles.buttonPos}>
                 <TouchableOpacity style={styles.icon} onPress={() => { if (mapType === 'standard' ) setMapType('satellite'); else setMapType('standard')}} >
                 {mapType=='standard' && <FontAwesome5 name="satellite" size={32} />}
@@ -34,6 +62,7 @@ const MapComponent = props => {
                     coordinate={{latitude:marker.latitude, longitude:marker.longitude}}
                     title={marker.name}
                     description={marker.description}
+                    onCalloutPress={() => editMarker(marker)}
                     />
                 }
                 else if (marker.type==='Circle') {

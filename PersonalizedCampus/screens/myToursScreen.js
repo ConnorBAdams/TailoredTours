@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import SignOutModule from '../components/signOut'
 import Button from '../components/button'
 import DrawerHeader from '../components/drawerHeader'
+import MarkerEditorComponent from '../components/markerEditor'
 
 const MyToursScreen = props => {
     return (

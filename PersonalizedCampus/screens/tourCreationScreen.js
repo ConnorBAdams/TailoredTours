@@ -76,6 +76,9 @@ const TourCreationScreen = props => {
                         lastModified: Date.now(),
                         nodes: data.nodes,
                     })
+                    .then(
+                        Alert.alert('Successfully saved!')
+                    )
                 }
             })
             
