@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, ActivityIndicator, Alert, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import * as Location from 'expo-location'
 import globalStyles from '../styles'
 import Button from '../components/button'
 import MapComponent from './map'
@@ -12,19 +10,10 @@ const TourSetupComponent = props => {
     const [anchor, setAnchor] = useState(null)
 
 	useEffect(() => {
-        (async () => {
-          let { status } = await Location.requestPermissionsAsync();
-          if (status !== 'granted') {
-              Alert.alert('Permission to access location was denied, is is required for the map')
-          }
-    
-          let location = await Location.getCurrentPositionAsync({});
-          setLocation(location);
-          console.log(location)
-        })();
-      }, []);
-
-    const navigation = useNavigation();
+        if (props.location != null){
+            setLocation(props.location);
+            console.log(props.location);
+        }});
     
     const isValidTourData = text => {
         if (!text) {

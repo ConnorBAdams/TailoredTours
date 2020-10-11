@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, TextInput, Alert } from 'react-na
 import 'react-native-gesture-handler';
 import globalStyles from '../styles';
 import Button from '../components/button'
+import * as Location from 'expo-location'
 import DrawerHeader from '../components/drawerHeader'
 import firebase, { auth } from 'firebase';
 import TourSetupComponent from '../components/tourSetup'
@@ -12,7 +13,21 @@ const TourCreationScreen = props => {
     const [tourData, setTourData] = useState(null);
     const [routeData, setRouteData] = useState(null);
     const [userID, setUserID] = useState(''); 
+    const [location, setLocation] = useState(null);
     useEffect(() => {getuserID() });
+
+	useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestPermissionsAsync();
+          if (status !== 'granted') {
+              Alert.alert('Permission to access location was denied, is is required for the map')
+          }
+    
+          let location = await Location.getCurrentPositionAsync({});
+          setLocation(location);
+          console.log(location)
+        })();
+      }, []);
 
     const getuserID = () => {
         firebase.auth().onAuthStateChanged(function(user) {
@@ -26,21 +41,28 @@ const TourCreationScreen = props => {
     }
 
     const createTour = async (data) => {
-        try {
-            setTourData(data)
-            console.log(data.title, data.anchor, data.anchor.latitude, data.anchor.longitude)
-            firebase.database().ref('/tours/' + userID )
-            .push({
-                tourName: data.title,
-                owner: userID, // Redundant
-                createdAt: Date.now(),
-                lastModified: Date.now(),
-                anchor: data.anchor,
-            })
-            
-        } catch (e) {
-            Alert.alert(e.message)
-            console.error(e.message)
+        if (data.anchor == null || data.anchor == undefined) {
+            Alert.alert('Please set an Anchor point for the tour')
+        } else if (data.title == null || data.title == undefined || data.title == '') {
+            Alert.alert('Please set a tour area title')
+        } else 
+        {
+            try {
+                setTourData(data)
+                console.log(data.title, data.anchor, data.anchor.latitude, data.anchor.longitude)
+                firebase.database().ref('/tours/' + userID )
+                .push({
+                    tourName: data.title,
+                    owner: userID, // Redundant
+                    createdAt: Date.now(),
+                    lastModified: Date.now(),
+                    anchor: data.anchor,
+                })
+                
+            } catch (e) {
+                Alert.alert(e.message)
+                console.error(e.message)
+            }
         }
     }
 
@@ -92,8 +114,8 @@ const TourCreationScreen = props => {
         <SafeAreaView style={styles.container}>
         <DrawerHeader name="Create a Tour" openDrawer={props.navigation.openDrawer}/>
         <View style={styles.internalContainer}>
-            {tourData === null && <TourSetupComponent submitTour={createTour} />}
-            {tourData != null && <RouteCreationComponent createRoute={createRoute} />}
+            {tourData === null && <TourSetupComponent submitTour={createTour} location={location} />}
+            {tourData != null && <RouteCreationComponent createRoute={createRoute} location={location} />}
         </View>
       </SafeAreaView>
     );

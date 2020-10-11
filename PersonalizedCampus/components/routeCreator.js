@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, ActivityIndicator, Alert, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import * as Location from 'expo-location'
 import globalStyles from '../styles'
 import Button from '../components/button'
 import MapComponent from './map'
@@ -12,19 +10,10 @@ const RouteCreatorComponent = props => {
     const [nodes, setNodes] = useState([])
 
 	useEffect(() => {
-        (async () => {
-          let { status } = await Location.requestPermissionsAsync();
-          if (status !== 'granted') {
-              Alert.alert('Permission to access location was denied, is is required for the map')
-          }
-    
-          let location = await Location.getCurrentPositionAsync({});
-          setLocation(location);
-          console.log(location)
-        })();
-      }, []);
-
-    const navigation = useNavigation();
+        if (props.location != null){
+            setLocation(props.location);
+            console.log(props.location);
+        }});
     
     const isValidTourData = text => {
         if (!text) {
@@ -42,6 +31,13 @@ const RouteCreatorComponent = props => {
         } 
    }
 
+   const createRoute = (e) => {
+        if (props.createRoute(e)) {
+            setTourTitle('')
+            setNodes([])
+        }
+   }
+
     return (
         <View style={styles.container}>
             <Text style={styles.titleText}>Tour Route Name:</Text>
@@ -52,7 +48,7 @@ const RouteCreatorComponent = props => {
             {location === null && <ActivityIndicator size="large" />}
             {location === null &&<Text>Loading...</Text>}
             {location != null && <MapComponent style={styles.mapStyle} nodes={nodes} onPress={e => createNode(e)} location={location} /> }
-            <Button title="Create Tour Route" onPress={() => {props.createRoute({title:tourTitle, nodes:nodes})}} />
+            <Button title="Create Tour Route" onPress={() => {createRoute({title:tourTitle, nodes:nodes})}} />
         </View>
     );
 }
