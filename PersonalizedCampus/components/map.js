@@ -50,13 +50,13 @@ const MapComponent = props => {
             onPress={e => {props.onPress != null ? props.onPress(e) : null}}> 
             <Marker key={1000} coordinate={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude}}
             title="Your Location" >
-                <MaterialIcons name="person-pin-circle" size={42} color="#00c0ff" />
+                <MaterialIcons name="person-pin-circle" size={42} color="crimson" />
             </Marker>
             {( props.nodes != undefined && props.nodes.length > 0 && props.nodes[0] != null) ? 
             props.nodes.map((marker, index) => { 
                 if (marker.type==='Node') 
                 {
-                    console.log('It\'s a node');
+                    //console.log('It\'s a node');
                     return <Marker
                     key={index}
                     coordinate={{latitude:marker.latitude, longitude:marker.longitude}}
@@ -66,7 +66,7 @@ const MapComponent = props => {
                     />
                 }
                 else if (marker.type==='Circle') {
-                    console.log('It\'s a circle');
+                    //console.log('It\'s a circle');
                     return [<Circle
                     key={index}
                     center={{latitude:marker.latitude, longitude:marker.longitude}}

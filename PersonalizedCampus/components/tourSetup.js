@@ -16,11 +16,7 @@ const TourSetupComponent = props => {
         }});
     
     const isValidTourData = text => {
-        if (!text) {
-            Alert.alert("Please enter a title for the tour area")
-        } else {
-            setTourTitle(text)
-        }
+        setTourTitle(text)
     }
 
     const createAnchor = (e) => {

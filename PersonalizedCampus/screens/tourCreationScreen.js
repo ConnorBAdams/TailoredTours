@@ -69,7 +69,7 @@ const TourCreationScreen = props => {
     const createRoute = async (data) => {
         try {
             setRouteData(data)
-            console.log(data.title, data.nodes)
+            console.log(routeData.title, routeData.nodes)
             console.log('Tour name: ', tourData.title)
             // We need to query Firebase for a tour with the area name we set and the current user ID
 
@@ -91,12 +91,12 @@ const TourCreationScreen = props => {
                 if (childKey != null)
                 {
                     // Now that we have that we need to write this route to it
-                    firebase.database().ref('/tours/' + userID + '/' + childKey )
+                    firebase.database().ref('/tours/' + userID + '/' + childKey + '/routes/' )
                     .push({
-                        routeName: data.title,
+                        routeName: routeData.title, 
                         createdAt: Date.now(),
                         lastModified: Date.now(),
-                        nodes: data.nodes,
+                        nodes: routeData.nodes,
                     })
                     .then(
                         Alert.alert('Successfully saved!')
@@ -132,14 +132,6 @@ const styles = StyleSheet.create({
     internalContainer: {
         height: '100%',
         alignItems: 'center',
-    },
-    header:{
-        width:"100%",
-        height:60,
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignItems:"center",
-        paddingHorizontal:20
     }
 });
 

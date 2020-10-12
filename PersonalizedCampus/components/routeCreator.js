@@ -16,11 +16,7 @@ const RouteCreatorComponent = props => {
         }});
     
     const isValidTourData = text => {
-        if (!text) {
-            Alert.alert("Please enter a title for the tour route")
-        } else {
-            setTourTitle(text)
-        }
+        setTourTitle(text)
     }
 
     const createNode = (e) => {

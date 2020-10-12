@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput } from 'react-native';
 import 'react-native-gesture-handler';
-import SignOutModule from '../components/signOut'
-import Button from '../components/button'
 import DrawerHeader from '../components/drawerHeader'
 import MarkerEditorComponent from '../components/markerEditor'
 
@@ -31,15 +27,7 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
         justifyContent: 'center',
-        },
-    header:{
-        width:"100%",
-        height:60,
-        flexDirection:"row",
-        justifyContent:"space-between",
-        alignItems:"center",
-        paddingHorizontal:20
-    }
+        }
 });
 
 
