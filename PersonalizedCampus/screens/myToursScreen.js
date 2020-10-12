@@ -34,7 +34,8 @@ const MyToursScreen = props => {
             return;
         } else {
             var arr = [];
-            firebase.database().ref('/tours').orderByChild('owner').equalTo(userID).on('child_added', function(snapshot) {
+            const tours_str = '/tours/' + userID;
+            firebase.database().ref(tours_str).on('child_added', function(snapshot) {
                 arr.push({tourId: snapshot.key, tourName: snapshot.child('tourName')});
             });
             setTours(arr);
