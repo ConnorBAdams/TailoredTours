@@ -70,7 +70,7 @@ const TourCreationScreen = props => {
         try {
             setRouteData(data)
             console.log(data.title, data.nodes)
-            console.log('Tour name: ', data.title)
+            console.log('Tour name: ', tourData.title)
             // We need to query Firebase for a tour with the area name we set and the current user ID
 
             // Reference /tours/ then the child node will be this user's ID
@@ -78,30 +78,29 @@ const TourCreationScreen = props => {
             // find the one where this user's tourName === the one we're working with
             // then, in a then() because this runs off of an async promise
             // insert the tour route
-
+            console.log(tourData)
             firebase.database().ref('/tours/' + userID + '/' )
-            .orderByChild('tourName').equalTo(data.title).once('value')
+            .orderByChild('tourName').equalTo(tourData.title).once('value')
             .then(function(snapshot) 
             {
-                console.log('SNAPSHOT RESULTS FOR \"' + data.title + '\": ',snapshot)
+                console.log('SNAPSHOT RESULTS FOR \"' + tourData.title + '\": ',snapshot)
                 var childKey = null;
                 snapshot.forEach(function(childSnapshot) { // I hate this. We have to do this because the key is dynamic from push()
+                    console.log(childSnapshot)
                     childKey = childSnapshot.key
                 })
-                if (childKey != null)
-                {
                     // Now that we have that we need to write this route to it
-                    firebase.database().ref('/tours/' + userID + '/' + childKey + '/routes/' )
-                    .push({
-                        routeName: data.title, 
-                        createdAt: Date.now(),
-                        lastModified: Date.now(),
-                        nodes: data.nodes,
-                    })
-                    .then(
-                        Alert.alert('Successfully saved!')
-                    )
-                }
+                firebase.database().ref('/tours/' + userID + '/' + childKey + '/routes/' )
+                .push({
+                    routeName: data.title, 
+                    createdAt: Date.now(),
+                    lastModified: Date.now(),
+                    nodes: data.nodes,
+                })
+                .then(
+                    Alert.alert('Successfully saved!')
+                )
+                
             })
             
         } catch (e) {

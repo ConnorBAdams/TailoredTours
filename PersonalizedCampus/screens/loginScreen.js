@@ -18,6 +18,7 @@ const LoginScreen = props => {
               navigation.navigate('Tour Creation')
           } else {
               // user isn't logged in, 
+              navigation.navigate('Login')
           }
       })
     }

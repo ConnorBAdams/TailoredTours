@@ -21,7 +21,7 @@ const ManualLoginModule = props => {
                 let response = await auth().signInWithEmailAndPassword(email, password)
                 console.log(response)
                 if (response.user) {
-                    firebase.database().ref('/users/' + result.user.uid).update({
+                    firebase.database().ref('/users/' + response.user.uid).update({
                         last_logged_in: Date.now()
                     })
                 }
