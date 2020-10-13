@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import DrawerHeader from '../components/drawerHeader'
+import Button from '../components/button'
 import MarkerEditorComponent from '../components/markerEditor'
 import firebase, { auth } from 'firebase';
 
-const MyToursScreen = props => {
-    useEffect(() => {getuserID() });
-
-    const [userID, setUserID] = useState('');
+const MyToursScreen = props => {    
+    const [selectedId, setSelectedId] = useState(null);
+    const [userID, setUserID] = useState(null);
     const [tours, setTours] = useState([]);
-    const DATA = [{ id: '-MJ9vKKNx8ugbPp9TlMc', title: 'ZacTour1' }, 
-    { id: '-MJ9vLCbKp7rNC0-KOPe', title: 'ZacTour2' },
-    { id: '-MJ9vLuuZG5PE0ZDo75z', title: 'ZacTour3' }];
-    //const DATA = []
+
+    useEffect(() => {getuserID();}, []);
+    useEffect(() => {getTours();});
 
     const getuserID = () => {
         firebase.auth().onAuthStateChanged(function(user) {
@@ -26,20 +25,22 @@ const MyToursScreen = props => {
             }
         })
     }
-    
-    const getTours = () => {
-        if (!userID) {
-            console.log('Not logged in');
-            return;
-        } else {
-            var arr = [];
+
+    const getTours = () => {    
+        if (userID != null) {
             const tours_str = '/tours/' + userID;
-            firebase.database().ref(tours_str).on('child_added', function(snapshot) {
-                arr.push({tourId: snapshot.key, tourName: snapshot.child('tourName')});
-            });
-            setTours(arr);
-            console.log(tours);
-            //console.log(DATA);
+            firebase.database().ref(tours_str).once('value', function(snapshot) {
+                var arr = [];
+                console.log(snapshot)
+                snapshot.forEach(element => { 
+                    arr.push({id:element.key, title:element.child('tourName').val()});})
+                if (arr.length > tours.length)
+                {
+                    setTours(arr);
+                    console.log(arr)
+                }
+                console.log('done')
+            })
         }
     }
 
@@ -49,7 +50,6 @@ const MyToursScreen = props => {
         </TouchableOpacity>
     );
     
-    const [selectedId, setSelectedId] = useState(null);
 
     const renderItem = ({ item }) => {
         const backgroundColor = item.id === selectedId ? "#2b5687" : "#2380eb";
@@ -63,20 +63,18 @@ const MyToursScreen = props => {
         );
     };
 
-    const toursNotFound = <Text style={{fontSize: 24}}>No tours found.</Text>
+    const toursNotFound = <ActivityIndicator size='large' /> //<Text style={{fontSize: 24}}>No tours found.</Text>
     const toursFound =  <FlatList
-                            data={DATA}
+                            data={tours}
                             renderItem={renderItem}
                             keyExtractor={(item) => item.id}
-                            extraData={selectedId}
-                        />
+                            extraData={selectedId} />
 
     return (
         <SafeAreaView style={styles.container}>
-            <DrawerHeader name="My Tours" openDrawer={props.navigation.openDrawer}/>
+        <DrawerHeader name="My Tours" openDrawer={props.navigation.openDrawer}/>
             <View style={styles.internalContainer}>
-                {DATA.length == 0 ? toursNotFound : toursFound}
-                <Button title="Get Tours" onPress={() => getTours()} />
+                {tours.length == 0 ? toursNotFound : toursFound}
             </View>
       </SafeAreaView>
     );
@@ -84,7 +82,6 @@ const MyToursScreen = props => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingTop: 25,
         backgroundColor: '#fff',
         alignItems: 'center',

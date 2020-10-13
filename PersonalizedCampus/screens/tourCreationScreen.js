@@ -69,8 +69,8 @@ const TourCreationScreen = props => {
     const createRoute = async (data) => {
         try {
             setRouteData(data)
-            console.log(routeData.title, routeData.nodes)
-            console.log('Tour name: ', tourData.title)
+            console.log(data.title, data.nodes)
+            console.log('Tour name: ', data.title)
             // We need to query Firebase for a tour with the area name we set and the current user ID
 
             // Reference /tours/ then the child node will be this user's ID
@@ -80,10 +80,10 @@ const TourCreationScreen = props => {
             // insert the tour route
 
             firebase.database().ref('/tours/' + userID + '/' )
-            .orderByChild('tourName').equalTo(tourData.title).once('value')
+            .orderByChild('tourName').equalTo(data.title).once('value')
             .then(function(snapshot) 
             {
-                console.log('SNAPSHOT RESULTS FOR \"' + tourData.title + '\": ',snapshot)
+                console.log('SNAPSHOT RESULTS FOR \"' + data.title + '\": ',snapshot)
                 var childKey = null;
                 snapshot.forEach(function(childSnapshot) { // I hate this. We have to do this because the key is dynamic from push()
                     childKey = childSnapshot.key
@@ -93,10 +93,10 @@ const TourCreationScreen = props => {
                     // Now that we have that we need to write this route to it
                     firebase.database().ref('/tours/' + userID + '/' + childKey + '/routes/' )
                     .push({
-                        routeName: routeData.title, 
+                        routeName: data.title, 
                         createdAt: Date.now(),
                         lastModified: Date.now(),
-                        nodes: routeData.nodes,
+                        nodes: data.nodes,
                     })
                     .then(
                         Alert.alert('Successfully saved!')
