@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Button from './button';
 import globalStyles from '../styles';
 import * as Google from 'expo-google-app-auth';
@@ -21,7 +21,7 @@ const ManualLoginModule = props => {
                 let response = await auth().signInWithEmailAndPassword(email, password)
                 console.log(response)
                 if (response.user) {
-                    firebase.database().ref('/users/' + result.user.uid).update({
+                    firebase.database().ref('/users/' + response.user.uid).update({
                         last_logged_in: Date.now()
                     })
                 }

@@ -9,8 +9,7 @@ const DrawerHeader = ({name, openDrawer}) => {
         <TouchableOpacity onPress={()=>openDrawer()}>
             <Ionicons name="ios-menu" size={32} />
         </TouchableOpacity>
-        <Text>{name}</Text>
-        <Text style={{width:50}}></Text>
+        <Text style={{fontSize: 20, marginLeft: 90}}>{name}</Text>
       </View>
     )
     }
@@ -19,10 +18,10 @@ const DrawerHeader = ({name, openDrawer}) => {
   const styles = StyleSheet.create({
     header:{
       width:"100%",
-      height:60,
+      height:110,
+      paddingTop: 50,
       backgroundColor: 'lightblue',
       flexDirection:"row",
-      justifyContent:"space-between",
       alignItems:"center",
       paddingHorizontal:20
     }

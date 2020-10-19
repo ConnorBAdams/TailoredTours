@@ -51,7 +51,8 @@ const GoogleLoginModule = props => {
                         first_name: result.additionalUserInfo.profile.given_name,
                         last_name: result.additionalUserInfo.profile.family_name,
                         created_at: Date.now(),
-                        last_logged_in: Date.now()
+                        last_logged_in: Date.now(),
+                        profile_uri: result.additionalUserInfo.profile.photoUrl
                     })
                 } else {
                     firebase.database().ref('/users/' + result.user.uid).update({

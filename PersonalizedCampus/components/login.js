@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button'
 import GoogleLoginModule from './googleLogin'
 import ManualLoginModule from './maualLogin';
 import ManualCreateAccountModule from './manualCreateAccount';
 import globalStyles from '../styles'
+import firebase from 'firebase'
 
 // Creating this component to serve as a plug and play way of logging people in
 
 const LoginModule = props => {
     const [createAccount, setCreateAccount] = useState(false);
+    useEffect(() => {checkIfLoggedIn() });
 
-    // Not sure if storing passwords this way is problematic from a security standpoint
+	const checkIfLoggedIn = () => {
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+                props.onSignIn(); // TODO: Find a better way of handling this. Probably a callback from components
+			}
+		})
+	}
+
 
     return (
         <View style={styles.container}>

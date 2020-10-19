@@ -11,7 +11,7 @@ web-build/
 PersonalizedCampus/config.js
 PersonalizedCampus/google-services.json
 PersonalizedCampus/GoogleService-Info.plist
-
+PersonalizedCampus/.expo/*
 # macOS
 .DS_Store
 PersonalizedCampus/my-key.keystore
