@@ -37,7 +37,7 @@ export default function App() {
       <Stack.Screen name="Tour Type" component={TourTypeScreen} /> 
       <Stack.Screen name="Login" component={LoginScreen} />
       {/* <Stack.Screen name="Account Creation" component={AccountCreationScreen} /> */}
-      <Stack.Screen name="Tour Creation" component={SignedInScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="SignedIn" component={SignedInScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

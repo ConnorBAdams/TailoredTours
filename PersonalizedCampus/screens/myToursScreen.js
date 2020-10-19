@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import DrawerHeader from '../components/drawerHeader'
 import Button from '../components/button'
-import MarkerEditorComponent from '../components/markerEditor'
 import firebase, { auth } from 'firebase';
 
 const MyToursScreen = props => {    
