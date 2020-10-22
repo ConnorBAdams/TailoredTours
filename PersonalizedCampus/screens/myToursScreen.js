@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator, Image } from 'react-native';
 import 'react-native-gesture-handler';
 import DrawerHeader from '../components/drawerHeader'
 import Button from '../components/button'
@@ -43,6 +43,10 @@ const MyToursScreen = props => {
 
     const Item = ({ item, onPress, style }) => (
         <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+            <Image 
+                source = {{uri:'https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png'}}
+                style = {styles.tourImg}
+            />
             <Text style={styles.title}>{item.title}</Text>
         </TouchableOpacity>
     );
@@ -83,6 +87,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 110 
         },
     internalContainer: {
         height: '100%',
@@ -95,19 +100,24 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-between",
         alignItems:"center",
-        paddingHorizontal:20
+        paddingHorizontal:20,
     },
     item: {
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 7,
-        padding: 10,
+        padding: 20,
         margin: 5,
         elevation: 2,
         width: 350,
+        flexDirection: 'row',
     },
     title: {
-        fontSize: 32,
+        fontSize: 28,
+    },
+    tourImg: {
+        width: 100,
+        height: 100,
     },
 });
 
