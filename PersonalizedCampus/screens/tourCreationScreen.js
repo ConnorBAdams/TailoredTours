@@ -20,7 +20,7 @@ const TourCreationScreen = props => {
         (async () => {
           let { status } = await Location.requestPermissionsAsync();
           if (status !== 'granted') {
-              Alert.alert('Permission to access location was denied, is is required for the map')
+              Alert.alert('Permission to access location was denied, it is required for the map')
           }
     
           let location = await Location.getCurrentPositionAsync({});
@@ -53,6 +53,7 @@ const TourCreationScreen = props => {
                 firebase.database().ref('/tours/' + userID )
                 .push({
                     tourName: data.title,
+                    public_private: 'private',
                     owner: userID, // Redundant
                     createdAt: Date.now(),
                     lastModified: Date.now(),

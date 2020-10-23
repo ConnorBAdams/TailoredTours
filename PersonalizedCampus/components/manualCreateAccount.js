@@ -44,7 +44,8 @@ const ManualCreateAccountModule = props => {
                         first_name: FName,
                         last_name: LName,
                         created_at: Date.now(),
-                        last_logged_in: Date.now()
+                        last_logged_in: Date.now(),
+                        verified: ''
                     })
                 }
             } catch (e) {

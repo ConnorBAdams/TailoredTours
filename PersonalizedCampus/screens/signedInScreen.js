@@ -45,7 +45,7 @@ useEffect(() => {checkIfLoggedIn() });
 		)
 		}}>
 			<Drawer.Screen name="My Tours" component={MyToursScreen} />
-			<Drawer.Screen name="SignedIn" component={TourCreationScreen} />
+			<Drawer.Screen name="Create Tour" component={TourCreationScreen} />
 		</Drawer.Navigator>
 		</NavigationContainer>
 	);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Image, View, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button';
 import globalStyles from '../styles';
@@ -52,7 +52,8 @@ const GoogleLoginModule = props => {
                         last_name: result.additionalUserInfo.profile.family_name,
                         created_at: Date.now(),
                         last_logged_in: Date.now(),
-                        profile_uri: result.additionalUserInfo.profile.photoUrl
+                        profile_url: result.additionalUserInfo.profile.photoUrl,
+                        verified: ''
                     })
                 } else {
                     firebase.database().ref('/users/' + result.user.uid).update({
