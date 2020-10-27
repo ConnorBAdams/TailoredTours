@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, Text, Image, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import 'react-native-gesture-handler';
+import { useNavigation  } from '@react-navigation/native';
 import DrawerHeader from '../components/drawerHeader'
 import Button from '../components/button'
 import firebase, { auth } from 'firebase';
 
 const MyToursScreen = props => {    
-    const [selectedId, setSelectedId] = useState(null);
     const [userID, setUserID] = useState(null);
     const [tours, setTours] = useState([]);
 
     useEffect(() => {getuserID();}, []);
     useEffect(() => {getTours();});
+
+	const navigation = useNavigation();
 
     const getuserID = () => {
         firebase.auth().onAuthStateChanged(function(user) {
@@ -28,58 +30,49 @@ const MyToursScreen = props => {
             const tours_str = '/tours/' + userID;
             firebase.database().ref(tours_str).once('value', function(snapshot) {
                 var arr = [];
-                console.log(snapshot)
+                console.log('Processing snapshot of user tour data')
                 snapshot.forEach(element => { 
                     arr.push({id:element.key, title:element.child('tourName').val()});})
                 if (arr.length > tours.length)
                 {
                     setTours(arr);
-                    console.log(arr)
                 }
                 console.log('done')
             })
         }
     }
 
-    const Item = ({ item, onPress, style }) => (
-        <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+    const elementPressed = item => {
+        navigation.navigate('EditScreen', 
+        {tourID: item.id,
+        userID: userID})
+    }
+
+    const Item = ({ item, onPress }) => (
+        <TouchableOpacity onPress={() => elementPressed(item)} style={styles.item}>
+            <Image source={{uri:'https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_28dp.png'}} style={styles.itemIcon} />
             <Text style={styles.title}>{item.title}</Text>
         </TouchableOpacity>
     );
     
-
-    const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#2b5687" : "#2380eb";
-
-        return (
-            <Item
-                item={item}
-                onPress={() => setSelectedId(item.id)}
-                style={{ backgroundColor }}
-            />
-        );
-    };
-
-    const toursNotFound = <ActivityIndicator size='large' /> //<Text style={{fontSize: 24}}>No tours found.</Text>
+    const toursNotFound = <ActivityIndicator size='large' /> 
     const toursFound =  <FlatList
                             data={tours}
-                            renderItem={renderItem}
-                            keyExtractor={(item) => item.id}
-                            extraData={selectedId} />
+                            renderItem={Item}
+                            keyExtractor={(item) => item.id} />
 
     return (
         <SafeAreaView style={styles.container}>
         <DrawerHeader name="My Tours" openDrawer={props.navigation.openDrawer}/>
-            <View style={styles.internalContainer}>
-                {tours.length == 0 ? toursNotFound : toursFound}
-            </View>
+        <View style={styles.internalContainer}>
+            {tours.length == 0 ? toursNotFound : toursFound}
+        </View>
       </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 25,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
@@ -97,14 +90,20 @@ const styles = StyleSheet.create({
         alignItems:"center",
         paddingHorizontal:20
     },
+    itemIcon: {
+        height: 50,
+        width: 50
+    },
     item: {
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        flexDirection: 'row',
         borderRadius: 7,
         padding: 10,
         margin: 5,
         elevation: 2,
         width: 350,
+        backgroundColor: '#00c9db'
     },
     title: {
         fontSize: 32,

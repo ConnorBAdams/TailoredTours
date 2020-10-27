@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { CardStyleInterpolators } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 import Button from '../components/button'
 import DrawerHeader from '../components/drawerHeader'
 import MyToursScreen from './myToursScreen'
 import TourCreationScreen from './tourCreationScreen'
 import firebase from 'firebase'
+import TourEditScreen from './tourEditScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -36,16 +38,23 @@ useEffect(() => {checkIfLoggedIn() });
 	return (
 		<NavigationContainer independent={true}>
 		<Drawer.Navigator initialRouteName="My Tours" drawerContent={props => {
+			// This filters out any screens we don't want to show
+			// that are controlled by this navigator
+			const {state, ...rest} = props;
+			const newState = {...state};
+			newState.routes = newState.routes.filter(item => item.name != ['EditScreen'])
 		return (
 			<DrawerContentScrollView {...props}>
 			<DrawerItem label="Main Screen" onPress={() => returnHome()} />
-			<DrawerItemList {...props} />
+			<DrawerItemList state={newState} {...rest} />
 			<DrawerItem label="Logout" onPress={() => signOut()} />
-		</DrawerContentScrollView>
-		)
-		}}>
+			</DrawerContentScrollView>
+		)}} screenOptions={{
+			cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+			}}>
 			<Drawer.Screen name="My Tours" component={MyToursScreen} />
-			<Drawer.Screen name="SignedIn" component={TourCreationScreen} />
+			<Drawer.Screen name="Tour Creator" component={TourCreationScreen} />
+			<Drawer.Screen name="EditScreen" component={TourEditScreen} />
 		</Drawer.Navigator>
 		</NavigationContainer>
 	);
