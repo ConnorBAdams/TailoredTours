@@ -30,7 +30,7 @@ const MyToursScreen = props => {
                 var arr = [];
                 console.log(snapshot)
                 snapshot.forEach(element => { 
-                    arr.push({id:element.key, title:element.child('tourName').val()});})
+                    arr.push({id:element.key, title:element.child('tourName').val(), thumbnail:element.child('thumbnail').val()});})
                 if (arr.length > tours.length)
                 {
                     setTours(arr);
@@ -44,8 +44,8 @@ const MyToursScreen = props => {
     const Item = ({ item, onPress, style }) => (
         <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
             <Image 
-                source = {{uri:'https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png'}}
                 style = {styles.tourImg}
+                source = {{uri: item.thumbnail}}
             />
             <Text style={styles.title}>{item.title}</Text>
         </TouchableOpacity>
