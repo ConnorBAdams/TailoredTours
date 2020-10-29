@@ -6,13 +6,16 @@ import globalStyles from '../styles'
 import firebase from 'firebase'
 
 const TourEditScreen = props => {
+    const [tour, setTour] = useState(null)
+
     useEffect(() => {
-        if (tour!=null && tour.key != props.route.params.tourID) {setTour(null)} // doing this for state timing, kinda
-        if(tour==null) {
+        if (tour!=null && tour.key != props.route.params.tourID) 
+        {setTour(null)} // doing this for state timing, kinda
+        else if(tour==null) {
             getTour()
+            console.log('null tour, getting it from firebase')
         }
     });
-    const [tour, setTour] = useState(null)
 
     const processSnapshot = snapshot => {
         if (snapshot != null) {
