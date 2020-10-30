@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, ActivityIndicator, Alert, TextInput } from 'react-native';
+import { useNavigation  } from '@react-navigation/native';
 import globalStyles from '../styles'
 import Button from '../components/button'
 import MapComponent from './map'
@@ -8,6 +9,7 @@ const RouteCreatorComponent = props => {
     const [location, setLocation] = useState(null)
     const [tourTitle, setTourTitle] = useState(null)
     const [nodes, setNodes] = useState([])
+    const navigation = useNavigation();
 
 	useEffect(() => {
         if (props.location != null){
@@ -45,6 +47,11 @@ const RouteCreatorComponent = props => {
             {location === null &&<Text>Loading...</Text>}
             {location != null && <MapComponent style={styles.mapStyle} nodes={nodes} onPress={e => createNode(e)} location={location} /> }
             <Button title="Create Tour Route" onPress={() => {createRoute({title:tourTitle, nodes:nodes})}} />
+            <Button title="Finalize Tour" onPress={() => navigation.navigate('Finalize Tour')}/> 
+            {/* The point of the button above is to then send the user to a screen to insert a picture
+                that will be used for the list display as well as a radio button to ask if the tour
+                is private or public if the user is verified. Was odd that "finishing" the tour meant you 
+                had to click away. I would think clicking away would delete it all so def need a button. */}
         </View>
     );
 }
@@ -57,7 +64,7 @@ const styles = StyleSheet.create({
       },
       mapStyle: {
         width: Dimensions.get('window').width,
-        height: 400,
+        height: 300,
       },
       titleText: {
           fontSize: 20,

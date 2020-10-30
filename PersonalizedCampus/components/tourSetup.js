@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
       },
       mapStyle: {
         width: Dimensions.get('window').width,
-        height: 400,
+        height: 300,
       },
       titleText: {
           fontSize: 20,

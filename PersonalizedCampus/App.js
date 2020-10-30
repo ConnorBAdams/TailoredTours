@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import HomeScreen from './screens/homeScreen'
 import LoginScreen from './screens/loginScreen'
 import TourTypeScreen from './screens/tourTypeScreen'
+import FinalizeTourScreen from './screens/finalizeTourScreen'
 import AccountCreationScreen from './screens/accountCreationScreen';
 import MapScreen from './screens/mapScreen';
 import SignedInScreen from './screens/signedInScreen';
@@ -36,6 +37,7 @@ export default function App() {
       <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="Tour Type" component={TourTypeScreen} /> 
       <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Finalize Tour" component={FinalizeTourScreen} />
       {/* <Stack.Screen name="Account Creation" component={AccountCreationScreen} /> */}
       <Stack.Screen name="SignedIn" component={SignedInScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
