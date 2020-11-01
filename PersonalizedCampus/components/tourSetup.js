@@ -10,7 +10,7 @@ const TourSetupComponent = props => {
     const [anchor, setAnchor] = useState(null)
 
 	useEffect(() => {
-        if (props.location != null){
+        if (props.location != null && location == null){
             setLocation(props.location);
             console.log(props.location);
         }});
@@ -31,7 +31,6 @@ const TourSetupComponent = props => {
 
     return (
         <View style={styles.container}>
-            <Text>First define the general area the tour route(s) will be in</Text>
             <Text style={styles.titleText}>Tour Name:</Text>
             <TextInput style={globalStyles.inputField}
             placeholder="Tour Name"
@@ -39,7 +38,12 @@ const TourSetupComponent = props => {
             <Text style={styles.titleText}>Select general tour area:</Text>
             {location === null && <ActivityIndicator size="large" />}
             {location === null &&<Text>Loading...</Text>}
-            {location != null && <MapComponent style={styles.mapStyle} nodes={[anchor]} onPress={e => createAnchor(e)} location={location} /> }
+            {location != null && 
+            <MapComponent 
+            style={styles.mapStyle} 
+            nodes={[anchor]} 
+            onPress={e => createAnchor(e)} 
+            location={location} /> }
             <Button title="Create Tour" onPress={() => {props.submitTour({title:tourTitle, anchor:anchor})}} />
         </View>
     );
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
       },
       mapStyle: {
         width: Dimensions.get('window').width,
-        height: 400,
+        height: Dimensions.get('window').height * 0.6,
       },
       titleText: {
           fontSize: 20,
