@@ -73,12 +73,17 @@ const MapComponent = props => {
 
     return (
         <View style={styles.container}>
-            {modalVisible && <MarkerEditorComponent onSubmit={updateNode} toggle={toggleModal} node={selectedNode} visible={modalVisible} />}
+            {modalVisible && 
+            <MarkerEditorComponent 
+                onSubmit={updateNode} 
+                toggle={toggleModal} 
+                node={selectedNode} 
+                visible={modalVisible} />}
             <View style={styles.mapTopButtons}>
             <View style={styles.mapModeButton}>
             {placementMode != null &&
                 <TouchableOpacity style={styles.icon} onPress={() => togglePlacementMode() } >
-                {placementMode=='node' && <FontAwesome5 name="route" size={32}  />}
+                {placementMode=='node' && <FontAwesome5 name="route" size={32} />}
                 {placementMode=='route' && <FontAwesome5 name="map-marker" size={32} style={{marginLeft:4, marginRight:4}} />}
                 </TouchableOpacity>
             }
@@ -107,16 +112,19 @@ const MapComponent = props => {
                     //console.log('It\'s a node');
                     return <Marker
                     key={index}
+                    identifier={index.toString()}
                     coordinate={{latitude:marker.latitude, longitude:marker.longitude}}
                     title={marker.name}
                     description={marker.description}
                     onCalloutPress={() => editMarker(marker)}
+                    onPress={(node) => {if (placementMode=='route') props.addNodeToRoute(node)} }
                     />
                 }
                 else if (marker.type==='Circle') {
                     //console.log('It\'s a circle');
                     return [<Circle
                     key={index}
+                    identifier={index.toString()}
                     center={{latitude:marker.latitude, longitude:marker.longitude}}
                     radius={marker.radius}
                     fillColor={marker.fillColor}
@@ -135,12 +143,11 @@ const MapComponent = props => {
             props.routes.map((marker, index) => { 
                 if (marker.length == 0) return;
                 coords = [];
-                console.log(marker)
                 marker.nodes.forEach(nodeID =>{ coords.push({latitude: props.nodes[nodeID].latitude, longitude:props.nodes[nodeID].longitude})})
-                console.log("coords: ", coords)
                 return <Polyline
                 key={index}
-                strokeColor={'red'}
+                strokeColor={`rgb(${marker.routeColor.r}, ${marker.routeColor.g}, ${marker.routeColor.b})`}
+                strokeWidth={4}
                 coordinates={coords}
                 />
             }) 
@@ -149,7 +156,7 @@ const MapComponent = props => {
             { placementMode === 'route' &&
             <View style={styles.mapBottomButtons}>
             <View style={styles.routeConfirmButton}>
-                <TouchableOpacity onPress={() => props.onRouteConfirm()} > 
+            <TouchableOpacity style={styles.icon} onPress={() => props.onRouteConfirm()} > 
                 <FontAwesome5 name="check-circle" size={32} />
             </TouchableOpacity>
             </View>
@@ -190,7 +197,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'space-between',
         alignItems: 'flex-end',
-        marginBottom: 12.5
+        marginBottom: 4.5
     },
     mapModeButton: {
         marginRight: Dimensions.get('window').width * 0.73, // sigh
