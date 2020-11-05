@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer, StackActions, useNavigation } from '@react-navigation/native';
+import { CardStyleInterpolators } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 import Button from '../components/button'
 import DrawerHeader from '../components/drawerHeader'
+import FinalizeTourScreen from './finalizeTourScreen'
 import MyToursScreen from './myToursScreen'
 import TourCreationScreen from './tourCreationScreen'
 import firebase from 'firebase'
@@ -35,18 +37,25 @@ useEffect(() => {checkIfLoggedIn() });
 
 	return (
 		<NavigationContainer independent={true}>
-		<Drawer.Navigator initialRouteName="My Tours" drawerContent={props => {
-		return (
-			<DrawerContentScrollView {...props}>
-			<DrawerItem label="Main Screen" onPress={() => returnHome()} />
-			<DrawerItemList {...props} />
-			<DrawerItem label="Logout" onPress={() => signOut()} />
-		</DrawerContentScrollView>
-		)
-		}}>
-			<Drawer.Screen name="My Tours" component={MyToursScreen} />
-			<Drawer.Screen name="Create Tour" component={TourCreationScreen} />
-		</Drawer.Navigator>
+			<Drawer.Navigator initialRouteName="My Tours" drawerContent={props => {
+				// This filters out any screens we don't want to show
+				// that are controlled by this navigator
+				const {state, ...rest} = props;
+				const newState = {...state};
+				newState.routes = newState.routes.filter(item => item.name != ['Finalize Tour'])
+			return (
+				<DrawerContentScrollView {...props}>
+				<DrawerItem label="Main Screen" onPress={() => returnHome()} />
+				<DrawerItemList state={newState} {...rest} />
+				<DrawerItem label="Logout" onPress={() => signOut()} />
+				</DrawerContentScrollView>
+			)}} screenOptions={{
+				cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+				}}>
+				<Drawer.Screen name="My Tours" component={MyToursScreen} />
+				<Stack.Screen name="Finalize Tour" component={FinalizeTourScreen} />
+				<Drawer.Screen name="Tour Creator" component={TourCreationScreen} />
+			</Drawer.Navigator>
 		</NavigationContainer>
 	);
 }
