@@ -1,59 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
 import firebase from 'firebase'
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+import { CardStyleInterpolators } from '@react-navigation/stack';
+import 'react-native-gesture-handler';
+import DrawerHeader from '../components/drawerHeader'
+const Drawer = createDrawerNavigator();
 
 const FinalizeTourScreen = props => {
     const navigation = useNavigation();
 
     return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.titleText}>How will you be taking this tour?</Text>
-        <View style={styles.buttonContainer}>
-          <Button title="Virtually" buttonStyle={styles.virtualButton} textStyle={styles.virtualText} onPress={() => navigation.navigate('Map')} />
-          <Button title="In Person" buttonStyle={styles.inPersonButton} textStyle={styles.inPersonText} onPress={() => navigation.navigate('Map')} />
-        </View>
-    </SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        <DrawerHeader name="Finalize Tour" openDrawer={props.navigation.openDrawer}/>
+            <View style={styles.internalContainer}>
+            </View>
+      </SafeAreaView>
     
     );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+      paddingTop: 25,
+      backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center',
+      },
+  internalContainer: {
+      height: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      },
+  header:{
+      width:"100%",
+      height:60,
+      flexDirection:"row",
+      justifyContent:"space-between",
+      alignItems:"center",
+      paddingHorizontal:20
   },
-  buttonContainer: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
+  item: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 7,
+      padding: 10,
+      margin: 5,
+      elevation: 2,
+      width: 350,
   },
-  virtualButton: {
-    height: '20%',
-    width: '65%',
-    marginTop: '10%',
-    marginBottom: '10%'
+  title: {
+      fontSize: 32,
   },
-  virtualText: {
-    fontSize: 30
-  },
-  inPersonButton: {
-    height: '20%',
-    width: '65%',
-    marginTop: '20%',
-    marginBottom: '10%'
-  },
-  inPersonText: {
-    fontSize: 30
-  },
-  titleText: {
-    marginBottom: '20%', 
-    fontSize: 20
-  }
 });
-
 
 export default FinalizeTourScreen;
