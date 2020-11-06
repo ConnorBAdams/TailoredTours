@@ -57,7 +57,7 @@ const FinalizeTourScreen = props => {
                     <Button title="Pick a photo" onPress={openImagePickerAsync} />
                     <Button title="Use default" onPress={setImageToDefault} />
                 </View>
-                <View style={styles.container}>
+                <View style={styles.container} style={{marginTop:40}}>
                     <Button title="Finish tour" />
                 </View>
             </View>
