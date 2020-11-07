@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, TouchableOpacity, StyleSheet, SafeAreaView, View, Text } from 'react-native';
+import { Image, TouchableOpacity, StyleSheet, SafeAreaView, View, Text, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
@@ -29,12 +29,45 @@ const FinalizeTourScreen = props => {
             return;
         }
 
-        setSelectedImage({ localUri: pickerResult.uri });
+        setSelectedImage({ localUri: pickerResult.uri, base64: pickerResult.base64 });
     };
 
     const setImageToDefault = () => {
         setSelectedImage(null);
     };
+
+    const finishTour = async () => {
+        if (selectedImage == null) {
+            Alert.alert('Tour uploaded successfully!');
+            props.navigation.popToTop();
+            return;
+        }
+        try {
+            console.log(userID);
+            console.log(tourName);
+            firebase.database().ref('/tours/' + userID + '/' )
+            .orderByChild('tourName').equalTo(tourName).once('value')
+            .then(function(snapshot) 
+            {
+                var childKey = null;
+                snapshot.forEach(function(childSnapshot) {
+                    console.log(childSnapshot)
+                    childKey = childSnapshot.key
+                })
+                firebase.database().ref('/tours/' + userID + '/' + childKey + '/')
+                .child('thumbnail').set(selectedImage.base64)
+                .then(function(success)
+                {
+                    Alert.alert('Tour uploaded successfully!');
+                    props.navigation.popToTop();
+                    return;
+                })
+            })
+        } catch (e) {
+            Alert.alert(e.message)
+            console.error(e.message)
+        }
+    }
 
     const no_img_selected = <Image 
                                 source={default_image} 
@@ -59,7 +92,7 @@ const FinalizeTourScreen = props => {
                     <Button title="Use default" onPress={setImageToDefault} />
                 </View>
                 <View style={styles.container} style={{marginTop:40}}>
-                    <Button title="Finish tour" />
+                    <Button title="Finish tour" onPress={finishTour} />
                 </View>
             </View>
       </SafeAreaView>
