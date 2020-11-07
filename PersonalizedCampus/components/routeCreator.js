@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, ActivityIndicator, TextInput, TouchableHighlight, Modal } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, ActivityIndicator, TextInput, Alert, Modal } from 'react-native';
 import globalStyles from '../styles'
 import Button from '../components/button'
 import MapComponent from './map'
@@ -8,13 +8,15 @@ import HsvColorPicker from 'react-native-hsv-color-picker';
 const RouteCreatorComponent = props => {
     const [location, setLocation] = useState(null)
     const [tourTitle, setTourTitle] = useState(null)
+    const [tourDesc, setTourDesc] = useState(null)
     const [nodes, setNodes] = useState([]) // array of all nodes
     const [routes, setRoutes] = useState([]) // array of objects which correspond to nodes
     const [wipRoute, setWIPRoute] = useState(null) // the WIP route, moved to routes when confirmed
-    const [nameModalVisible, setNameModalVisible] = useState(false)
-    const [hue, setHue] = useState(0)
-    const [sat, setSat] = useState(0)
-    const [val, setVal] = useState(1)
+    const [nameModalVisible, setNameModalVisible] = useState(false) // modal visibility
+    // Color picker data, HSV color formatting
+    const [hue, setHue] = useState(0) // hue
+    const [sat, setSat] = useState(0) // saturation
+    const [val, setVal] = useState(1) // value
 
     useEffect(() => {
         if (props.location != null && location == null){
@@ -106,6 +108,7 @@ const RouteCreatorComponent = props => {
                 id: routes.length,
                 routeColor: hsvToRgb(hue, sat, val), 
                 name: tourTitle,
+                desc: tourDesc,
                 nodes: wipRoute.nodes
             }])
         }
@@ -115,6 +118,7 @@ const RouteCreatorComponent = props => {
                 id: 0,
                 routeColor: hsvToRgb(hue, sat, val), 
                 name: tourTitle,
+                desc: tourDesc,
                 nodes: wipRoute.nodes
             }])
         }
@@ -123,17 +127,23 @@ const RouteCreatorComponent = props => {
         setSat(0)
         setVal(1)
         setNameModalVisible(false)
-   }
+    }
 
    // TODO: change how these are saving in Mongo
    // need to verify WIP is empty (prompt to save if not)
    // then send routes and nodes to be saved
    // routes will just save the names and references to nodes
    const finished = () => {
-       if (wipRoute.length != 0){
-           // not finished
-           // prompt to save WIP
+       if (wipRoute != null && wipRoute.length != 0){
+           Alert.alert(
+               "Unsaved route", "Unsaved route, would you like to save it before moving on?",
+               [{
+                   text:'Yes', onPress:() => promptForRouteName()
+               },{ text: 'No', onPress:() => setWIPRoute(null) }
+            ])
+
        } else {
+        props.createRoute({routes:{...routes}, nodes:{...nodes}})
            // can be finished
        }
    }
@@ -158,7 +168,9 @@ const RouteCreatorComponent = props => {
             <TextInput style={globalStyles.inputField}
             placeholder="Route Name"
             onChangeText={text => setTourTitle(text)} />
-            
+            <TextInput style={globalStyles.inputField}
+            placeholder="Route Description"
+            onChangeText={text => setTourDesc(text)} />
             <HsvColorPicker
             huePickerHue={hue}
             satValPickerHue={hue}
@@ -185,13 +197,13 @@ const RouteCreatorComponent = props => {
             <MapComponent 
             style={styles.mapStyle} 
             nodes={nodes} 
-            routes={[wipRoute, ...routes]}
+            routes={(wipRoute != null)? [wipRoute, ...routes] : routes}
             placementMode={'route'}
             onPress={(e, mode) => createNode(e, mode)} 
             onRouteConfirm={promptForRouteName}
             addNodeToRoute={addNodeToRoute}
             location={location} /> }
-            <Button title="Finished" style={styles.submitButton} onPress={() => {createRoute({title:tourTitle, nodes:nodes})}} />
+            <Button title="Finished" style={styles.submitButton} onPress={() => {finished()}} />
         </View>
     );
 }

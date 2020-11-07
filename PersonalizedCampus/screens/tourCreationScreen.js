@@ -47,61 +47,34 @@ const TourCreationScreen = props => {
             Alert.alert('Please set a tour area title')
         } else 
         {
-            try {
-                setTourData(data)
-                console.log(data.title, data.anchor, data.anchor.latitude, data.anchor.longitude)
-                firebase.database().ref('/tours/' + userID )
-                .push({
-                    tourName: data.title,
-                    owner: userID, // Redundant
-                    createdAt: Date.now(),
-                    lastModified: Date.now(),
-                    anchor: data.anchor,
-                })
-                
-            } catch (e) {
-                Alert.alert(e.message)
-                console.error(e.message)
-            }
+            setTourData(data)
         }
     }
 
     const createRoute = async (data) => {
         try {
             setRouteData(data)
-            console.log(data.title, data.nodes)
-            console.log('Tour name: ', tourData.title)
-            // We need to query Firebase for a tour with the area name we set and the current user ID
 
-            // Reference /tours/ then the child node will be this user's ID
-            // Get all the tour areas this user owns and order by tourName
-            // find the one where this user's tourName === the one we're working with
-            // then, in a then() because this runs off of an async promise
-            // insert the tour route
-            console.log(tourData)
-            firebase.database().ref('/tours/' + userID + '/' )
-            .orderByChild('tourName').equalTo(tourData.title).once('value')
-            .then(function(snapshot) 
-            {
-                console.log('SNAPSHOT RESULTS FOR \"' + tourData.title + '\": ',snapshot)
-                var childKey = null;
-                snapshot.forEach(function(childSnapshot) { // I hate this. We have to do this because the key is dynamic from push()
-                    console.log(childSnapshot)
-                    childKey = childSnapshot.key
-                })
-                    // Now that we have that we need to write this route to it
-                firebase.database().ref('/tours/' + userID + '/' + childKey + '/routes/' )
+            try {
+                console.log(tourData.title, tourData.anchor, tourData.anchor.latitude, tourData.anchor.longitude)
+                firebase.database().ref('/tours/' + userID )
                 .push({
-                    routeName: data.title, 
+                    tourName: tourData.title,
+                    owner: userID, // Redundant
                     createdAt: Date.now(),
                     lastModified: Date.now(),
-                    nodes: data.nodes,
-                })
+                    anchor: tourData.anchor,
+                    routes: data.routes,
+                    nodes: data.nodes
+                })                
                 .then(
                     Alert.alert('Successfully saved!')
                 )
                 
-            })
+            } catch (e) {
+                Alert.alert(e.message)
+                console.error(e.message)
+            }
             
         } catch (e) {
             Alert.alert(e.message)

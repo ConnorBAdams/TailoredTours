@@ -16,7 +16,8 @@ import firebaseConfig from './config'
 const Stack = createStackNavigator();
 
 export default function App() {
-  firebase.initializeApp(firebaseConfig);
+  if (!firebase.apps.length)
+    firebase.initializeApp(firebaseConfig);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{

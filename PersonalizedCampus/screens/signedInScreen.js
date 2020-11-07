@@ -24,7 +24,7 @@ useEffect(() => {checkIfLoggedIn() });
 				//navigation.navigate('Login') // This is causing error on logout
 			}
 		})
-	}
+	} 
 
 	const signOut = () => {
 		props.navigation.navigate('Home')

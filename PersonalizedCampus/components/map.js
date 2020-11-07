@@ -83,8 +83,8 @@ const MapComponent = props => {
             <View style={styles.mapModeButton}>
             {placementMode != null &&
                 <TouchableOpacity style={styles.icon} onPress={() => togglePlacementMode() } >
-                {placementMode=='node' && <FontAwesome5 name="route" size={32} />}
-                {placementMode=='route' && <FontAwesome5 name="map-marker" size={32} style={{marginLeft:4, marginRight:4}} />}
+                {placementMode=='node' && <FontAwesome5 name="map-marker" size={32} />}
+                {placementMode=='route' && <FontAwesome5 name="route" size={32} style={{marginLeft:4, marginRight:4}} />}
                 </TouchableOpacity>
             }
             </View>
@@ -105,6 +105,7 @@ const MapComponent = props => {
             title="Your Location" >
                 <MaterialIcons name="person-pin-circle" size={42} color="crimson" />
             </Marker> }
+            {console.log(props.nodes)}
             {( props.nodes != undefined && props.nodes.length > 0 && props.nodes[0] != null) ? 
             props.nodes.map((marker, index) => { 
                 if (marker.type==='Node') 
@@ -143,6 +144,7 @@ const MapComponent = props => {
             props.routes.map((marker, index) => { 
                 if (marker.length == 0) return;
                 coords = [];
+                console.log('have a route')
                 marker.nodes.forEach(nodeID =>{ coords.push({latitude: props.nodes[nodeID].latitude, longitude:props.nodes[nodeID].longitude})})
                 return <Polyline
                 key={index}

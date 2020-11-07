@@ -27,9 +27,9 @@ const TourSetupComponent = props => {
             radius: 1000,
             fillColor: (65, 61, 82),
             type:'Circle'})
-   }
+    }
 
-    return (
+    return ( 
         <View style={styles.container}>
             <Text style={styles.titleText}>Tour Name:</Text>
             <TextInput style={globalStyles.inputField}

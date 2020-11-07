@@ -44,7 +44,12 @@ const TourEditorModule = props => {
     return (
         <View style={styles.internalContainer}>
             {anchorLoc != null &&
-            <MapComponent style={styles.mapStyle} nodes={allNodes} onPress={e => console.log(e)} location={anchorLoc} showUser={false} />
+            <MapComponent 
+            style={styles.mapStyle} 
+            nodes={allNodes} 
+            onPress={e => console.log(e)} 
+            location={anchorLoc} 
+            showUser={false} />
             }
             <Text>Loading: {props.tour.key} for user: {props.tour.child('owner').val()}</Text>
         </View>
