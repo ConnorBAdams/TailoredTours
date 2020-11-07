@@ -102,7 +102,7 @@ const RouteCreatorComponent = props => {
     // Finishes creating the route in the frontend
     // Moves a WIP route object into the routes array
     const createRoute = () => {
-        if (routes.length > 0) {
+        if (routes != null && routes.length > 0) {
             setRoutes([...routes, {
                 type: 'Route',
                 id: routes.length,
@@ -129,10 +129,9 @@ const RouteCreatorComponent = props => {
         setNameModalVisible(false)
     }
 
-   // TODO: change how these are saving in Mongo
-   // need to verify WIP is empty (prompt to save if not)
-   // then send routes and nodes to be saved
-   // routes will just save the names and references to nodes
+   // If a route is in progress this asks the user if they want to save it
+   // TODO: Make it continue following the alert
+   // Otherwise it saved the tour
    const finished = () => {
        if (wipRoute != null && wipRoute.length != 0){
            Alert.alert(
@@ -141,7 +140,6 @@ const RouteCreatorComponent = props => {
                    text:'Yes', onPress:() => promptForRouteName()
                },{ text: 'No', onPress:() => setWIPRoute(null) }
             ])
-
        } else {
         props.createRoute({routes:{...routes}, nodes:{...nodes}})
            // can be finished

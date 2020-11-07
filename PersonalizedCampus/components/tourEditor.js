@@ -7,24 +7,20 @@ import firebase from 'firebase'
 const TourEditorModule = props => {
     [anchorLoc, setAnchorLoc] = useState(null);
     [allNodes, setAllNodes] = useState(null);
+    [allRoutes, setAllRoutes] = useState(null);
     [tourID, setTourID] = useState(null);
 
     useEffect(() => {
         if (props.tour != null && props.tour.key != tourID)
         {
-            console.log('Props not null', props.tour.key)
-            buildNodes = [props.tour.child('anchor').val()]
-            allRoutes = props.tour.child('routes').val()
-            //props.tour.child('routes').foreach(element => console.log(element) )
-            for (var i in allRoutes) {
-                buildNodes.push.apply(buildNodes, allRoutes[i]['nodes'])
-            }
+            buildNodes = props.tour.child('nodes').val()
+            buildNodes = [...buildNodes, props.tour.child('anchor').val()]
+            setAllRoutes(props.tour.child('routes').val())
             setAllNodes(buildNodes)
             setAnchorLoc({coords: {
                 latitude: props.tour.child('anchor').child('latitude').val(),
                 longitude: props.tour.child('anchor').child('longitude').val()}});
             setTourID(props.tour.key)
-
         }
     })
 
@@ -47,6 +43,7 @@ const TourEditorModule = props => {
             <MapComponent 
             style={styles.mapStyle} 
             nodes={allNodes} 
+            routes={allRoutes}
             onPress={e => console.log(e)} 
             location={anchorLoc} 
             showUser={false} />
@@ -71,7 +68,8 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         width: Dimensions.get('window').width,
-        height: 400,
+        marginBottom: 30,
+        height: '94%',
     },
 });
 

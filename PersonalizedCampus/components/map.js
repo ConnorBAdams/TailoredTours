@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ANimated } from 'react-native';
 import { FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import { Marker, Circle, Polyline } from 'react-native-maps';
 import globalStyles from '../styles'
 import Button from '../components/button'
 import MarkerEditorComponent from './markerEditor'
+import Animated from 'react-native-reanimated';
 
 // How to use this component: 
 // This displays the map with Google Maps and allows for node/route creation
@@ -24,6 +25,7 @@ const MapComponent = props => {
     const [placementMode, setPlacementMode] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
     const [selectedNode, setSelectedNode] = useState(null)
+    const [animation, setAnimation] = useState(0)
 
     useEffect(() => {
         if (placementMode == null && props.placementMode != null)
@@ -144,7 +146,6 @@ const MapComponent = props => {
             props.routes.map((marker, index) => { 
                 if (marker.length == 0) return;
                 coords = [];
-                console.log('have a route')
                 marker.nodes.forEach(nodeID =>{ coords.push({latitude: props.nodes[nodeID].latitude, longitude:props.nodes[nodeID].longitude})})
                 return <Polyline
                 key={index}
@@ -154,7 +155,42 @@ const MapComponent = props => {
                 />
             }) 
             : null}
-            </MapView>
+            </MapView> 
+            { (props.routes != undefined ) ? 
+            <Animated.ScrollView
+                horizontal
+                scrollEventThrottle={1}
+                showsHorizontalScrollIndicator={false}
+                snapToInterval={CARD_WIDTH}
+                onScroll={Animated.event(
+                    [{
+                        nativeEvent: {
+                        contentOffset: {
+                            x: animation,
+                        },},
+                    },],
+                    { useNativeDriver: true }
+                )}
+                style={styles.scrollView}
+                contentContainerStyle={styles.endPadding}
+                >
+                {props.routes.map((route, index) => (
+                    <View style={styles.card} key={index}>
+                    {/* <Image
+                        source={marker.image}
+                        style={styles.cardImage}
+                        resizeMode="cover"
+                    /> */}
+                    <View style={styles.textContent}>
+                        <Text numberOfLines={1} style={styles.cardtitle}>{route.title}</Text>
+                        <Text numberOfLines={1} style={styles.cardDescription}>
+                        {route.description}
+                        </Text>
+                    </View>
+                    </View>
+                ))}
+                </Animated.ScrollView>
+            : null}    
             { placementMode === 'route' &&
             <View style={styles.mapBottomButtons}>
             <View style={styles.routeConfirmButton}>
@@ -167,6 +203,9 @@ const MapComponent = props => {
         </View>
     );
 }
+
+const CARD_HEIGHT = Dimensions.get("window").height / 4;
+const CARD_WIDTH = CARD_HEIGHT - 50;
 
 const styles = StyleSheet.create({
     container: {
@@ -210,7 +249,48 @@ const styles = StyleSheet.create({
     routeConfirmButton: {
         marginRight: 10,
         padding: 2
-    }
+    },
+    scrollView: {
+        position: "absolute",
+        bottom: 30,
+        left: 0,
+        right: 0,
+        paddingVertical: 10,
+    },
+    endPadding: {
+        paddingRight: Dimensions.get('window').width - CARD_WIDTH,
+    },
+    card: {
+        padding: 10,
+        elevation: 2,
+        backgroundColor: "#FFF",
+        marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowOffset: { x: 2, y: -2 },
+        height: CARD_HEIGHT,
+        width: CARD_WIDTH,
+        overflow: "hidden",
+    },
+    cardImage: {
+        flex: 3,
+        width: "100%",
+        height: "100%",
+        alignSelf: "center",
+    },
+    textContent: {
+        flex: 1,
+    },
+    cardtitle: {
+        fontSize: 12,
+        marginTop: 5,
+        fontWeight: "bold",
+    },
+    cardDescription: {
+        fontSize: 12,
+        color: "#444",
+    },
 });
 
 
