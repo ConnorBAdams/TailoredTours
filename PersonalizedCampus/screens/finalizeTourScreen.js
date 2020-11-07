@@ -11,10 +11,10 @@ import DrawerHeader from '../components/drawerHeader'
 const Drawer = createDrawerNavigator();
 
 const FinalizeTourScreen = props => {
+    const tourName = props.route.params.tourName;
     var default_image = require('../assets/default_thumbnail.png');
     const navigation = useNavigation();
     const [selectedImage, setSelectedImage] = React.useState(null);
-
 
     let openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
