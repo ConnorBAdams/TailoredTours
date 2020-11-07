@@ -48,7 +48,6 @@ const TourEditorModule = props => {
             location={anchorLoc} 
             showUser={false} />
             }
-            <Text>Loading: {props.tour.key} for user: {props.tour.child('owner').val()}</Text>
         </View>
     );
     }
@@ -68,8 +67,7 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         width: Dimensions.get('window').width,
-        marginBottom: 30,
-        height: '94%',
+        flex: 1
     },
 });
 

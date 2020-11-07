@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, ANimated } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
 import { FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import { Marker, Circle, Polyline } from 'react-native-maps';
 import globalStyles from '../styles'
 import Button from '../components/button'
 import MarkerEditorComponent from './markerEditor'
-import Animated from 'react-native-reanimated';
+import Carousel from 'react-native-snap-carousel';
 
 // How to use this component: 
 // This displays the map with Google Maps and allows for node/route creation
@@ -25,7 +25,7 @@ const MapComponent = props => {
     const [placementMode, setPlacementMode] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
     const [selectedNode, setSelectedNode] = useState(null)
-    const [animation, setAnimation] = useState(0)
+    const [selectedIndex, setSelectedIndex] = useState(0)
 
     useEffect(() => {
         if (placementMode == null && props.placementMode != null)
@@ -72,6 +72,14 @@ const MapComponent = props => {
             setPlacementMode('node')
     }
     
+    const carouselItem = ({item, index}) => {
+        return (
+            <View style={styles.slide}>
+                <Text style={styles.title}>{item.name}</Text>
+                <Text >{item.desc}</Text>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -157,39 +165,17 @@ const MapComponent = props => {
             : null}
             </MapView> 
             { (props.routes != undefined ) ? 
-            <Animated.ScrollView
-                horizontal
-                scrollEventThrottle={1}
-                showsHorizontalScrollIndicator={false}
-                snapToInterval={CARD_WIDTH}
-                onScroll={Animated.event(
-                    [{
-                        nativeEvent: {
-                        contentOffset: {
-                            x: animation,
-                        },},
-                    },],
-                    { useNativeDriver: true }
-                )}
-                style={styles.scrollView}
-                contentContainerStyle={styles.endPadding}
-                >
-                {props.routes.map((route, index) => (
-                    <View style={styles.card} key={index}>
-                    {/* <Image
-                        source={marker.image}
-                        style={styles.cardImage}
-                        resizeMode="cover"
-                    /> */}
-                    <View style={styles.textContent}>
-                        <Text numberOfLines={1} style={styles.cardtitle}>{route.title}</Text>
-                        <Text numberOfLines={1} style={styles.cardDescription}>
-                        {route.description}
-                        </Text>
-                    </View>
-                    </View>
-                ))}
-                </Animated.ScrollView>
+            <View style={styles.carouselContainer}>
+            <Carousel
+              ref={(c) => { carousel = c; }}
+              data={props.routes}
+              renderItem={carouselItem}
+              sliderWidth={Dimensions.get('window').width}
+              itemWidth={Dimensions.get('window').width * 0.75}
+              style={styles.carousel}
+              onSnapToItem={index => setSelectedIndex(index)}
+            />
+            </View>
             : null}    
             { placementMode === 'route' &&
             <View style={styles.mapBottomButtons}>
@@ -203,9 +189,6 @@ const MapComponent = props => {
         </View>
     );
 }
-
-const CARD_HEIGHT = Dimensions.get("window").height / 4;
-const CARD_WIDTH = CARD_HEIGHT - 50;
 
 const styles = StyleSheet.create({
     container: {
@@ -250,47 +233,19 @@ const styles = StyleSheet.create({
         marginRight: 10,
         padding: 2
     },
-    scrollView: {
-        position: "absolute",
-        bottom: 30,
-        left: 0,
-        right: 0,
-        paddingVertical: 10,
+    carouselContainer: {
+        marginTop: '-100%',
+        backgroundColor: 'transparent',
+        height: 300
     },
-    endPadding: {
-        paddingRight: Dimensions.get('window').width - CARD_WIDTH,
+    carousel: {
+        zIndex: 1,
     },
-    card: {
-        padding: 10,
-        elevation: 2,
-        backgroundColor: "#FFF",
-        marginHorizontal: 10,
-        shadowColor: "#000",
-        shadowRadius: 5,
-        shadowOpacity: 0.3,
-        shadowOffset: { x: 2, y: -2 },
-        height: CARD_HEIGHT,
-        width: CARD_WIDTH,
-        overflow: "hidden",
-    },
-    cardImage: {
-        flex: 3,
-        width: "100%",
-        height: "100%",
-        alignSelf: "center",
-    },
-    textContent: {
-        flex: 1,
-    },
-    cardtitle: {
-        fontSize: 12,
-        marginTop: 5,
-        fontWeight: "bold",
-    },
-    cardDescription: {
-        fontSize: 12,
-        color: "#444",
-    },
+    slide: {
+        width: Dimensions.get('window').width * 0.75,
+        height: 300,
+        backgroundColor: 'white'
+    }
 });
 
 
