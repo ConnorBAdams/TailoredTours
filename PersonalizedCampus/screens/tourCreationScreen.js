@@ -53,11 +53,12 @@ const TourCreationScreen = props => {
                 firebase.database().ref('/tours/' + userID )
                 .push({
                     tourName: data.title,
-                    public_private: 'private',
                     owner: userID, // Redundant
                     createdAt: Date.now(),
                     lastModified: Date.now(),
                     anchor: data.anchor,
+                    private: true,
+                    thumbnail: 'default',
                 })
                 
             } catch (e) {
