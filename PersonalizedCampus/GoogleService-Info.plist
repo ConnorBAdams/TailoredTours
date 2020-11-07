@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>584187795626-hlmrdscnoig34c2ils98ahjn6p03l5pj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.584187795626-hlmrdscnoig34c2ils98ahjn6p03l5pj</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>584187795626-79n57oma1vd88h2j7nfarq55mctp7s8q.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBXBslWnqLB2LRlZmN8Nwjvz9LJcWIbCmU</string>
+	<key>GCM_SENDER_ID</key>
+	<string>584187795626</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.cs495.tailoredtours</string>
+	<key>PROJECT_ID</key>
+	<string>tailoredtours-25201</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tailoredtours-25201.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:584187795626:ios:f396631171d2183dd598d3</string>
+	<key>DATABASE_URL</key>
+	<string>https://tailoredtours-25201.firebaseio.com</string>
+</dict>
+</plist>

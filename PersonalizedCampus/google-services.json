@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "584187795626",
+    "firebase_url": "https://tailoredtours-25201.firebaseio.com",
+    "project_id": "tailoredtours-25201",
+    "storage_bucket": "tailoredtours-25201.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584187795626:android:01bc1abb89713baad598d3",
+        "android_client_info": {
+          "package_name": "com.cs495.tailoredtours"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584187795626-2uvdpto15tkb9ocd94p1ps06eo4i3ph3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjlxnDlI5g2nz8DvN6RPaM4J8BhEXrluw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584187795626-2uvdpto15tkb9ocd94p1ps06eo4i3ph3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "584187795626-0v4cce212t7u1q1tthg74ko7voul0krk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,10 +6,13 @@ import HomeScreen from './screens/homeScreen'
 import LoginScreen from './screens/loginScreen'
 import AccountCreationScreen from './screens/accountCreationScreen';
 import MapScreen from './screens/mapScreen';
+import * as firebase from 'firebase';
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  if(!firebase.apps.length)
+    firebase.initializeApp(firebaseConfig);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{
