@@ -9,6 +9,7 @@ const MyToursScreen = props => {
     const [selectedId, setSelectedId] = useState(null);
     const [userID, setUserID] = useState(null);
     const [tours, setTours] = useState([]);
+    const default_image = require('../assets/default_thumbnail.png');
 
     useEffect(() => {getuserID();}, []);
     useEffect(() => {getTours();});
@@ -45,7 +46,7 @@ const MyToursScreen = props => {
         <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
             <Image 
                 style = {styles.tourImg}
-                source = {{uri: item.thumbnail}}
+                source = {item.thumbnail == 'default' ? default_image : {uri: 'data:image/jpeg;base64,' + item.thumbnail}}
             />
             <Text style={styles.title}>{item.title}</Text>
         </TouchableOpacity>
