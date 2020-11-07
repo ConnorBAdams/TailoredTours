@@ -7,6 +7,7 @@ import MapComponent from './map'
 
 const RouteCreatorComponent = props => {
     const [tourName, setTourName] = useState(null)
+    const [userID, setUserID] = useState(null)
     const [location, setLocation] = useState(null)
     const [tourTitle, setTourTitle] = useState(null)
     const [nodes, setNodes] = useState([])
@@ -20,6 +21,10 @@ const RouteCreatorComponent = props => {
         if (props.tourName != null) {
             setTourName(props.tourName);
             console.log(props.tourName);
+        }
+        if (props.userID != null) {
+            setUserID(props.userID);
+            console.log(props.userID);
         }
     });
     
@@ -53,7 +58,7 @@ const RouteCreatorComponent = props => {
             {location === null &&<Text>Loading...</Text>}
             {location != null && <MapComponent style={styles.mapStyle} nodes={nodes} onPress={e => createNode(e)} location={location} /> }
             <Button title="Create Tour Route" onPress={() => {createRoute({title:tourTitle, nodes:nodes})}} />
-            <Button title="Finalize Tour" onPress={() => navigation.navigate('Finalize Tour', {tourName: tourName})}/> 
+            <Button title="Finalize Tour" onPress={() => navigation.navigate('Finalize Tour', {tourName: tourName, userID: userID})}/> 
             {/* The point of the button above is to then send the user to a screen to insert a picture
                 that will be used for the list display as well as a radio button to ask if the tour
                 is private or public if the user is verified. Was odd that "finishing" the tour meant you 
