@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "PersonalizedCampus",
-    "slug": "PersonalizedCampus",
+    "name": "TailoredTours",
+    "slug": "TailoredTours",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Logo-Icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Logo-Full.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,8 +16,17 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.cs495.tailoredtours",
+      "googleServicesFile": "./google-services.json"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.584187795626-fdfap9h2efpe10hob7tg5m03ikbdah59"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

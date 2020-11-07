@@ -1,52 +1,56 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import Button from './button'
+import GoogleLoginModule from './googleLogin'
+import ManualLoginModule from './maualLogin';
+import ManualCreateAccountModule from './manualCreateAccount';
 import globalStyles from '../styles'
+import firebase from 'firebase'
 
 // Creating this component to serve as a plug and play way of logging people in
 
 const LoginModule = props => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState(''); 
-    // Not sure if storing passwords this way is problematic from a security standpoint
+    const [createAccount, setCreateAccount] = useState(false);
+    useEffect(() => {checkIfLoggedIn() });
+
+	const checkIfLoggedIn = () => {
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+                props.onSignIn(); // TODO: Find a better way of handling this. Probably a callback from components
+			}
+		})
+	}
+
 
     return (
-        <View>
-            <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}>
-                <TouchableOpacity 
-                style={styles.container} 
-                activeOpacity={1} 
-                onPressOut={() => {setModalVisible(false)}}>
-                <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Log In</Text>
-                    <TextInput style={globalStyles.inputField}
-                    placeholder="Username" 
-                    autoCompleteType='username'
-                    textContentType='username'
-                    onChangeText={text => setUsername(text) }/>
-                    <TextInput style={globalStyles.inputField}
-                    placeholder="Password" 
-                    autoCompleteType='password'
-                    textContentType='password'
-                    secureTextEntry={true}
-                    onChangeText={text => setPassword(text)} />
-                    <Button title='Submit' onPress={() =>{setModalVisible(false)}} />
-                    <Button title='Cancel' onPress={() =>{setModalVisible(false)}} />
-                </View>
-                </TouchableOpacity>
-            </Modal>
-        <Button title="Log in" onPress={() => {setModalVisible(true)}} />
+        <View style={styles.container}>
+            <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+                {!createAccount && <ManualLoginModule /> || 
+                createAccount && <ManualCreateAccountModule /> }
+                {/* Confirm log in or acc creation */}
+                {!createAccount && <Text style={{marginTop:'10%'}}>Or maybe</Text> }
+                {!createAccount && <GoogleLoginModule style={{marginTop: '5%'}} /> }
+            </View>
+            </View>
+            <View style={styles.conditionalConfirmation}>
+                {/* Switch between create and log in */}
+                {!createAccount &&  <Text>Don't have an account?</Text>  || 
+                createAccount && <Text>Already have an account?</Text> }
+                
+                {!createAccount &&  <Button title="Create account" onPress={() => {setCreateAccount(!createAccount)}} />  || 
+                createAccount && <Button title="Log in" onPress={() => {setCreateAccount(!createAccount)}} /> }
+                
+                {/* TODO: Password reset feature */}
+            </View>
+
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 0,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -66,6 +70,9 @@ const styles = StyleSheet.create({
         elevation: 5,
         marginTop: 22,
     },
+    modalContainer: {
+        height: 500
+    },
     textStyle: {
         color: 'white',
         fontWeight: 'bold',
@@ -75,6 +82,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         fontSize: 25,
         textAlign: 'center',
+    },
+    conditionalConfirmation: {
+        alignItems: 'center',
+        alignContent: 'center',
+        textAlign: 'center',
+        marginTop: 25,
     }
 });
 

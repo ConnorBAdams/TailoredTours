@@ -30,11 +30,13 @@ const globalStyles = StyleSheet.create({
     },
     inputField: {
         margin: 10,
+        padding: 10,
         borderRadius: 5,
         borderColor: secondaryColor,
         borderWidth: 1,
         height: 40,
-        width: 150,
+        width: 200,
+        padding: 4,
     },
 
 });
