@@ -13,7 +13,7 @@ const Drawer = createDrawerNavigator();
 const FinalizeTourScreen = props => {
     const tourName = props.route.params.tourName;
     const userID = props.route.params.userID;
-    var default_image = require('../assets/default_thumbnail.png');
+    const default_image = require('../assets/default_thumbnail.png');
     const navigation = useNavigation();
     const [selectedImage, setSelectedImage] = React.useState(null);
 
