@@ -65,7 +65,7 @@ const MyToursScreen = props => {
         );
     };
 
-    const toursNotFound = <ActivityIndicator size='large' /> //<Text style={{fontSize: 24}}>No tours found.</Text>
+    const toursNotFound = /*<ActivityIndicator size='large' />*/ <Text style={{fontSize: 24}}>No tours found.</Text>
     const toursFound =  <FlatList
                             data={tours}
                             renderItem={renderItem}

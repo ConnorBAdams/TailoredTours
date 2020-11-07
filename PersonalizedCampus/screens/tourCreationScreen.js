@@ -20,7 +20,7 @@ const TourCreationScreen = props => {
         (async () => {
           let { status } = await Location.requestPermissionsAsync();
           if (status !== 'granted') {
-              Alert.alert('Permission to access location was denied, is is required for the map')
+              Alert.alert('Permission to access location was denied, it is required for the map')
           }
     
           let location = await Location.getCurrentPositionAsync({});
@@ -57,6 +57,8 @@ const TourCreationScreen = props => {
                     createdAt: Date.now(),
                     lastModified: Date.now(),
                     anchor: data.anchor,
+                    private: true,
+                    thumbnail: 'default',
                 })
                 
             } catch (e) {
@@ -114,7 +116,7 @@ const TourCreationScreen = props => {
         <DrawerHeader name="Create a Tour" openDrawer={props.navigation.openDrawer}/>
         <View style={styles.internalContainer}>
             {tourData === null && <TourSetupComponent submitTour={createTour} location={location} />}
-            {tourData != null && <RouteCreationComponent createRoute={createRoute} location={location} />}
+            {tourData != null && <RouteCreationComponent createRoute={createRoute} location={location} tourName={tourData.title} userID={userID} />}
         </View>
       </SafeAreaView>
     );
