@@ -73,7 +73,7 @@ const CarouselItem = props => {
               </Animated.View>
             </View>
             <View style={styles.bottomContainer}>
-              <Text>Bottom sheet content</Text>
+              <Text>Bottom view content</Text>
               <Button title='Is this clickable?' style={{elevation: 5, zIndex: 5}} onPress={() => (console.log('yes it is'))} />
             </View>
         </View>

@@ -178,7 +178,6 @@ const MapComponent = props => {
             </View>
             </View>} 
             { (props.routes != undefined && props.carouselEnabled ) ? 
-            <View style={styles.carouselContainer}>
             <Carousel
                 ref={(c) => { carousel = c; }}
                 data={props.routes}
@@ -186,10 +185,8 @@ const MapComponent = props => {
                 sliderWidth={Dimensions.get('window').width}
                 itemWidth={Dimensions.get('window').width * 0.8}
                 onSnapToItem={index => setSelectedIndex(index)}
-                containerCustomStyle={{ height: Dimensions.get('window').height }}
+                containerCustomStyle={{ height: Dimensions.get('window').height, position:'absolute' }}
                 />
-
-            </View>
             : null}  
         </View>
     );

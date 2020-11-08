@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         flex: 1,
-        width: Dimensions.get('window').width ,
+        width: Dimensions.get('window').width
     },
 });
 
