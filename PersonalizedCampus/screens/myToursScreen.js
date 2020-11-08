@@ -59,7 +59,9 @@ const MyToursScreen = props => {
     const toursFound =  <FlatList
                             data={tours}
                             renderItem={Item}
-                            keyExtractor={(item) => item.id} />
+                            keyExtractor={(item) => item.id}
+                            contentContainerStyle={{ paddingBottom: 200}}
+                            />
 
     return (
         <SafeAreaView style={styles.container}>
@@ -108,6 +110,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
     },
+
 });
 
 

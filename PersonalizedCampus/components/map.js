@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Animated, ScrollView } from 'react-native';
 import { FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import { Marker, Circle, Polyline } from 'react-native-maps';
@@ -7,6 +7,10 @@ import globalStyles from '../styles'
 import Button from '../components/button'
 import MarkerEditorComponent from './markerEditor'
 import Carousel from 'react-native-snap-carousel';
+import CarouselItem from './carouselItem'
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 // How to use this component: 
 // This displays the map with Google Maps and allows for node/route creation
@@ -74,10 +78,9 @@ const MapComponent = props => {
     
     const carouselItem = ({item, index}) => {
         return (
-            <View style={styles.slide}>
-                <Text style={styles.title}>{item.name}</Text>
-                <Text >{item.desc}</Text>
-            </View>
+            <CarouselItem 
+            contents={item}
+            type={'route'} />    
         );
     }
 
@@ -105,6 +108,7 @@ const MapComponent = props => {
                 </TouchableOpacity>
             </View>
             </View>
+            <View style={{zIndex: -1, elevation: -1}}>
             <MapView 
             style={(props.style != null) ? props.style : styles.mapStyle} 
             mapType={mapType}
@@ -163,20 +167,8 @@ const MapComponent = props => {
                 />
             }) 
             : null}
-            </MapView> 
-            { (props.routes != undefined ) ? 
-            <View style={styles.carouselContainer}>
-            <Carousel
-              ref={(c) => { carousel = c; }}
-              data={props.routes}
-              renderItem={carouselItem}
-              sliderWidth={Dimensions.get('window').width}
-              itemWidth={Dimensions.get('window').width * 0.75}
-              style={styles.carousel}
-              onSnapToItem={index => setSelectedIndex(index)}
-            />
+            </MapView>  
             </View>
-            : null}    
             { placementMode === 'route' &&
             <View style={styles.mapBottomButtons}>
             <View style={styles.routeConfirmButton}>
@@ -184,15 +176,29 @@ const MapComponent = props => {
                 <FontAwesome5 name="check-circle" size={32} />
             </TouchableOpacity>
             </View>
+            </View>} 
+            { (props.routes != undefined && props.carouselEnabled ) ? 
+            <View style={styles.carouselContainer}>
+            <Carousel
+                ref={(c) => { carousel = c; }}
+                data={props.routes}
+                renderItem={carouselItem}
+                sliderWidth={Dimensions.get('window').width}
+                itemWidth={Dimensions.get('window').width * 0.8}
+                onSnapToItem={index => setSelectedIndex(index)}
+                containerCustomStyle={{ height: Dimensions.get('window').height }}
+                />
+
             </View>
-            }
+            : null}  
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 10,
+        flex: 1,
+        marginTop: 5,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -234,18 +240,21 @@ const styles = StyleSheet.create({
         padding: 2
     },
     carouselContainer: {
-        marginTop: '-100%',
-        backgroundColor: 'transparent',
-        height: 300
+        flex: 1,
+        height: Dimensions.get('window').height * 0.25,
+        width: Dimensions.get('window').width ,
+        bottom: -10,
+        backgroundColor: 'blue',
+        position: 'absolute',
+        alignItems: 'center',
+        flexDirection: 'row',
+        flexWrap: 'wrap-reverse',
+        flexBasis: 1,
+        flexGrow: 1,
+        flexShrink: 1,
+        zIndex: 10,
+        elevation: 10
     },
-    carousel: {
-        zIndex: 1,
-    },
-    slide: {
-        width: Dimensions.get('window').width * 0.75,
-        height: 300,
-        backgroundColor: 'white'
-    }
 });
 
 

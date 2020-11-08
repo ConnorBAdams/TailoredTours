@@ -44,8 +44,9 @@ const TourEditorModule = props => {
             style={styles.mapStyle} 
             nodes={allNodes} 
             routes={allRoutes}
-            onPress={e => console.log(e)} 
+            onPress={e => console.log('pressed map')} 
             location={anchorLoc} 
+            carouselEnabled={true}
             showUser={false} />
             }
         </View>
@@ -66,8 +67,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     mapStyle: {
-        width: Dimensions.get('window').width,
-        flex: 1
+        flex: 1,
+        width: Dimensions.get('window').width ,
     },
 });
 
