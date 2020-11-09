@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator, Image } from 'react-native';
 import 'react-native-gesture-handler';
 import DrawerHeader from '../components/drawerHeader'
 import Button from '../components/button'
@@ -9,6 +9,7 @@ const MyToursScreen = props => {
     const [selectedId, setSelectedId] = useState(null);
     const [userID, setUserID] = useState(null);
     const [tours, setTours] = useState([]);
+    const default_image = require('../assets/default_thumbnail.png');
 
     useEffect(() => {getuserID();}, []);
     useEffect(() => {getTours();});
@@ -30,7 +31,7 @@ const MyToursScreen = props => {
                 var arr = [];
                 console.log(snapshot)
                 snapshot.forEach(element => { 
-                    arr.push({id:element.key, title:element.child('tourName').val()});})
+                    arr.push({id:element.key, title:element.child('tourName').val(), thumbnail:element.child('thumbnail').val()});})
                 if (arr.length > tours.length)
                 {
                     setTours(arr);
@@ -43,6 +44,10 @@ const MyToursScreen = props => {
 
     const Item = ({ item, onPress, style }) => (
         <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+            <Image 
+                style = {styles.tourImg}
+                source = {item.thumbnail == 'default' ? default_image : {uri: 'data:image/jpeg;base64,' + item.thumbnail}}
+            />
             <Text style={styles.title}>{item.title}</Text>
         </TouchableOpacity>
     );
@@ -83,6 +88,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 110 
         },
     internalContainer: {
         height: '100%',
@@ -95,19 +101,24 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-between",
         alignItems:"center",
-        paddingHorizontal:20
+        paddingHorizontal:20,
     },
     item: {
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 7,
-        padding: 10,
+        padding: 20,
         margin: 5,
         elevation: 2,
         width: 350,
+        flexDirection: 'row',
     },
     title: {
-        fontSize: 32,
+        fontSize: 28,
+    },
+    tourImg: {
+        width: 100,
+        height: 100,
     },
 });
 
