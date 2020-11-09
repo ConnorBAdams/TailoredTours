@@ -22,6 +22,8 @@ const FinalizeTourScreen = props => {
     );
 }
 
+
+
 const styles = StyleSheet.create({
   container: {
       paddingTop: 25,

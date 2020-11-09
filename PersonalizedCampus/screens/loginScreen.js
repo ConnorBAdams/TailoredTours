@@ -29,7 +29,7 @@ const LoginScreen = props => {
 		justifyContent: 'center',
 	}, 
 	titleText: {
-		marginBottom: '5%', 
+		marginBottom: '-3%', 
 		fontSize: 20
 	}
 	});
