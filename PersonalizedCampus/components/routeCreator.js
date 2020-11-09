@@ -200,6 +200,7 @@ const RouteCreatorComponent = props => {
             onPress={(e, mode) => createNode(e, mode)} 
             onRouteConfirm={promptForRouteName}
             addNodeToRoute={addNodeToRoute}
+            placementEnabled={true}
             location={location} /> }
             <Button title="Finished" style={styles.submitButton} onPress={() => {finished()}} />
         </View>

@@ -25,11 +25,12 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 const MapComponent = props => {
     const [mapType, setMapType] = useState('standard')
     const [placementMode, setPlacementMode] = useState(null)
+    const [placementEnabled, setPlacementEnabled] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [selectedNode, setSelectedNode] = useState(null)
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [overviewEnabled, setOverviewEnabled] = useState(false)
-    const [itemHeight, setItemHeight] = useState(0)
+    const [inspectObject, setInspectObject] = useState(null)
     const map = null;
 
     useEffect(() => {
@@ -81,6 +82,24 @@ const MapComponent = props => {
         else 
             setPlacementMode('node')
     }
+
+    const nodePressed = (node) => {
+        console.log('Selected node: ', node.nativeEvent)
+        if (placementMode=='route' && placementEnabled) 
+            props.addNodeToRoute(node)
+        else if(!placementEnabled && props.carouselEnabled)
+        {
+            console.log(node.nativeEvent.id, ' selected')
+            setInspectObject(props.nodes[node.nativeEvent.id])
+        }
+    }
+
+    const polylinePressed = (poly) => {
+        if (props.carouselEnabled) {
+            console.log(poly, ' selected')
+            setInspectObject(props.routes[poly.id])
+        }
+    }
     
     const carouselItem = ({item, index}) => {
         return (
@@ -90,11 +109,6 @@ const MapComponent = props => {
             overviewToggle={setOverviewEnabled} />    
         );
     }
-
-    const onContentSizeChange = (contentWidth, contentHeight) => {
-        console.log('resize: ', contentHeight)
-        setItemHeight(contentHeight);
-    };
 
     return (
         <View style={styles.container}>
@@ -146,7 +160,7 @@ const MapComponent = props => {
                     title={marker.name}
                     description={marker.description}
                     onCalloutPress={() => editMarker(marker)}
-                    onPress={(node) => {if (placementMode=='route') props.addNodeToRoute(node)} }
+                    onPress={(node) => {nodePressed(node)}}
                     />
                 }
                 else if (marker.type==='Circle') {
@@ -175,8 +189,10 @@ const MapComponent = props => {
                 marker.nodes.forEach(nodeID =>{ coords.push({latitude: props.nodes[nodeID].latitude, longitude:props.nodes[nodeID].longitude})})
                 return <Polyline
                 key={index}
+                tappable={true}
+                onPress={() => {polylinePressed(marker)}}
                 strokeColor={`rgb(${marker.routeColor.r}, ${marker.routeColor.g}, ${marker.routeColor.b})`}
-                strokeWidth={ (selectedIndex != -1 && index == selectedIndex) ? 8 : 4}
+                strokeWidth={ (selectedIndex != -1 && index == selectedIndex && placementMode=='route') ? 8 : 4}
                 coordinates={coords}
                 />
             }) 
@@ -249,7 +265,7 @@ const MapComponent = props => {
         type={'route'} 
         overviewToggle={setOverviewEnabled} /></View>
             </ScrollView> */}
-            <Carousel
+            {/* <Carousel
             ref={(c) => { carousel = c; }}
             data={props.routes}
             renderItem={carouselItem}
@@ -257,11 +273,11 @@ const MapComponent = props => {
             itemWidth={Dimensions.get('window').width * 0.8}
             onSnapToItem={index => changeSelectedIndex(index)}
             containerCustomStyle={styles.carousel}
-            /> 
-                {/* <CarouselItem
-                    contents={{name:'test',desc:'test test'}}
-                    type={'route'} 
-                    overviewToggle={setOverviewEnabled} />     */}
+            />  */}
+            <CarouselItem
+            contents={inspectObject}
+            type={'route'} 
+            overviewToggle={setOverviewEnabled} />    
             </View>
             : null}  
         </View>
@@ -315,22 +331,22 @@ const styles = StyleSheet.create({
         flex: 1,
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
-        bottom: 100,
+        bottom: 0,
         position: 'absolute',
-        flexDirection:'row',
-        flexWrap:'wrap-reverse',
-        flexBasis: 1,
-        flexGrow: 1,
-        flexShrink: 1,
-        zIndex: 10
-    },
-    carousel: {
-        height: Dimensions.get('window').height *0.25,
-        backgroundColor:'grey',
         flexBasis: 1,
         flexGrow: 1,
         flexShrink: 1,
         zIndex: 10,
+    },
+    carousel: {
+        backgroundColor:'grey',
+        flexBasis: 1,
+        flexGrow: 1,
+        flexShrink: 1,
+        flex: 1,
+        zIndex: 10,
+        // flexDirection:'row',
+        // flexWrap:'wrap-reverse',
     },
 });
 

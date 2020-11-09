@@ -42,6 +42,10 @@ const CarouselItem = props => {
       extrapolate: "clamp"
     });
 
+    if (props.contents == null){
+      return (<View></View>)
+    }
+
     return (
         <SlidingUpPanel
           ref={c => (panel = c)}
@@ -71,16 +75,13 @@ const CarouselItem = props => {
                     { translateX: textTranslateX },
                     { scale: textScale }
                   ]}}>
-                <Text style={styles.textHeader}>{props.contents.name}</Text>
+                <Text style={styles.textHeader}>{props.contents.name} : {props.contents.id}</Text>
               </Animated.View>
             </View>
-            <View style={styles.previewContainer}>
-                <Text>Description: {props.contents.desc}</Text>
-            </View>
+
             <View style={styles.bottomContainer}>
               <Text>Additional info as soon as I can get this fixed</Text>
               <TouchableOpacity onPress={() => (console.log('pressed the touchable opacity'))} onPressIn={(()=>console.log('pressin worked') )}>
-                  <Text>Test button</Text>
               </TouchableOpacity>
             </View>
         </View>
@@ -99,22 +100,25 @@ const styles = StyleSheet.create({
     },
     panel: {
         flex:1,
-        backgroundColor: "white",
         zIndex: 10,
     },
     panelHeader: {
         height: 110,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         backgroundColor: '#4633af',
         justifyContent: "flex-end",
         padding: 24,
     },
     previewContainer: {
-        padding: 20
+        padding: 20,
+        backgroundColor: "white",
     },
     bottomContainer: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: "white",
         height: 300,
     },
     textHeader: {
