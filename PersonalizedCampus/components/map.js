@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, Animated, ScrollView } from 'react-native';
 import { FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
-import { Marker, Circle, Polyline } from 'react-native-maps';
+import { Marker, Circle, Polyline, fitToSuppliedMarkers } from 'react-native-maps';
 import globalStyles from '../styles'
 import Button from '../components/button'
 import MarkerEditorComponent from './markerEditor'
 import Carousel from 'react-native-snap-carousel';
 import CarouselItem from './carouselItem'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 
 // How to use this component: 
 // This displays the map with Google Maps and allows for node/route creation
@@ -30,6 +28,9 @@ const MapComponent = props => {
     const [modalVisible, setModalVisible] = useState(false)
     const [selectedNode, setSelectedNode] = useState(null)
     const [selectedIndex, setSelectedIndex] = useState(0)
+    const [overviewEnabled, setOverviewEnabled] = useState(false)
+    const [itemHeight, setItemHeight] = useState(0)
+    const map = null;
 
     useEffect(() => {
         if (placementMode == null && props.placementMode != null)
@@ -37,6 +38,11 @@ const MapComponent = props => {
             setPlacementMode(props.placementMode)
         }
     })
+
+    const changeSelectedIndex = (index) => {
+        setSelectedIndex(index)
+        // todo : fit these to the map view
+    }
 
     const toggleModal = () => {
         if (modalVisible === false) {
@@ -80,9 +86,15 @@ const MapComponent = props => {
         return (
             <CarouselItem 
             contents={item}
-            type={'route'} />    
+            type={'route'} 
+            overviewToggle={setOverviewEnabled} />    
         );
     }
+
+    const onContentSizeChange = (contentWidth, contentHeight) => {
+        console.log('resize: ', contentHeight)
+        setItemHeight(contentHeight);
+    };
 
     return (
         <View style={styles.container}>
@@ -92,8 +104,8 @@ const MapComponent = props => {
                 toggle={toggleModal} 
                 node={selectedNode} 
                 visible={modalVisible} />}
-            <View style={styles.mapTopButtons}>
-            <View style={styles.mapModeButton}>
+            <View style={styles.mapTopButtons} pointerEvents="box-none">
+            <View style={styles.mapModeButton} pointerEvents="box-none">
             {placementMode != null &&
                 <TouchableOpacity style={styles.icon} onPress={() => togglePlacementMode() } >
                 {placementMode=='node' && <FontAwesome5 name="map-marker" size={32} />}
@@ -112,8 +124,10 @@ const MapComponent = props => {
             <MapView 
             style={(props.style != null) ? props.style : styles.mapStyle} 
             mapType={mapType}
+            //ref={map => {this.map = map}}
             initialRegion={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421}} 
-            onPress={e => {props.onPress != null ? props.onPress(e, placementMode) : null}}> 
+            onPress={e => {props.onPress != null && !overviewEnabled ? props.onPress(e, placementMode) : null}}
+            > 
             { (props.showUser != null && props.showUser === true || props.showUser == null) && 
             <Marker key={1000.1} coordinate={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude}}
             title="Your Location" >
@@ -162,7 +176,7 @@ const MapComponent = props => {
                 return <Polyline
                 key={index}
                 strokeColor={`rgb(${marker.routeColor.r}, ${marker.routeColor.g}, ${marker.routeColor.b})`}
-                strokeWidth={4}
+                strokeWidth={ (selectedIndex != -1 && index == selectedIndex) ? 8 : 4}
                 coordinates={coords}
                 />
             }) 
@@ -178,15 +192,77 @@ const MapComponent = props => {
             </View>
             </View>} 
             { (props.routes != undefined && props.carouselEnabled ) ? 
+            <View style={styles.carouselContainer} pointerEvents="box-none">
+            {/* <ScrollView
+            ref={(scrollView) => {scrollView = scrollView}}
+            horizontal={true}
+            removeClippedSubviews={true}
+            directionalLockEnabled={false}
+            contentContainerStyle={styles.carousel}
+            decelerationRate={0}
+            snapToInterval={200}
+            onContentSizeChange={onContentSizeChange}
+            style={{backgroundColor:'lightblue'}}
+            snapToAlignment={'center'}>
+        <View style={{flex: 1, flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 10,
+        backgroundColor:'red',
+        margin: 10, height: 200,
+        flexGrow: 1, width:300}}>
+        <CarouselItem
+        contents={{name:'test',desc:'test test'}}
+        type={'route'} 
+        overviewToggle={setOverviewEnabled} /></View>
+                <View style={{flex: 1, flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 10,
+        backgroundColor:'red',
+        margin: 10, height: 200,
+        flexGrow: 1, width:300}}>
+        <CarouselItem
+        contents={{name:'test',desc:'test test'}}
+        type={'route'} 
+        overviewToggle={setOverviewEnabled} /></View>
+                <View style={{flex: 1, flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 10,
+        backgroundColor:'red',
+        margin: 10, height: 200,
+        flexGrow: 1, width:300}}>
+        <CarouselItem
+        contents={{name:'test',desc:'test test'}}
+        type={'route'} 
+        overviewToggle={setOverviewEnabled} /></View>
+                <View style={{flex: 1, flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        zIndex: 10,
+        backgroundColor:'red',
+        margin: 10, height: 200,
+        flexGrow: 1, width:300}}>
+        <CarouselItem
+        contents={{name:'test',desc:'test test'}}
+        type={'route'} 
+        overviewToggle={setOverviewEnabled} /></View>
+            </ScrollView> */}
             <Carousel
-                ref={(c) => { carousel = c; }}
-                data={props.routes}
-                renderItem={carouselItem}
-                sliderWidth={Dimensions.get('window').width}
-                itemWidth={Dimensions.get('window').width * 0.8}
-                onSnapToItem={index => setSelectedIndex(index)}
-                containerCustomStyle={{ height: Dimensions.get('window').height, position:'absolute' }}
-                />
+            ref={(c) => { carousel = c; }}
+            data={props.routes}
+            renderItem={carouselItem}
+            sliderWidth={Dimensions.get('window').width}
+            itemWidth={Dimensions.get('window').width * 0.8}
+            onSnapToItem={index => changeSelectedIndex(index)}
+            containerCustomStyle={styles.carousel}
+            /> 
+                {/* <CarouselItem
+                    contents={{name:'test',desc:'test test'}}
+                    type={'route'} 
+                    overviewToggle={setOverviewEnabled} />     */}
+            </View>
             : null}  
         </View>
     );
@@ -194,7 +270,6 @@ const MapComponent = props => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         marginTop: 5,
         alignItems: 'center',
         justifyContent: 'center',
@@ -238,19 +313,24 @@ const styles = StyleSheet.create({
     },
     carouselContainer: {
         flex: 1,
-        height: Dimensions.get('window').height * 0.25,
-        width: Dimensions.get('window').width ,
-        bottom: -10,
-        backgroundColor: 'blue',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width,
+        bottom: 100,
         position: 'absolute',
-        alignItems: 'center',
-        flexDirection: 'row',
-        flexWrap: 'wrap-reverse',
+        flexDirection:'row',
+        flexWrap:'wrap-reverse',
+        flexBasis: 1,
+        flexGrow: 1,
+        flexShrink: 1,
+        zIndex: 10
+    },
+    carousel: {
+        height: Dimensions.get('window').height *0.25,
+        backgroundColor:'grey',
         flexBasis: 1,
         flexGrow: 1,
         flexShrink: 1,
         zIndex: 10,
-        elevation: 10
     },
 });
 

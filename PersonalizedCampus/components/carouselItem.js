@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {View, Text, StyleSheet, Dimensions, Animated} from 'react-native';
+import { FontAwesome } from '@expo/vector-icons'; 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Button from './button'
 
 const { height } = Dimensions.get("window") ;
 
 const CarouselItem = props => {
-    const [draggableRange, setDraggableRange] = useState({top: height + 180 - 64, bottom: 180})
+    const [draggableRange, setDraggableRange] = useState({top: height + 40 , bottom: 180})
     const { top, bottom } = draggableRange;
     const _draggedValue = new Animated.Value(180);
 
@@ -41,15 +43,14 @@ const CarouselItem = props => {
     });
 
     return (
-        <View style={styles.container}>
         <SlidingUpPanel
           ref={c => (panel = c)}
           draggableRange={draggableRange}
           animatedValue={_draggedValue}
-          snappingPoints={[150]}
+          snappingPoints={[360]}
           height={750}
           friction={0.5}
-          style={{zIndex: 10, elevation: 10}}
+          style={{zIndex: 10}}
         >
         <View style={styles.panel}>
             <Animated.View
@@ -61,6 +62,7 @@ const CarouselItem = props => {
                 }
               ]}
             />
+            <FontAwesome name="heart" size={24} style={styles.icon} />
             <View style={styles.panelHeader}>
               <Animated.View
                 style={{
@@ -72,13 +74,17 @@ const CarouselItem = props => {
                 <Text style={styles.textHeader}>{props.contents.name}</Text>
               </Animated.View>
             </View>
+            <View style={styles.previewContainer}>
+                <Text>Description: {props.contents.desc}</Text>
+            </View>
             <View style={styles.bottomContainer}>
-              <Text>Bottom view content</Text>
-              <Button title='Is this clickable?' style={{elevation: 5, zIndex: 5}} onPress={() => (console.log('yes it is'))} />
+              <Text>Additional info as soon as I can get this fixed</Text>
+              <TouchableOpacity onPress={() => (console.log('pressed the touchable opacity'))} onPressIn={(()=>console.log('pressin worked') )}>
+                  <Text>Test button</Text>
+              </TouchableOpacity>
             </View>
         </View>
         </SlidingUpPanel>
-      </View>
     )  
 }
 
@@ -87,18 +93,23 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        zIndex: 10, elevation: 10,
+        zIndex: 10,
+        backgroundColor:'red',
+        flexGrow: 1
     },
     panel: {
         flex:1,
         backgroundColor: "white",
-        zIndex: 10, elevation: 10,
+        zIndex: 10,
     },
     panelHeader: {
-        height: 100,
-        backgroundColor: "#b197fc",
+        height: 110,
+        backgroundColor: '#4633af',
         justifyContent: "flex-end",
         padding: 24,
+    },
+    previewContainer: {
+        padding: 20
     },
     bottomContainer: {
         flex: 1,
@@ -114,14 +125,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         position: "absolute",
-        top: -24,
-        right: 18,
+        color: '#413d52',
+        top: -12,
+        right: 6,
         width: 48,
         height: 48,
         zIndex: 1
     },
     iconBg: {
-        backgroundColor: "#2b8a3e",
+        backgroundColor: 'white',
         position: "absolute",
         top: -24,
         right: 18,

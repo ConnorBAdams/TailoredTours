@@ -39,18 +39,22 @@ const TourSetupComponent = props => {
             {location === null && <ActivityIndicator size="large" />}
             {location === null &&<Text>Loading...</Text>}
             {location != null && 
+            <View style={{flex: 1, alignItems: 'center'}}>
             <MapComponent 
             style={styles.mapStyle} 
             nodes={[anchor]} 
             onPress={e => createAnchor(e)} 
-            location={location} /> }
+            location={location} /> 
             <Button title="Create Tour" onPress={() => {props.submitTour({title:tourTitle, anchor:anchor})}} />
+            </View>
+            }
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
@@ -61,7 +65,8 @@ const styles = StyleSheet.create({
       },
       titleText: {
           fontSize: 20,
-          marginTop: 15
+          marginTop: 15,
+          marginBottom: 10
       },
 });
 
