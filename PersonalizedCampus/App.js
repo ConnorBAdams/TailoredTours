@@ -7,6 +7,7 @@ import LoginScreen from './screens/loginScreen'
 import AccountCreationScreen from './screens/accountCreationScreen';
 import MapScreen from './screens/mapScreen';
 import * as firebase from 'firebase';
+import firebaseConfig from './config'
 
 const Stack = createStackNavigator();
 
