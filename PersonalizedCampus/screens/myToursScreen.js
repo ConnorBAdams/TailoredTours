@@ -9,11 +9,11 @@ import firebase, { auth } from 'firebase';
 const MyToursScreen = props => {    
     const [userID, setUserID] = useState(null);
     const [tours, setTours] = useState([]);
-    const default_image = require('../assets/default_thumbnail.png');
 
     useEffect(() => {getuserID();}, []);
     useEffect(() => {getTours();});
-
+    
+    const default_image = require('../assets/default_thumbnail.png');
 	const navigation = useNavigation();
 
     const getuserID = () => {
@@ -48,8 +48,9 @@ const MyToursScreen = props => {
         {tourID: item.id,
         userID: userID})
     }
-    const Item = ({ item, onPress, style }) => (
-        <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+
+    const Item = ({ item, onPress }) => (
+        <TouchableOpacity onPress={() => elementPressed(item)} style={styles.item}>
             <Image 
                 style = {styles.tourImg}
                 source = {item.thumbnail == 'default' ? default_image : {uri: 'data:image/jpeg;base64,' + item.thumbnail}}
@@ -57,21 +58,8 @@ const MyToursScreen = props => {
             <Text style={styles.title}>{item.title}</Text>
         </TouchableOpacity>
     );
-    
 
-    const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#2b5687" : "#2380eb";
-
-        return (
-            <Item
-                item={item}
-                onPress={() => setSelectedId(item.id)}
-                style={{ backgroundColor }}
-            />
-        );
-    };
-
-    const toursNotFound = /*<ActivityIndicator size='large' />*/ <Text style={{fontSize: 24}}>No tours found.</Text>
+    const toursNotFound = <Text style={{fontSize: 24}}>No tours found.</Text>
     const toursFound =  <FlatList
                         data={tours}
                         renderItem={Item}

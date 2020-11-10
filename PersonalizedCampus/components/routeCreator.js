@@ -166,7 +166,7 @@ const RouteCreatorComponent = props => {
             ])
        } else {
         props.createRoute({routes:{...routes}, nodes:{...nodes}})
-        navigation.navigate('Finalize Tour', {tourName: tourName, userID: userID})
+        //navigation.navigate('Finalize Tour', {tourName: tourName, userID: userID})
            // can be finished
        }
    }
@@ -228,7 +228,7 @@ const RouteCreatorComponent = props => {
             placementEnabled={true}
             location={location} /> }
             {/* <Button title="Finished" style={styles.submitButton} onPress={() => {finished()}} /> */}
-            <Button title="Finalize Tour" onPress={finished()}/> 
+            <Button title="Finalize Tour" onPress={finished}/> 
             {/* The point of the button above is to then send the user to a screen to insert a picture
                 that will be used for the list display as well as a radio button to ask if the tour
                 is private or public if the user is verified. Was odd that "finishing" the tour meant you 
