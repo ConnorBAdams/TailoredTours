@@ -12,37 +12,41 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-firebase/app": "^8.4.4",
     "@react-native-firebase/auth": "^9.2.5",
-    "@react-navigation/drawer": "^5.9.3",
+    "@react-navigation/drawer": "^5.10.7",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "expo": "^38.0.10",
     "expo-google-app-auth": "^8.1.3",
     "expo-google-sign-in": "~8.2.1",
+    "expo-location": "~8.2.1",
     "expo-status-bar": "^1.0.2",
     "firebase": "7.9.0",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-maps": "0.27.1",
     "react-native-reanimated": "~1.9.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.4.2",
     "react-navigation-stack": "^2.8.2",
-    "react-native-maps": "0.27.1",
-    "expo-location": "~8.2.1"
+    "sinon": "^9.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "babel-preset-expo": "~8.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "jest-expo": "^39.0.0",
     "react-test-renderer": "^16.14.0"
   },
   "jest": {
     "preset": "jest-expo",
+    "setupTestFrameworkScriptFile": "./test-setup.js",
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.|react-navigation|@react-navigation/.|@unimodules/.|unimodules|sentry-expo|rn-sliding-up-panel|native-base|@sentry/.)"
     ]
   },
   "private": true,

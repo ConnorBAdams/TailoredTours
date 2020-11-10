@@ -112,7 +112,7 @@ const TourCreationScreen = props => {
 
     return (
         <SafeAreaView style={styles.container}>
-        <DrawerHeader name="Create a Tour" /> 
+        <DrawerHeader name="Create a Tour" openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>        
         <View style={styles.internalContainer}>
             {tourData === null && <TourSetupComponent submitTour={createTour} location={location} />}
             {tourData != null && <RouteCreationComponent createRoute={createRoute} location={location} />}

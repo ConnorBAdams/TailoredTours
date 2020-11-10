@@ -5,12 +5,14 @@
 import React from 'react';
 import { unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import SignedInScreen from '../screens/signedInScreen'
-import TourCreationScreen from '../screens/tourCreationScreen';
+import HomeScreen from '../screens/homeScreen';
 import * as firebase from 'firebase'
 require('firebase/auth')
 import { shallow, mount, render } from 'enzyme';
 import sinon from 'sinon';
+import 'react-native-gesture-handler/jestSetup';
+
+jest.mock('@react-navigation/native');
 
 
 jest.mock('firebase', () => {
@@ -84,7 +86,7 @@ jest.mock('firebase', () => {
 
 
 
-it("Snapshot of TourCreation Screen", () => {
-  const wrapper = shallow(<TourCreationScreen />);
+it("Snapshot of Home Screen", () => {
+  const wrapper = shallow(<HomeScreen />);
   expect(wrapper).toMatchSnapshot();
 });

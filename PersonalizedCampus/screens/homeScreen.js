@@ -4,6 +4,7 @@ import { useNavigation  } from '@react-navigation/native';
 import Button from '../components/button'
 import firebase from 'firebase'
 
+
 const HomeScreen = props => {
 	const navigation = useNavigation();
 	var logo = props.active ? require('../assets/Logo-Full.png') : require('../assets/Logo-Full.png');

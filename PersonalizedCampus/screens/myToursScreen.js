@@ -69,8 +69,8 @@ const MyToursScreen = props => {
 
     return (
         <SafeAreaView style={styles.container}>
-        <DrawerHeader name="My Tours" openDrawer={props.navigation.openDrawer}/>
-            <View style={styles.internalContainer}>
+        <DrawerHeader name="My Tours" openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>            
+        <View style={styles.internalContainer}>
                 {tours.length == 0 ? toursNotFound : toursFound}
             </View>
       </SafeAreaView>
