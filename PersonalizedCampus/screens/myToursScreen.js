@@ -55,7 +55,9 @@ const MyToursScreen = props => {
                 style = {styles.tourImg}
                 source = {item.thumbnail == 'default' ? default_image : {uri: 'data:image/jpeg;base64,' + item.thumbnail}}
             />
-            <Text style={styles.title}>{item.title}</Text>
+            <Text
+            numberOfLines={ 1 }
+            style={styles.title}>{item.title}</Text>
         </TouchableOpacity>
     );
 
@@ -79,7 +81,6 @@ const MyToursScreen = props => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 110 
@@ -116,8 +117,8 @@ const styles = StyleSheet.create({
         fontSize: 28,
     },
     tourImg: {
-        width: 100,
-        height: 100,
+        width: 75,
+        height: 75,
     },
 
 });

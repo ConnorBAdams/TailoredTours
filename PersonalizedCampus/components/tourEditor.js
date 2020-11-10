@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         flex: 1,
+        marginTop: -10,
         width: Dimensions.get('window').width,
     },
 });

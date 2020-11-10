@@ -300,6 +300,7 @@ const MapComponent = props => {
             contents={inspectObject}
             type={'route'} 
             deleteComponent={handleDelete}
+            editComponent={editMarker}
             overviewToggle={setOverviewEnabled} />    
             </View>
             : null}  
