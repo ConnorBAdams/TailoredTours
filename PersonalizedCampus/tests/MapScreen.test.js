@@ -87,3 +87,10 @@ it("Snapshot of Map Screen", () => {
   const wrapper = shallow(<MapScreen />);
   expect(wrapper).toMatchSnapshot();
 });
+
+it('Testing Location Permissions Error Message', () => {
+    const context = { name: 'foo' };
+    const wrapper = mount(<MapScreen />, { context });
+    wrapper.setContext({status: 'granted'});
+    expect(wrapper.contains('Permission to access location was denied, is is required for the map')).toBeFalsy();
+  });

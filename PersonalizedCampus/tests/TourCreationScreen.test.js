@@ -82,8 +82,6 @@ jest.mock('firebase', () => {
   };
 });
 
-
-
 it("Snapshot of TourCreation Screen", () => {
   const wrapper = shallow(<TourCreationScreen />);
   expect(wrapper).toMatchSnapshot();
