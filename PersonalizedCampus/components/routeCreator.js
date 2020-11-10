@@ -67,6 +67,7 @@ const RouteCreatorComponent = props => {
                 longitude:e.nativeEvent.coordinate.longitude}])
         } 
         if (mode==='route') {
+            console.log('called create node')
             if (wipRoute == null) {
             // nodes are only the IDs, which are assigned sequentially
             // The name is also set to a WIP name for ease of object use
@@ -90,13 +91,13 @@ const RouteCreatorComponent = props => {
             setWIPRoute({ 
                 name: 'Untitled Route',
                 routeColor: {r:255, g:0, b:0},
-                nodes: [node.nativeEvent.id] }) 
+                nodes: [node.id] }) 
         } 
         else {
             setWIPRoute({
                 name: 'Untitled Route',
                 routeColor: {r:255, g:0, b:0},
-                nodes: [...wipRoute.nodes, node.nativeEvent.id] })
+                nodes: [...wipRoute.nodes, node.id] })
         }
     }
 

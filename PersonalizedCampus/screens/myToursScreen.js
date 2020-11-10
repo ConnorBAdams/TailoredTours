@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     tourImg: {
         width: 75,
         height: 75,
+        borderRadius: 10
     },
 
 });

@@ -84,9 +84,10 @@ const MapComponent = props => {
     }
 
     const nodePressed = (node) => {
-        console.log('Selected node: ', node.nativeEvent)
-        if (placementMode=='route' && placementEnabled) 
-            props.addNodeToRoute(node)
+        console.log('Selected node: ', node)
+        if (placementMode=='route') {
+            props.addNodeToRoute(node) 
+        }
         else if(!placementEnabled && props.carouselEnabled)
         {
             console.log(node, ' selected')
