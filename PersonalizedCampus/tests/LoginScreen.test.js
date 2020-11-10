@@ -5,12 +5,13 @@
 import React from 'react';
 import { unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import SignedInScreen from '../screens/signedInScreen'
-import TourCreationScreen from '../screens/tourCreationScreen';
+import LoginScreen from '../screens/loginScreen';
 import * as firebase from 'firebase'
 require('firebase/auth')
 import { shallow, mount, render } from 'enzyme';
 import sinon from 'sinon';
+
+jest.mock('@react-navigation/native');
 
 
 jest.mock('firebase', () => {
@@ -82,7 +83,8 @@ jest.mock('firebase', () => {
   };
 });
 
-it("Snapshot of TourCreation Screen", () => {
-  const wrapper = shallow(<TourCreationScreen />);
+
+it("Snapshot of Login Screen", () => {
+  const wrapper = shallow(<LoginScreen />);
   expect(wrapper).toMatchSnapshot();
 });

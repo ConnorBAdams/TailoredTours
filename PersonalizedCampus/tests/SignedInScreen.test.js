@@ -6,7 +6,6 @@ import React from 'react';
 import { unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import SignedInScreen from '../screens/signedInScreen'
-import TourCreationScreen from '../screens/tourCreationScreen';
 import * as firebase from 'firebase'
 require('firebase/auth')
 import { shallow, mount, render } from 'enzyme';
@@ -82,7 +81,13 @@ jest.mock('firebase', () => {
   };
 });
 
-it("Snapshot of TourCreation Screen", () => {
-  const wrapper = shallow(<TourCreationScreen />);
+
+jest.doMock('../screens/signedInScreen', () => {
+  const SignedInScreen = () => <div />;
+  return SignedInScreen;
+});
+
+it("Snapshot of SignedIn Screen", () => {
+  const wrapper = shallow(<SignedInScreen />);
   expect(wrapper).toMatchSnapshot();
 });

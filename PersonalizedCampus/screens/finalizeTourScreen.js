@@ -3,12 +3,9 @@ import { Image, TouchableOpacity, StyleSheet, SafeAreaView, View, Text, Alert } 
 import * as ImagePicker from 'expo-image-picker';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
-import firebase from 'firebase'
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import { CardStyleInterpolators } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 import DrawerHeader from '../components/drawerHeader'
-const Drawer = createDrawerNavigator();
+
 
 const FinalizeTourScreen = props => {
     const [selectedImage, setSelectedImage] = React.useState(null);
@@ -77,7 +74,7 @@ const FinalizeTourScreen = props => {
 
     return (
       <SafeAreaView style={styles.container}>
-        <DrawerHeader name="Finalize Tour" openDrawer={props.navigation.openDrawer}/>
+        <DrawerHeader name="Finalize Tour"  openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>
             <View style={styles.internalContainer}>
                 <View style={styles.container}>
                     <Text style={styles.text}>Select a photo for your tour or use the default image.</Text>

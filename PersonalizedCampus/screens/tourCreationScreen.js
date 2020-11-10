@@ -31,7 +31,7 @@ const TourCreationScreen = props => {
           console.log(location)
         })();
       }, []);
-      
+
     const navigation = useNavigation();
 
     const getuserID = () => {
@@ -88,7 +88,7 @@ const TourCreationScreen = props => {
 
     return (
         <SafeAreaView style={styles.container}>
-        <DrawerHeader name="Create a Tour" openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>
+        <DrawerHeader name="Create a Tour" openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>        
         <View style={styles.internalContainer}>
             {tourData === null && <TourSetupComponent submitTour={createTour} location={location} />}
             {(tourData != null && !finalize) && <RouteCreationComponent createRoute={createRoute} location={location} tourName={tourData.title} userID={userID} />}

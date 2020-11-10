@@ -12,7 +12,7 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-firebase/app": "^8.4.4",
     "@react-native-firebase/auth": "^9.2.5",
-    "@react-navigation/drawer": "^5.9.3",
+    "@react-navigation/drawer": "^5.10.7",
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "enzyme": "^3.11.0",
@@ -36,7 +36,8 @@
     "react-navigation": "^4.4.2",
     "react-navigation-stack": "^2.8.2",
     "rn-sliding-up-panel": "^2.4.3",
-    "expo-image-picker": "~8.3.0"
+    "expo-image-picker": "~8.3.0",
+    "sinon": "^9.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

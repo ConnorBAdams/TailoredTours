@@ -5,13 +5,13 @@
 import React from 'react';
 import { unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import SignedInScreen from '../screens/signedInScreen'
-import TourCreationScreen from '../screens/tourCreationScreen';
+import MapScreen from '../screens/mapScreen';
 import * as firebase from 'firebase'
 require('firebase/auth')
 import { shallow, mount, render } from 'enzyme';
 import sinon from 'sinon';
 
+jest.mock('@react-navigation/native');
 
 jest.mock('firebase', () => {
   return {
@@ -82,7 +82,15 @@ jest.mock('firebase', () => {
   };
 });
 
-it("Snapshot of TourCreation Screen", () => {
-  const wrapper = shallow(<TourCreationScreen />);
+
+it("Snapshot of Map Screen", () => {
+  const wrapper = shallow(<MapScreen />);
   expect(wrapper).toMatchSnapshot();
 });
+
+it('Testing Location Permissions Error Message', () => {
+    const context = { name: 'foo' };
+    const wrapper = mount(<MapScreen />, { context });
+    wrapper.setContext({status: 'granted'});
+    expect(wrapper.contains('Permission to access location was denied, is is required for the map')).toBeFalsy();
+  });
