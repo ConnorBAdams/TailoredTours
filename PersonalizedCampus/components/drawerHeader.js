@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
       width:"100%",
       height: 150,
       backgroundColor: '#4633af',
-
+      zIndex: 100
     },
     icon: {
       flexDirection:"row",

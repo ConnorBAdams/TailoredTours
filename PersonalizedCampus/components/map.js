@@ -28,7 +28,7 @@ const MapComponent = props => {
     const [placementEnabled, setPlacementEnabled] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const [selectedNode, setSelectedNode] = useState(null)
-    const [selectedIndex, setSelectedIndex] = useState(0)
+    const [selectedIndex, setSelectedIndex] = useState(-1)
     const [overviewEnabled, setOverviewEnabled] = useState(false)
     const [inspectObject, setInspectObject] = useState(null)
     const map = null;
@@ -89,8 +89,9 @@ const MapComponent = props => {
             props.addNodeToRoute(node)
         else if(!placementEnabled && props.carouselEnabled)
         {
-            console.log(node.nativeEvent.id, ' selected')
-            setInspectObject(props.nodes[node.nativeEvent.id])
+            console.log(node, ' selected')
+            setInspectObject(node)
+            setSelectedIndex(-1)
         }
     }
 
@@ -98,9 +99,26 @@ const MapComponent = props => {
         if (props.carouselEnabled) {
             console.log(poly, ' selected')
             setInspectObject(props.routes[poly.id])
+            setSelectedIndex(poly.id)
+        }
+    }
+
+    const mapPress = (e) => {
+        console.log('Map press')
+        if (props.carouselEnabled) {
+            //setSelectedIndex(-1)
+            setInspectObject(null)
+            setSelectedIndex(-1)
         }
     }
     
+    const handleDelete = (item) => { 
+        props.deleteComponent(item);
+        setInspectObject(null)
+        setSelectedIndex(-1)
+
+    }
+
     const carouselItem = ({item, index}) => {
         return (
             <CarouselItem 
@@ -140,40 +158,41 @@ const MapComponent = props => {
             mapType={mapType}
             //ref={map => {this.map = map}}
             initialRegion={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421}} 
-            onPress={e => {props.onPress != null && !overviewEnabled ? props.onPress(e, placementMode) : null}}
+            onPress={e => {props.onPress != null && !overviewEnabled ? props.onPress(e, placementMode) : mapPress(e)}}
             > 
             { (props.showUser != null && props.showUser === true || props.showUser == null) && 
-            <Marker key={1000.1} coordinate={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude}}
+            <Marker key={1000.1} 
+            coordinate={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude}}
             title="Your Location" >
                 <MaterialIcons name="person-pin-circle" size={42} color="crimson" />
             </Marker> }
-            {console.log(props.nodes)}
+            {/* {console.log(props.nodes)} */}
             {( props.nodes != undefined && props.nodes.length > 0 && props.nodes[0] != null) ? 
             props.nodes.map((marker, index) => { 
                 if (marker.type==='Node') 
                 {
                     //console.log('It\'s a node');
                     return <Marker
-                    key={index}
-                    identifier={index.toString()}
+                    key={marker.id.toString()}
+                    identifier={marker.id.toString()}
                     coordinate={{latitude:marker.latitude, longitude:marker.longitude}}
                     title={marker.name}
                     description={marker.description}
                     onCalloutPress={() => editMarker(marker)}
-                    onPress={(node) => {nodePressed(node)}}
+                    onPress={() => {nodePressed(marker)}}
                     />
                 }
                 else if (marker.type==='Circle') {
                     //console.log('It\'s a circle');
                     return [<Circle
-                    key={index}
-                    identifier={index.toString()}
+                    key={'-100'}
+                    identifier={'-100'}
                     center={{latitude:marker.latitude, longitude:marker.longitude}}
                     radius={marker.radius}
                     fillColor={marker.fillColor}
                     title={marker.name}/>, 
                     <Marker
-                    key={index+0.5}
+                    key={marker.id+0.5}
                     coordinate={{latitude:marker.latitude, longitude:marker.longitude}}
                     title={marker.name}
                     anchor={{x: 0.5, y: 0.5}}>
@@ -186,13 +205,16 @@ const MapComponent = props => {
             props.routes.map((marker, index) => { 
                 if (marker.length == 0) return;
                 coords = [];
-                marker.nodes.forEach(nodeID =>{ coords.push({latitude: props.nodes[nodeID].latitude, longitude:props.nodes[nodeID].longitude})})
+                for (var i = 0; i < props.nodes.length; i++) {
+                    if (marker.nodes.includes(props.nodes[i].id))
+                        coords.push({latitude: props.nodes[i].latitude, longitude:props.nodes[i].longitude})
+                }
                 return <Polyline
-                key={index}
+                key={marker.id}
                 tappable={true}
                 onPress={() => {polylinePressed(marker)}}
                 strokeColor={`rgb(${marker.routeColor.r}, ${marker.routeColor.g}, ${marker.routeColor.b})`}
-                strokeWidth={ (selectedIndex != -1 && index == selectedIndex && placementMode=='route') ? 8 : 4}
+                strokeWidth={ (selectedIndex != -1 && index == selectedIndex ) ? 8 : 4}
                 coordinates={coords}
                 />
             }) 
@@ -277,6 +299,7 @@ const MapComponent = props => {
             <CarouselItem
             contents={inspectObject}
             type={'route'} 
+            deleteComponent={handleDelete}
             overviewToggle={setOverviewEnabled} />    
             </View>
             : null}  

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, StyleSheet, Dimensions, Animated} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Animated, Alert} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SlidingUpPanel from 'rn-sliding-up-panel';
@@ -42,6 +42,21 @@ const CarouselItem = props => {
       extrapolate: "clamp"
     });
 
+    const deleteSelected = () => {
+      console.log('Delete called')
+      Alert.alert('Delete?', 'Are you sure you want to delete this?\nThis cannot be undone',
+      [{
+        text: 'Yes',
+        onPress: () => {props.deleteComponent(props.contents); }
+      },
+      {
+        text: 'Cancel',
+        onPress: () => ('Cancel pressed'),
+        style: 'cancel'
+      }],
+      { cancelable: true }
+    )}
+
     if (props.contents == null){
       return (<View></View>)
     }
@@ -75,14 +90,17 @@ const CarouselItem = props => {
                     { translateX: textTranslateX },
                     { scale: textScale }
                   ]}}>
+                    {console.log('got:', props.contents)}
                 <Text style={styles.textHeader}>{props.contents.name} : {props.contents.id}</Text>
               </Animated.View>
             </View>
 
-            <View style={styles.bottomContainer}>
+            <View style={styles.bodyContainer}>
               <Text>Additional info as soon as I can get this fixed</Text>
-              <TouchableOpacity onPress={() => (console.log('pressed the touchable opacity'))} onPressIn={(()=>console.log('pressin worked') )}>
-              </TouchableOpacity>
+
+              <View style={styles.bottomContainer}>
+                <Button title='Delete' buttonStyle={{backgroundColor:'crimson'}} onPress={() => deleteSelected()} />
+              </View>
             </View>
         </View>
         </SlidingUpPanel>
@@ -114,7 +132,7 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: "white",
     },
-    bottomContainer: {
+    bodyContainer: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
@@ -146,6 +164,10 @@ const styles = StyleSheet.create({
         borderRadius: 24,
         zIndex: 1
     },
+    bottomContainer: {
+      flexDirection:'column',
+      backgroundColor:'white'
+    }
 });
 
 export default CarouselItem;
