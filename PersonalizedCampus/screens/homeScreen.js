@@ -25,17 +25,17 @@ const HomeScreen = props => {
 	})
 	}
 
-	return (
-	<SafeAreaView style={styles.container}>
-		<View style={styles.imageContainer}>
-		<Image source={logo} style={styles.logo} />
-		</View>
-		<View style={styles.buttonContainer}>
-		<Button title="Take Tour" buttonStyle={styles.takeTourButton} textStyle={styles.takeTourText} onPress={() => navigation.navigate('Tour Type')} />
-		<Button title="Make Tour" buttonStyle={styles.makeTourButton} textStyle={styles.makeTourText} onPress={() => checkIfLoggedIn()} />
-		</View>
-	</SafeAreaView>
-	);
+    return (
+    <SafeAreaView style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image source={logo} style={styles.logo} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button title="Take Tour" buttonStyle={styles.takeTourButton} textStyle={styles.takeTourText} onPress={() => navigation.navigate('Tour Type')} />
+          <Button title="Make Tour" buttonStyle={styles.makeTourButton} textStyle={styles.makeTourText} onPress={() => checkIfLoggedIn()} />
+        </View>
+    </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

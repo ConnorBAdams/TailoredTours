@@ -10,13 +10,11 @@ import MyToursScreen from './myToursScreen'
 import TourCreationScreen from './tourCreationScreen'
 import firebase from 'firebase'
 import TourEditScreen from './tourEditScreen';
+import FinalizeTourScreen from './finalizeTourScreen';
 
 const Drawer = createDrawerNavigator();
-
 const SignedInScreen = props => {
-
-useEffect(() => {checkIfLoggedIn() });
-
+	useEffect(() => {checkIfLoggedIn() });
 	const checkIfLoggedIn = () => {
 		firebase.auth().onAuthStateChanged(function(user) {
 			if (!user) {
@@ -30,11 +28,9 @@ useEffect(() => {checkIfLoggedIn() });
 		props.navigation.navigate('Home')
 		firebase.auth().signOut()
 	} 
-
 	const returnHome = () => {
 		props.navigation.navigate('Home')
 	}
-
 	return (
 		<NavigationContainer independent={true}>
 		<Drawer.Navigator initialRouteName="My Tours" drawerContent={props => {
@@ -42,7 +38,7 @@ useEffect(() => {checkIfLoggedIn() });
 			// that are controlled by this navigator
 			const {state, ...rest} = props;
 			const newState = {...state};
-			newState.routes = newState.routes.filter(item => item.name != ['EditScreen'])
+			newState.routes = newState.routes.filter(item => item.name != ['EditScreen', 'Finalize Tour'])
 		return (
 			<DrawerContentScrollView {...props}>
 			<DrawerItem label="Main Screen" onPress={() => returnHome()} />
@@ -55,11 +51,11 @@ useEffect(() => {checkIfLoggedIn() });
 			<Drawer.Screen name="My Tours" component={MyToursScreen} />
 			<Drawer.Screen name="Tour Creator" component={TourCreationScreen} />
 			<Drawer.Screen name="EditScreen" component={TourEditScreen} />
+			<Drawer.Screen name="Finalize Tour" component={FinalizeTourScreen} />
 		</Drawer.Navigator>
 		</NavigationContainer>
 	);
 }
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -81,6 +77,4 @@ const styles = StyleSheet.create({
 		paddingHorizontal:20
 	}
 });
-
-
 export default SignedInScreen;

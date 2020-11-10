@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Dimensions, ActivityIndicator, TextInput, Alert, Modal } from 'react-native';
+import { useNavigation  } from '@react-navigation/native';
 import globalStyles from '../styles'
 import Button from '../components/button'
 import MapComponent from './map'
 import HsvColorPicker from 'react-native-hsv-color-picker';
 
 const RouteCreatorComponent = props => {
+    const [tourName, setTourName] = useState(null)
+    const [userID, setUserID] = useState(null)
     const [location, setLocation] = useState(null)
     const [tourTitle, setTourTitle] = useState(null)
     const [tourDesc, setTourDesc] = useState(null)
@@ -23,6 +26,27 @@ const RouteCreatorComponent = props => {
             setLocation(props.location);
             console.log(props.location);
         }});
+        
+    const navigation = useNavigation();
+
+	// useEffect(() => {
+    //     if (props.location != null) {
+    //         setLocation(props.location);
+    //         console.log(props.location);
+    //     }
+    //     if (props.tourName != null) {
+    //         setTourName(props.tourName);
+    //         console.log(props.tourName);
+    //     }
+    //     if (props.userID != null) {
+    //         setUserID(props.userID);
+    //         console.log(props.userID);
+    //     }
+    // });
+    
+    const isValidTourData = text => {
+        setTourTitle(text)
+    }
 
     const createNode = (e, mode) => {
         if (nodes.length > 0) {
@@ -142,6 +166,7 @@ const RouteCreatorComponent = props => {
             ])
        } else {
         props.createRoute({routes:{...routes}, nodes:{...nodes}})
+        navigation.navigate('Finalize Tour', {tourName: tourName, userID: userID})
            // can be finished
        }
    }
@@ -202,7 +227,12 @@ const RouteCreatorComponent = props => {
             addNodeToRoute={addNodeToRoute}
             placementEnabled={true}
             location={location} /> }
-            <Button title="Finished" style={styles.submitButton} onPress={() => {finished()}} />
+            {/* <Button title="Finished" style={styles.submitButton} onPress={() => {finished()}} /> */}
+            <Button title="Finalize Tour" onPress={finished()}/> 
+            {/* The point of the button above is to then send the user to a screen to insert a picture
+                that will be used for the list display as well as a radio button to ask if the tour
+                is private or public if the user is verified. Was odd that "finishing" the tour meant you 
+                had to click away. I would think clicking away would delete it all so def need a button. */}
         </View>
     );
 }
