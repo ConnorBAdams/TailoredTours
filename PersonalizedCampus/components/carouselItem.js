@@ -14,6 +14,9 @@ const CarouselItem = props => {
 	const [draggableRange, setDraggableRange] = useState({top: height + 40 , bottom: 180})
 	const [photos, setPhotos] = useState([])
 	const [modalVisible, setModalVisible] = useState(false)
+	// Local references
+	const [slidingPanel, setSlidingPanel] = useState(null)
+	const [carousel, setCarousel] = useState(null)
 	const { top, bottom } = draggableRange;
 	const _draggedValue = new Animated.Value(180);
 
@@ -53,20 +56,21 @@ const CarouselItem = props => {
 			alert("Permission to access camera roll is required!");
 			return;
 		}
-		let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true});
+		let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: false});
 		if (pickerResult.cancelled === true) {
 			return;
-	}
-	if (props.contents.images == undefined || props.contents.images.length == 0) {
-		props.contents.images=[{base64: pickerResult.base64}]
-		//setPhotos([{base64: pickerResult.base64}])
-	} else {
-		props.contents.images=[{base64: pickerResult.base64}, ...props.contents.images]
-		//setPhotos([{base64: pickerResult.base64}, ...photos])
-	}
-	setPhotos([...photos, pickerResult.base64]) // this is just to get the UI to update
+		}
+		if (props.contents.images == undefined || props.contents.images.length == 0) {
+			props.contents.images=[{uri: pickerResult.uri}]
+		} else {
+			props.contents.images=[{uri: pickerResult.uri}, ...props.contents.images]
+		}
+		setPhotos([...photos, {uri: pickerResult.uri}]) // this is just to get the UI to update
+		// Send update call to parent component
+		props.updateComponent(props.contents)
 	};
 
+	
 	const toggleModal = () => {
         if (modalVisible === false) {
             setModalVisible(true)
@@ -77,8 +81,9 @@ const CarouselItem = props => {
 	
 	const updateNode = (title, descr) => {
 		props.contents.name = title
-		if (props.contents.type=='Node')
-        props.contents.description = descr
+		props.contents.description = descr
+		// Send update call to parent component
+		props.updateComponent(props.contents)
     }
 
 	const deleteSelected = () => {
@@ -96,23 +101,25 @@ const CarouselItem = props => {
 		{ cancelable: true }
 	)}
 
+	//Rendered jsx inside the image carousel
 	const carouselImage = ({item, index}) => {
 		return ( 
 		<View>
 		<Image style={{width: 200, height: 200, 
 			borderWidth: 1, aspectRatio: 1}} 
-			source={{uri: `data:image/gif;base64,${item.base64}` }}
+			source={item}
 			/>
 		</View> 
 	)}
 
+	// Empty contents
 	if (props.contents == null){
 		return (<View></View>)
 	}
 
 	return (
 		<SlidingUpPanel
-		ref={c => (panel = c)}
+		ref={c => (setSlidingPanel(c) )}
 		draggableRange={draggableRange}
 		animatedValue={_draggedValue}
 		snappingPoints={[360]}
@@ -167,7 +174,7 @@ const CarouselItem = props => {
 			<View style={styles.imageCarouselContainer}>
 				{(props.contents.images != undefined) ? 
 				<Carousel 
-					ref={(c) => carousel = c}
+					ref={(c) => setCarousel(c) }
 					data={props.contents.images}
 					renderItem={carouselImage}
 					sliderWidth={Dimensions.get('window').width * 0.8}

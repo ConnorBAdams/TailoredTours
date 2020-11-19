@@ -9,6 +9,7 @@ import firebase, { auth } from 'firebase';
 const MyToursScreen = props => {    
     const [userID, setUserID] = useState(null);
     const [tours, setTours] = useState([]);
+    const [queryComplete, setQueryComplete] = useState(false); // This could be optimized with context/redux
 
     useEffect(() => {getuserID();}, []);
     useEffect(() => {getTours();});
@@ -38,6 +39,7 @@ const MyToursScreen = props => {
                 {
                     setTours(arr);
                 }
+                setQueryComplete(true)
                 console.log('done')
             })
         }
@@ -62,6 +64,9 @@ const MyToursScreen = props => {
     );
 
     const toursNotFound = <Text style={{fontSize: 24}}>No tours found.</Text>
+    const loading = <View style={{flexDirection:'column'}}>
+        <ActivityIndicator size={'large'} />
+        <Text style={{fontSize: 24}}>Loading...</Text></View>
     const toursFound =  <FlatList
                         data={tours}
                         renderItem={Item}
@@ -73,7 +78,7 @@ const MyToursScreen = props => {
         <SafeAreaView style={styles.container}>
         <DrawerHeader name="My Tours" openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>            
         <View style={styles.internalContainer}>
-                {tours.length == 0 ? toursNotFound : toursFound}
+                {tours.length == 0 ? (queryComplete ? toursNotFound : loading) : toursFound}
             </View>
       </SafeAreaView>
     );

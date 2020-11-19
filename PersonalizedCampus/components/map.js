@@ -117,7 +117,6 @@ const MapComponent = props => {
         props.deleteComponent(item);
         setInspectObject(null)
         setSelectedIndex(-1)
-
     }
 
     const carouselItem = ({item, index}) => {
@@ -232,75 +231,11 @@ const MapComponent = props => {
             </View>} 
             { (props.routes != undefined && props.carouselEnabled ) ? 
             <View style={styles.carouselContainer} pointerEvents="box-none">
-            {/* <ScrollView
-            ref={(scrollView) => {scrollView = scrollView}}
-            horizontal={true}
-            removeClippedSubviews={true}
-            directionalLockEnabled={false}
-            contentContainerStyle={styles.carousel}
-            decelerationRate={0}
-            snapToInterval={200}
-            onContentSizeChange={onContentSizeChange}
-            style={{backgroundColor:'lightblue'}}
-            snapToAlignment={'center'}>
-        <View style={{flex: 1, flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-        backgroundColor:'red',
-        margin: 10, height: 200,
-        flexGrow: 1, width:300}}>
-        <CarouselItem
-        contents={{name:'test',desc:'test test'}}
-        type={'route'} 
-        overviewToggle={setOverviewEnabled} /></View>
-                <View style={{flex: 1, flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-        backgroundColor:'red',
-        margin: 10, height: 200,
-        flexGrow: 1, width:300}}>
-        <CarouselItem
-        contents={{name:'test',desc:'test test'}}
-        type={'route'} 
-        overviewToggle={setOverviewEnabled} /></View>
-                <View style={{flex: 1, flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-        backgroundColor:'red',
-        margin: 10, height: 200,
-        flexGrow: 1, width:300}}>
-        <CarouselItem
-        contents={{name:'test',desc:'test test'}}
-        type={'route'} 
-        overviewToggle={setOverviewEnabled} /></View>
-                <View style={{flex: 1, flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-        backgroundColor:'red',
-        margin: 10, height: 200,
-        flexGrow: 1, width:300}}>
-        <CarouselItem
-        contents={{name:'test',desc:'test test'}}
-        type={'route'} 
-        overviewToggle={setOverviewEnabled} /></View>
-            </ScrollView> */}
-            {/* <Carousel
-            ref={(c) => { carousel = c; }}
-            data={props.routes}
-            renderItem={carouselItem}
-            sliderWidth={Dimensions.get('window').width}
-            itemWidth={Dimensions.get('window').width * 0.8}
-            onSnapToItem={index => changeSelectedIndex(index)}
-            containerCustomStyle={styles.carousel}
-            />  */}
             <CarouselItem
             contents={inspectObject}
             type={'route'} 
             deleteComponent={handleDelete}
+            updateComponent={props.updateComponent}
             editComponent={editMarker}
             overviewToggle={setOverviewEnabled} />    
             </View>

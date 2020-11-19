@@ -22,7 +22,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" screenOptions={{
       cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-      }}>
+      }} headerMode='none'>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Map" component={MapScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />

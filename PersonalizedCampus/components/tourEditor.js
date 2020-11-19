@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, Dimensions, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, Dimensions, View, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation  } from '@react-navigation/native';
 import MapComponent from '../components/map'
 import firebase from 'firebase'
@@ -61,6 +61,125 @@ const TourEditorModule = props => {
         }
     }
 
+    const updateComponent = async (item) => {
+        // First check for images that need uploading
+        uploadImagesToFirebase(item.images)
+        .then((updatedPhotos) => {
+            console.log('Test test')
+            item.images = updatedPhotos
+            if (item.type == 'Node') {
+                console.log('Received a Node')
+            } else if (item.type == 'Route') {
+                console.log('Received a Route')
+                // Received a route,
+            }
+        })
+
+    }
+
+    // ensures all promises have been fulfilled
+	const allFilesReplied = (arrToCheck) => {
+		var returnVal = true
+		arrToCheck.map((values) => {
+            if (values.backendURL == undefined) {
+                returnVal = false;
+            }
+		});
+		return returnVal;
+    };
+	
+	// This is going to handle uploading to firebase Storage
+	const uploadImagesToFirebase = async (photos) => {
+        console.log('Starting image uploads...')
+		var user = firebase.auth().currentUser;
+		var metadata = {
+		  contentType: "image/jpeg",
+		};
+
+        return new Promise((resolve, reject) => {
+		try {
+		var promises = [];
+        
+		// Iterate through all chosen/taken pictures
+        photos.forEach(async (image, index) => {
+            // Does this one already have a directURL? 
+            if (image.backendURL == null) {
+                // this should porbably be a random string?
+                var fileName = image.uri
+                .substring(image.uri.lastIndexOf("/") + 1)
+                .split(".")
+                .slice(0, -1)
+                .join(".");
+                console.log("Trying to upload: ", image.uri, fileName);
+                // Create blobs from the URIs (can this be refactored?)
+                const response = await fetch(image.uri);
+                const blob = await response.blob();
+                // Individually upload each to firebase storage and add it to a promises array
+                promises.push(
+                firebase
+                    .storage()
+                    .ref()
+                    .child(`Images/${user.uid}/${fileName}`)
+                    .put(blob, metadata)
+                );
+            }
+            // Check if all promises have been set and are being worked on
+            if ( index == photos.length - 1) {
+                // Wait on the promises to resolve before finalizing
+                Promise.all(promises).then(function (replies) {
+                    // Map out the reply snapshots
+                    replies.map((snapshot, snapIndex) => {
+                    // Get the URLs
+                    snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                        console.log("File available at", downloadURL);
+                        photos[snapIndex].backendURL = downloadURL;
+        
+                        // Once all urls have been received make the final write (ffs)
+                        if (allFilesReplied(photos)) {
+                            resolve(photos)
+                        }
+                    });
+                    });
+                });
+            }
+        });
+
+		} catch (e) {
+		Alert.alert(e.message);
+        console.error(e.message);
+        reject('Error: ', e.message)
+		}
+    })
+    };
+	
+    const finalizeSave = () => {
+    try {
+        var user = firebase.auth().currentUser;
+        // Push the rest & storage URLs to real time database
+        firebase
+        .database()
+        .ref(`/tours/${user.uid}/${tourID}/`)
+        .push({
+            name: name,
+            size: size,
+            cut: cut,
+            year: year,
+            manufacturer: manufacturer,
+            images: jerseyPics.map((item) => ({
+            location: item.location,
+            source: item.source.backendURL,
+            })),
+        })
+        .then(() => {
+            console.log("Successfully saved to realtime database!");
+            //Alert.alert('Saved successfully!')
+        });
+    } catch (e) {
+        Alert.alert(e.message);
+        console.error(e.message);
+    }
+    };
+
 
     // if the tour is null then show this while it loads
     if (props.tour == null){
@@ -83,6 +202,7 @@ const TourEditorModule = props => {
             routes={allRoutes}
             location={anchorLoc} 
             deleteComponent={deleteComponent}
+            updateComponent={updateComponent}
             carouselEnabled={true}
             showUser={false} />
             }
