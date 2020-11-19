@@ -59,22 +59,55 @@ const TourEditorModule = props => {
                 }
             }
         }
+        var user = firebase.auth().currentUser;
+        // Remove from backend
+        if (item.type == 'Node') { 
+            console.log('Received a Node')
+            var nodeRef = firebase.database().ref(`tours/${user.uid}/${tourID}/nodes/${item.id}/`)
+            nodeRef.remove()
+            .then(function() {
+                console.log("Remove succeeded.")
+            })
+            .catch(function(error) {
+            console.log("Remove failed: " + error.message)
+            });
+        } else if (item.type == 'Route') {
+            console.log('Received a Route')
+            var reouteRef = firebase.database().ref(`tours/${user.uid}/${tourID}/routes/${item.id}/`)
+            reouteRef.remove()
+            .then(function() {
+                console.log("Remove succeeded.")
+            })
+            .catch(function(error) {
+            console.log("Remove failed: " + error.message)
+            });
+        }
     }
 
     const updateComponent = async (item) => {
         // First check for images that need uploading
+        var user = firebase.auth().currentUser;
         uploadImagesToFirebase(item.images)
         .then((updatedPhotos) => {
-            console.log('Test test')
-            item.images = updatedPhotos
+            // Then update the photos and put everything into the realtime database
+            if (updatedPhotos != null)
+                item.images = updatedPhotos
             if (item.type == 'Node') {
                 console.log('Received a Node')
+                var nodeRef = firebase.database().ref(`tours/${user.uid}/${tourID}/nodes/${item.id}/`)
+                nodeRef.set({item})
             } else if (item.type == 'Route') {
                 console.log('Received a Route')
-                // Received a route,
+                var reouteRef = firebase.database().ref(`tours/${user.uid}/${tourID}/routes/${item.id}/`)
+                reouteRef.set( item)
+                .then((snapshot)=>{
+                    console.log('Returned: ', snapshot)
+                })
             }
         })
+        // Then update the local state variables
 
+        // TODO: This
     }
 
     // ensures all promises have been fulfilled
@@ -99,7 +132,10 @@ const TourEditorModule = props => {
         return new Promise((resolve, reject) => {
 		try {
 		var promises = [];
-        
+        if (photos == null || photos == undefined) {
+            resolve(null)
+            return;
+        }
 		// Iterate through all chosen/taken pictures
         photos.forEach(async (image, index) => {
             // Does this one already have a directURL? 
@@ -125,22 +161,30 @@ const TourEditorModule = props => {
             }
             // Check if all promises have been set and are being worked on
             if ( index == photos.length - 1) {
+                setTimeout(() => {
                 // Wait on the promises to resolve before finalizing
-                Promise.all(promises).then(function (replies) {
-                    // Map out the reply snapshots
-                    replies.map((snapshot, snapIndex) => {
-                    // Get the URLs
-                    snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                        console.log("File available at", downloadURL);
-                        photos[snapIndex].backendURL = downloadURL;
-        
-                        // Once all urls have been received make the final write (ffs)
-                        if (allFilesReplied(photos)) {
-                            resolve(photos)
-                        }
+                console.log('Waiting on: ', promises.length, ' promises')
+                if (promises.length==0) {
+                    resolve(null)
+                } else  {
+                    Promise.all(promises).then(function (replies) {
+                        // Map out the reply snapshots
+                        replies.map((snapshot, snapIndex) => {
+                        // Get the URLs
+                        snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                            console.log("File available at", downloadURL);
+                            photos[snapIndex].backendURL = downloadURL;
+            
+                            // Once all urls have been received make the final write (ffs)
+                            if (allFilesReplied(photos)) {
+                                resolve(photos)
+                            }
+                        });
+                        });
                     });
-                    });
-                });
+                }
+
+            }, 2000) // Wait for 2 seconds before checking that all promises have been fulfilled because I am lazy and not entirely sure how to do this properly
             }
         });
 

@@ -165,7 +165,7 @@ const CarouselItem = props => {
 				<TouchableOpacity onPress={() => toggleModal()}>
 				<FontAwesome name="pencil" size={30} color="black" />
 			</TouchableOpacity></View>
-			<Text style={styles.descriptionText}>{(props.contents.desc != null)? props.contents.desc : props.contents.description}</Text>
+			<Text style={styles.descriptionText}>{props.contents.description}</Text>
 			
 			<Text style={styles.photosHeader}>Photos:</Text>
 

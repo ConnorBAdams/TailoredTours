@@ -133,7 +133,7 @@ const RouteCreatorComponent = props => {
                 id: routes.length,
                 routeColor: hsvToRgb(hue, sat, val), 
                 name: tourTitle,
-                desc: tourDesc,
+                description: tourDesc,
                 nodes: wipRoute.nodes
             }])
         }
@@ -143,7 +143,7 @@ const RouteCreatorComponent = props => {
                 id: 0,
                 routeColor: hsvToRgb(hue, sat, val), 
                 name: tourTitle,
-                desc: tourDesc,
+                description: tourDesc,
                 nodes: wipRoute.nodes
             }])
         }
