@@ -18,20 +18,22 @@ const FinalizeTourScreen = props => {
       <SafeAreaView style={styles.container}>
         <DrawerHeader name="Finalize Tour" openDrawer={props.navigation.openDrawer}/>
             <View style={styles.internalContainer}>
-                <RadioButton
-                value = 'first'
-                status = { checked == 'first' ? 'checked' : 'unchecked' }
-                onPress = { () => setChecked('first') }
+                <Text>Private</Text>
+                <RadioButton.Android
+                    value = 'first'
+                    status = { checked == 'first' ? 'checked' : 'unchecked' }
+                    //uncheckedColor = 'blue'
+                    onPress = { () => setChecked('first') }
                 />
-                <RadioButton
+                <Text>Public</Text>
+                <RadioButton.Android
                     value = 'second'
                     status = { checked == 'second' ? 'checked' : 'unchecked' }
+                    //uncheckedColor = 'blue'
                     onPress = { () => setChecked('second') }
                 />
             </View>
       </SafeAreaView>
-      
-    
     );
 }
 
