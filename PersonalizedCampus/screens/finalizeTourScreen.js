@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
 import firebase from 'firebase'
+import { RadioButton } from 'react-native-paper';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { CardStyleInterpolators } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
@@ -11,12 +12,23 @@ const Drawer = createDrawerNavigator();
 
 const FinalizeTourScreen = props => {
     const navigation = useNavigation();
+    const [checked, setChecked] = React.useState('first');
 
     return (
       <SafeAreaView style={styles.container}>
         <DrawerHeader name="Finalize Tour" openDrawer={props.navigation.openDrawer}/>
             <View style={styles.internalContainer}>
             </View>
+        <RadioButton
+            value = 'first'
+            status = { checked == 'first' ? 'checked' : 'unchecked' }
+            onPress = { () => setChecked('first') }
+        />
+        <RadioButton
+            value = 'second'
+            status = { checked == 'second' ? 'checked' : 'unchecked' }
+            onPress = { () => setChecked('second') }
+        />
       </SafeAreaView>
     
     );

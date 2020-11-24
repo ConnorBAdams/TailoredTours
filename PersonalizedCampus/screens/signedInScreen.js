@@ -57,9 +57,9 @@ useEffect(() => {checkIfLoggedIn() });
 			// that are controlled by this navigator
 			const {state, ...rest} = props;
 			const newState = {...state};
-			<View style={styles.container}>
+			/*<View style={styles.container}>
 				<RadioButton PROP={PROP} />
-			</View>
+			</View>*/
 			newState.routes = newState.routes.filter(item => item.name != ['Finalize Tour'])
 		return (
 			<DrawerContentScrollView {...props}>
