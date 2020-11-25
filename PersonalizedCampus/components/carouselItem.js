@@ -4,9 +4,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import Button from './button'
+import Button from './button';
 import Carousel from 'react-native-snap-carousel';
-import MarkerEditorComponent from './markerEditor'
+import MarkerEditorComponent from './markerEditor';
+import { Video } from 'expo-av';
 
 const { height } = Dimensions.get("window") ;
 
