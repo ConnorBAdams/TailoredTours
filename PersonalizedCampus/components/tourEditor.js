@@ -129,7 +129,10 @@ const TourEditorModule = props => {
 		  contentType: "image/jpeg",
         };
         var video_metadata = {
-          contentType: "video/mp4",
+          contentType: "video/mp4", 
+          // We may have to implement other MIME types if people are
+          // uploading other video formats than mp4. I have not tested
+          // other types. Same goes with images.
         };
 
         return new Promise((resolve, reject) => {
