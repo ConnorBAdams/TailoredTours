@@ -62,16 +62,35 @@ const CarouselItem = props => {
 			return;
 		}
 		if (props.contents.images == undefined || props.contents.images.length == 0) {
-			props.contents.images=[{uri: pickerResult.uri}]
+			props.contents.images=[{uri: pickerResult.uri, type: 'image'}]
 		} else {
-			props.contents.images=[{uri: pickerResult.uri}, ...props.contents.images]
+			props.contents.images=[{uri: pickerResult.uri, type: 'image'}, ...props.contents.images]
 		}
-		setPhotos([...photos, {uri: pickerResult.uri}]) // this is just to get the UI to update
+		setPhotos([...photos, {uri: pickerResult.uri, type: 'image'}]) // this is just to get the UI to update
 		// Send update call to parent component
 		props.updateComponent(props.contents)
 	};
 
-	
+	const openVideoPickerAsync = async () => {
+		let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+		if (permissionResult.granted === false) {
+			alert("Permission to access camera roll is required!");
+			return;
+		}
+		let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: false, mediaTypes: ImagePicker.MediaTypeOptions.Videos});
+		if (pickerResult.cancelled === true) {
+			return;
+		}
+		if (props.contents.images == undefined || props.contents.images.length == 0) {
+			props.contents.images=[{uri: pickerResult.uri, type: 'video'}]
+		} else {
+			props.contents.images=[{uri: pickerResult.uri, type: 'video'}, ...props.contents.images]
+		}
+		setPhotos([...photos, {uri: pickerResult.uri, type: 'video'}]) // this is just to get the UI to update
+		// Send update call to parent component
+		props.updateComponent(props.contents)
+	};
+
 	const toggleModal = () => {
         if (modalVisible === false) {
             setModalVisible(true)
@@ -106,10 +125,25 @@ const CarouselItem = props => {
 	const carouselImage = ({item, index}) => {
 		return ( 
 		<View>
-		<Image style={{width: 200, height: 200, 
-			borderWidth: 1, aspectRatio: 1}} 
-			source={item}
-			/>
+			{item.type == 'image' ? 
+				<Image 
+					style={{width: 200, height: 200, 
+					borderWidth: 1, aspectRatio: 1}} 
+					source={item}
+				/> 
+				: 
+				<Video
+	 				source={item}
+	  				rate={1.0}
+	  				volume={1.0}
+	 				isMuted={false}
+	 				resizeMode="cover"
+	  				shouldPlay
+					isLooping
+					//useNativeControls
+	  				style={{ width: 200, height: 200 }}
+				/>
+			}
 		</View> 
 	)}
 
@@ -186,6 +220,7 @@ const CarouselItem = props => {
 				<Text style={{fontSize: 18}}>There are no images on this {props.contents.type}</Text> }
 			</View>
 			<Button title="Upload Photos" onPress={openImagePickerAsync} />
+			<Button title="Upload Videos" onPress={openVideoPickerAsync} />
 
 
 			</View>
