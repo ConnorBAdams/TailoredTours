@@ -156,16 +156,21 @@ const MapComponent = props => {
             <MapView 
             style={(props.style != null) ? props.style : styles.mapStyle} 
             mapType={mapType}
+            showsUserLocation={props.takingTour && props.showUser}
+            showsMyLocationButton={props.takingTour && props.showUser}
+            followsUserLocation={props.takingTour && props.showUser}
+            showsCompass={props.takingTour && props.showUser}
+            loadingEnabled={true}
             //ref={map => {this.map = map}}
             initialRegion={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421}} 
             onPress={e => {props.onPress != null && !overviewEnabled ? props.onPress(e, placementMode) : mapPress(e)}}
             > 
-            { (props.showUser != null && props.showUser === true || props.showUser == null) && 
+            {/* { (props.showUser != null && props.showUser === true || props.showUser == null) && 
             <Marker key={1000.1} 
             coordinate={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude}}
             title="Your Location" >
                 <MaterialIcons name="person-pin-circle" size={42} color="crimson" />
-            </Marker> }
+            </Marker> } */}
             {/* {console.log(props.nodes)} */}
             {( props.nodes != undefined && props.nodes.length > 0 && props.nodes[0] != null) ? 
             props.nodes.map((marker, index) => { 

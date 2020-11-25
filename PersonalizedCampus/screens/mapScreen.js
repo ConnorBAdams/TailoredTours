@@ -27,7 +27,7 @@ const MapScreen = props => {
     <View style={styles.container}>
 		{location === null && <ActivityIndicator size="large" />}
 		{location === null &&<Text>Loading...</Text>}
-		{location != null && <MapComponent location={location} /> }
+		{location != null && <MapComponent location={location} showUser={true} takingTour={true} /> }
     </View>
     );
 }

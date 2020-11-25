@@ -196,34 +196,6 @@ const TourEditorModule = props => {
     })
     };
 	
-    const finalizeSave = () => {
-    try {
-        var user = firebase.auth().currentUser;
-        // Push the rest & storage URLs to real time database
-        firebase
-        .database()
-        .ref(`/tours/${user.uid}/${tourID}/`)
-        .push({
-            name: name,
-            size: size,
-            cut: cut,
-            year: year,
-            manufacturer: manufacturer,
-            images: jerseyPics.map((item) => ({
-            location: item.location,
-            source: item.source.backendURL,
-            })),
-        })
-        .then(() => {
-            console.log("Successfully saved to realtime database!");
-            //Alert.alert('Saved successfully!')
-        });
-    } catch (e) {
-        Alert.alert(e.message);
-        console.error(e.message);
-    }
-    };
-
 
     // if the tour is null then show this while it loads
     if (props.tour == null){
