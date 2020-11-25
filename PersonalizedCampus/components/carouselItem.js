@@ -62,11 +62,11 @@ const CarouselItem = props => {
 			return;
 		}
 		if (props.contents.images == undefined || props.contents.images.length == 0) {
-			props.contents.images=[{uri: pickerResult.uri, type: 'image'}]
+			props.contents.images=[{uri: pickerResult.uri, media_type: 'image'}]
 		} else {
-			props.contents.images=[{uri: pickerResult.uri, type: 'image'}, ...props.contents.images]
+			props.contents.images=[{uri: pickerResult.uri, media_type: 'image'}, ...props.contents.images]
 		}
-		setPhotos([...photos, {uri: pickerResult.uri, type: 'image'}]) // this is just to get the UI to update
+		setPhotos([...photos, {uri: pickerResult.uri, media_type: 'image'}]) // this is just to get the UI to update
 		// Send update call to parent component
 		props.updateComponent(props.contents)
 	};
@@ -82,11 +82,11 @@ const CarouselItem = props => {
 			return;
 		}
 		if (props.contents.images == undefined || props.contents.images.length == 0) {
-			props.contents.images=[{uri: pickerResult.uri, type: 'video'}]
+			props.contents.images=[{uri: pickerResult.uri, media_type: 'video'}]
 		} else {
-			props.contents.images=[{uri: pickerResult.uri, type: 'video'}, ...props.contents.images]
+			props.contents.images=[{uri: pickerResult.uri, media_type: 'video'}, ...props.contents.images]
 		}
-		setPhotos([...photos, {uri: pickerResult.uri, type: 'video'}]) // this is just to get the UI to update
+		setPhotos([...photos, {uri: pickerResult.uri, media_type: 'video'}]) // this is just to get the UI to update
 		// Send update call to parent component
 		props.updateComponent(props.contents)
 	};
@@ -125,7 +125,7 @@ const CarouselItem = props => {
 	const carouselImage = ({item, index}) => {
 		return ( 
 		<View>
-			{item.type == 'image' ? 
+			{item.media_type == 'image' ? 
 				<Image 
 					style={{width: 200, height: 200, 
 					borderWidth: 1, aspectRatio: 1}} 

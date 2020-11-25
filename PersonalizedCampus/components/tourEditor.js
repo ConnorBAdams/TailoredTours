@@ -125,9 +125,12 @@ const TourEditorModule = props => {
 	const uploadImagesToFirebase = async (photos) => {
         console.log('Starting image uploads...')
 		var user = firebase.auth().currentUser;
-		var metadata = {
+		var image_metadata = {
 		  contentType: "image/jpeg",
-		};
+        };
+        var video_metadata = {
+          contentType: "video/mp4",
+        };
 
         return new Promise((resolve, reject) => {
 		try {
@@ -151,13 +154,23 @@ const TourEditorModule = props => {
                 const response = await fetch(image.uri);
                 const blob = await response.blob();
                 // Individually upload each to firebase storage and add it to a promises array
-                promises.push(
-                firebase
-                    .storage()
-                    .ref()
-                    .child(`Images/${user.uid}/${fileName}`)
-                    .put(blob, metadata)
-                );
+                if (image.media_type == 'image') {
+                    promises.push(
+                    firebase
+                        .storage()
+                        .ref()
+                        .child(`Images/${user.uid}/${fileName}`)
+                        .put(blob, image_metadata)
+                    );
+                } else if (image.media_type == 'video') {
+                    promises.push(
+                    firebase
+                        .storage()
+                        .ref()
+                        .child(`Videos/${user.uid}/${fileName}`)
+                        .put(blob, video_metadata)
+                    );
+                }
             }
             // Check if all promises have been set and are being worked on
             if ( index == photos.length - 1) {
