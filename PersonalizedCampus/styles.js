@@ -19,7 +19,7 @@ const globalStyles = StyleSheet.create({
         backgroundColor: secondaryColor,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 7,
+        borderRadius: 20,
         padding: 10,
         margin: 5,
         elevation: 2,
@@ -31,7 +31,8 @@ const globalStyles = StyleSheet.create({
     inputField: {
         margin: 10,
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 20,
+        backgroundColor: '#fff',
         borderColor: secondaryColor,
         borderWidth: 1,
         height: 40,

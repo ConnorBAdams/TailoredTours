@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
       },
       mapStyle: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.5,
+        height: Dimensions.get('window').height * 0.6,
       },
       titleText: {
           fontSize: 20,

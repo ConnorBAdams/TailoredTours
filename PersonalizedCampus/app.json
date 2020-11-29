@@ -18,7 +18,8 @@
     ],
     "android": {
       "package": "com.cs495.tailoredtours",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "ios": {
       "supportsTablet": true,

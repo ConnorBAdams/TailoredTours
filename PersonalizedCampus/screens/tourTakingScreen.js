@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View, ActivityIndicator, Dimensions, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
 import MapComponent from '../components/map'
 import * as Location from 'expo-location'
+import globalStyles from '../styles'
 
-const MapScreen = props => {
-	const [location, setLocation] = useState(null)
+const TourTakingScreen = props => {
+	const [location, setLocation] = useState(null);
 	const [errorMsg, setErrorMsg] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
 	useEffect(() => {
       (async () => {
@@ -24,17 +26,29 @@ const MapScreen = props => {
     const navigation = useNavigation();
 
     return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 		{location === null && <ActivityIndicator size="large" />}
 		{location === null &&<Text>Loading...</Text>}
-		{location != null && <MapComponent location={location} showUser={true} takingTour={true} /> }
-    </View>
+		{location != null && 
+    <SafeAreaView >
+      <View style={styles.searchBar}>
+      <TextInput style={globalStyles.inputField} 
+      onChangeText={text => setSearchTerm(text)}
+      inlineImageLeft='search_icon'
+      placeholder='Search Tours'
+      />
+      </View>
+      <MapComponent location={location} style={styles.map} showUser={true} takingTour={true} /> 
+    </SafeAreaView>
+    }
+    </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -43,8 +57,17 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: '15%',
     alignContent: 'center',
+  },
+  map: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
+  searchBar: {
+    alignItems: 'center',
+    height: 0,
+    bottom: -50,
   }
 });
 
 
-export default MapScreen;
+export default TourTakingScreen;
