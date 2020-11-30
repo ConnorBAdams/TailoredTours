@@ -136,7 +136,7 @@ const MapComponent = props => {
                 toggle={toggleModal} 
                 node={selectedNode} 
                 visible={modalVisible} />}
-            <View style={{...styles.mapTopButtons, top: (props.takingTour)?125:15}} pointerEvents="box-none">
+            <View style={{...styles.mapTopButtons, top: (props.takingTour)?150:15}} pointerEvents="box-none">
             <View style={styles.mapModeButton} pointerEvents="box-none">
             {placementMode != null &&
                 <TouchableOpacity style={styles.icon} onPress={() => togglePlacementMode() } >
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     icon: {
         borderRadius: 12,
         borderWidth: 2,
-        borderColor: '#4633af',
+        borderColor: 'black',
         padding: 2,
         elevation: 5,
         backgroundColor: '#fff',
