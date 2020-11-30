@@ -10,7 +10,6 @@ import MyToursScreen from './myToursScreen'
 import TourCreationScreen from './tourCreationScreen'
 import firebase from 'firebase'
 import TourEditScreen from './tourEditScreen';
-import FinalizeTourScreen from './finalizeTourScreen';
 
 const Drawer = createDrawerNavigator();
 const SignedInScreen = props => {
@@ -51,7 +50,6 @@ const SignedInScreen = props => {
 			<Drawer.Screen name="My Tours" component={MyToursScreen} />
 			<Drawer.Screen name="Tour Creator" component={TourCreationScreen} />
 			<Drawer.Screen name="EditScreen" component={TourEditScreen} />
-			<Drawer.Screen name="Finalize Tour" component={FinalizeTourScreen} />
 		</Drawer.Navigator>
 		</NavigationContainer>
 	);

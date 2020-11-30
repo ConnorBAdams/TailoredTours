@@ -73,7 +73,8 @@ const TourCreationScreen = props => {
                 anchor: tourData.anchor,
                 routes: routeData.routes,
                 nodes: routeData.nodes,
-                thumbnail: data.selectedImage
+                thumbnail: data.selectedImage,
+                publicTour: data.publicTour
             })                
             .then(
                 Alert.alert('Successfully saved!'),

@@ -160,11 +160,13 @@ const RouteCreatorComponent = props => {
    const finished = () => {
        if (wipRoute != null && wipRoute.length != 0){
            Alert.alert(
-               "Unsaved route", "Unsaved route, would you like to save it before moving on?",
+               "Unsaved route!", "You have an unsaved route, would you like to save it before moving on?",
                [{
-                   text:'Yes', onPress:() => promptForRouteName()
-               },{ text: 'No', onPress:() => setWIPRoute(null) }
-            ])
+                   text:'Yes, save it!', onPress:() => promptForRouteName()
+               },{ 
+				   text: 'No, delete route!', onPress:() => setWIPRoute(null) 
+				}
+            ],{ cancelable: true })
        } else {
         props.createRoute({routes:{...routes}, nodes:{...nodes}})
         //navigation.navigate('Finalize Tour', {tourName: tourName, userID: userID})
@@ -183,7 +185,7 @@ const RouteCreatorComponent = props => {
         <View style={styles.container}>
             <Modal
             animationType="slide"
-            transparent={true}
+			transparent={true}
             visible={nameModalVisible}
             onRequestClose={() => {setNameModalVisible(!nameModalVisible)}}>
             <View style={styles.centeredView}>
@@ -207,6 +209,8 @@ const RouteCreatorComponent = props => {
             />
             
             <Button title="Save Route" style={{paddingTop: 15}} onPress={() => {createRoute()}} />
+            
+			<View style={{paddingTop: 25}}><Button title="Cancel" buttonStyle={{width: 100, backgroundColor:'darkred'}} onPress={() => {setNameModalVisible(false)}} /></View>
             </View>
             </View>
             </Modal>
@@ -214,7 +218,9 @@ const RouteCreatorComponent = props => {
             <TextInput style={globalStyles.inputField}
             placeholder="Route Name"
             onChangeText={text => isValidTourData(text)} /> */}
-            <Text style={styles.titleText}>Create stops and routes:</Text>
+            <View style={styles.topOverlay}>
+            <Text style={styles.titleText}>Create stops and routes</Text>
+            </View>
             {location === null && <ActivityIndicator size="large" />}
             {location === null && <Text>Loading...</Text>}
             {location != null && 
@@ -229,7 +235,13 @@ const RouteCreatorComponent = props => {
             placementEnabled={true}
             location={location} /> }
             {/* <Button title="Finished" style={styles.submitButton} onPress={() => {finished()}} /> */}
-            <Button title="Finalize Tour" onPress={finished}/> 
+            <View style={styles.bottomOverlay} >
+            <Button 
+              textStyle={{fontSize: 20}}
+              buttonStyle={{width: 175,elevation: 5}}
+			title="Finalize Tour" 
+			onPress={finished}/> 
+            </View>
             {/* The point of the button above is to then send the user to a screen to insert a picture
                 that will be used for the list display as well as a radio button to ask if the tour
                 is private or public if the user is verified. Was odd that "finishing" the tour meant you 
@@ -246,12 +258,11 @@ const styles = StyleSheet.create({
     },
     mapStyle: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height * 0.75,
+        height: Dimensions.get('window').height * 0.9,
     },
     titleText: {
         fontSize: 20,
-        marginTop: 10,
-        marginBottom: 10
+        margin: 15,
     },
     submitButton: {
         marginTop: 10
@@ -260,13 +271,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
+		marginTop: 22,
     },
     modalView: {
         margin: 20,
@@ -281,7 +286,9 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5,
+		elevation: 5,
+		borderWidth: 1,
+		borderColor: '#00c9db'
     },
     openButton: {
         backgroundColor: '#F194FF',
@@ -302,7 +309,21 @@ const styles = StyleSheet.create({
     colorPicker : {
         height: 100,
         width: 100
-    }
+    },
+    topOverlay: {
+		backgroundColor: "#fff",
+		elevation: 20,
+		position: "absolute",
+		top: 10,
+		alignItems: "center",
+		borderRadius: 20,
+		borderColor: '#4633af',
+		borderWidth: 2,
+      },
+      bottomOverlay: {
+        position: "absolute",
+        bottom: 75,
+      },
 });
 
 

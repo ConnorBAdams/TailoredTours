@@ -1,142 +1,160 @@
-import React, { useState, useEffect } from 'react';
-import { Image, TouchableOpacity, StyleSheet, SafeAreaView, View, Text, Alert } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { useNavigation } from '@react-navigation/native';
-import Button from '../components/button'
-import firebase from 'firebase'
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import 'react-native-gesture-handler';
+import React, { useState } from "react";
+import {
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  View,
+  Text,
+  Dimensions
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import Button from "../components/button";
+import { RadioButton } from 'react-native-paper';
 
-const Drawer = createDrawerNavigator();
+const FinalizeTourScreen = (props) => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [privateTour, setPrivateTour] = useState(true)
+  const default_image = require("../assets/default_thumbnail.png");
 
-const FinalizeTourScreen = props => {
-    const [selectedImage, setSelectedImage] = React.useState(null);
-
-    const default_image = require('../assets/default_thumbnail.png');
-    const navigation = useNavigation();
-
-    let openImagePickerAsync = async () => {
-        let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
-            return;
-        }
-        let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true});
-        console.log(pickerResult);
-        if (pickerResult.cancelled === true) {
-            return;
-        }
-
-        setSelectedImage({ localUri: pickerResult.uri, base64: pickerResult.base64 });
-    };
-
-    const setImageToDefault = () => {
-        setSelectedImage(null);
-    };
-
-    const finishTour = async () => {
-        if (selectedImage == null) {
-            props.finishTour({selectedImage: 'default'})
-        } else {
-            props.finishTour({selectedImage: selectedImage.base64})
-        }
-        return;
-        try {
-            console.log(userID);
-            console.log(tourName);
-            firebase.database().ref('/tours/' + userID + '/' )
-            .orderByChild('tourName').equalTo(tourName).once('value')
-            .then(function(snapshot) 
-            {
-                var childKey = null;
-                snapshot.forEach(function(childSnapshot) {
-                    console.log(childSnapshot)
-                    childKey = childSnapshot.key
-                })
-                firebase.database().ref('/tours/' + userID + '/' + childKey + '/')
-                .child('thumbnail').set(selectedImage.base64)
-                .then(function(success)
-                {
-                    Alert.alert('Tour created successfully!');
-                    props.navigation.popToTop();
-                    return;
-                })
-            })
-        } catch (e) {
-            Alert.alert(e.message)
-            console.error(e.message)
-        }
+  let openImagePickerAsync = async () => {
+    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("Permission to access camera roll is required!");
+      return;
+    }
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+      quality: 0.8
+    });
+    if (pickerResult.cancelled === true) {
+      return;
     }
 
-    const no_img_selected = <Image 
-                                source={default_image} 
-                                style={styles.thumbnail} 
-                            />
+    setSelectedImage({
+      localUri: pickerResult.uri,
+      base64: pickerResult.base64,
+    });
+  };
 
-    return (
-      <SafeAreaView style={styles.container}>
-            <View style={styles.internalContainer}>
-                <View style={styles.container}>
-                    <Text style={styles.text}>Select a photo for your tour or use the default image.</Text>
-                </View>
-                <View style={styles.container}>
-                    <Text style={styles.text}>Currently selected image:</Text>
-                    {selectedImage !== null ? 
-                        <Image 
-                            source={{uri: selectedImage.localUri}} 
-                            style={styles.thumbnail} 
-                        /> : no_img_selected}
-                    <Button title="Pick a photo" onPress={openImagePickerAsync} />
-                    <Button title="Use default" onPress={setImageToDefault} />
-                </View>
-                <View style={styles.container} style={{marginTop:40}}>
-                    <Button title="Finish tour" onPress={finishTour} />
-                </View>
-            </View>
-      </SafeAreaView>
-    
-    );
-}
+  const setImageToDefault = () => {
+    setSelectedImage(null);
+  };
+
+  const finishTour = async () => {
+    if (selectedImage == null) {
+      props.finishTour({ selectedImage: "default", publicTour: !privateTour });
+    } else {
+      props.finishTour({ selectedImage: selectedImage.base64, publicTour: !privateTour  });
+    }
+    return;
+  };
+
+  const no_img_selected = (
+    <Image source={default_image} style={styles.thumbnail} />
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.internalContainer}>
+        <View style={styles.container}>
+          <Text style={styles.text}>
+            Select a thumbnail photo for your tour 
+          </Text>
+          <Text style={styles.text}>
+          (or use the default)
+          </Text>
+        </View>
+        <View style={styles.imageSelectionContainer}>
+          <Text style={styles.text}>Currently selected image:</Text>
+          <View style={styles.imageHolder}>
+          {selectedImage !== null ? (
+            <Image
+              source={{ uri: selectedImage.localUri }}
+              style={styles.thumbnail}
+            />
+          ) : (
+            no_img_selected
+          )}
+          </View>
+          <Button title="Pick a photo" onPress={openImagePickerAsync} />
+          <Button title="Use default" onPress={setImageToDefault} />
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.text}>
+            Public or Private
+          </Text>
+          <Text style={styles.subText}>
+          (Must have an approved account for public)
+          </Text>
+          <View style={styles.buttons}>
+          <Text>Private</Text>
+          <RadioButton
+          value="true"
+          label="Private"
+          status={privateTour === true ? 'checked' : 'unchecked'}
+          onPress={() => { setPrivateTour(true) }}
+        />
+        <Text style={{marginLeft: 25}}>Public</Text>
+        <RadioButton
+          value="false"
+          //disabled={true} // TODO: THIS, MAKE CERTAIN ACCOUNTS DISABLE THIS
+          label="Public"
+          status={privateTour === false ? 'checked' : 'unchecked'}
+          onPress={() => { setPrivateTour(false) }}
+        />
+        </View>
+        </View>
+        <View style={{marginTop: 20}}>
+        <Button title="Finish tour" 
+        textStyle={{fontSize: 20}}
+        buttonStyle={{width: 175,elevation: 5}}
+        onPress={finishTour} />
+      </View>
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-      paddingTop: 25,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-      },
-  internalContainer: {
-      height: '100%',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      },
-  header:{
-      width:"100%",
-      height:60,
-      flexDirection:"row",
-      justifyContent:"space-between",
-      alignItems:"center",
-      paddingHorizontal:20
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  item: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 7,
-      padding: 10,
-      margin: 5,
-      elevation: 2,
-      width: 350,
+  imageSelectionContainer: {
+    margin: 25,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 20,
+    borderColor: '#4633af',
+    borderWidth: 2,
+    width:  Dimensions.get('window').width * 0.75
+  },
+  internalContainer: {
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
   text: {
-    fontSize: 16,
+    alignItems: "center",
+    fontSize: 18,
+    textAlign: "center",
+  },
+  subText: {
+    alignItems: "center",
+    fontSize: 14,
+    textAlign: "center",
   },
   thumbnail: {
-    width: 300,
-    height: 300,
+    height: 250,
+    aspectRatio: 1,
     resizeMode: "contain",
-    marginTop: 10,
-    marginBottom: 10,
   },
+  buttons: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
 });
 
 export default FinalizeTourScreen;

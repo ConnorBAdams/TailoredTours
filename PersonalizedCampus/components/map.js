@@ -136,7 +136,7 @@ const MapComponent = props => {
                 toggle={toggleModal} 
                 node={selectedNode} 
                 visible={modalVisible} />}
-            <View style={{...styles.mapTopButtons, top: (props.takingTour)?125:50}} pointerEvents="box-none">
+            <View style={{...styles.mapTopButtons, top: (props.takingTour)?125:15}} pointerEvents="box-none">
             <View style={styles.mapModeButton} pointerEvents="box-none">
             {placementMode != null &&
                 <TouchableOpacity style={styles.icon} onPress={() => togglePlacementMode() } >
@@ -215,7 +215,7 @@ const MapComponent = props => {
                         coords.push({latitude: props.nodes[i].latitude, longitude:props.nodes[i].longitude})
                 }
                 return <Polyline
-                key={marker.id}
+                key={marker.id + 0.5}
                 tappable={true}
                 onPress={() => {polylinePressed(marker)}}
                 strokeColor={`rgb(${marker.routeColor.r}, ${marker.routeColor.g}, ${marker.routeColor.b})`}
@@ -262,7 +262,9 @@ const styles = StyleSheet.create({
     icon: {
         borderRadius: 12,
         borderWidth: 2,
+        borderColor: '#4633af',
         padding: 2,
+        elevation: 5,
         backgroundColor: '#fff',
     },
     mapTopButtons: {
@@ -275,7 +277,8 @@ const styles = StyleSheet.create({
     },
     mapBottomButtons: {
         zIndex: 1,
-        marginTop: -50,
+        bottom: 75,
+        //marginTop: -50,
         alignSelf: 'flex-end',
         flexDirection: 'row',
         justifyContent:'space-between',
