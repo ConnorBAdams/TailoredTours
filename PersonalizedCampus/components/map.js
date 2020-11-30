@@ -136,7 +136,7 @@ const MapComponent = props => {
                 toggle={toggleModal} 
                 node={selectedNode} 
                 visible={modalVisible} />}
-            <View style={styles.mapTopButtons} pointerEvents="box-none">
+            <View style={{...styles.mapTopButtons, top: (props.takingTour)?125:50}} pointerEvents="box-none">
             <View style={styles.mapModeButton} pointerEvents="box-none">
             {placementMode != null &&
                 <TouchableOpacity style={styles.icon} onPress={() => togglePlacementMode() } >
@@ -157,9 +157,9 @@ const MapComponent = props => {
             style={(props.style != null) ? props.style : styles.mapStyle} 
             mapType={mapType}
             showsUserLocation={props.takingTour && props.showUser}
-            showsMyLocationButton={props.takingTour && props.showUser}
-            followsUserLocation={props.takingTour && props.showUser}
-            showsCompass={props.takingTour && props.showUser}
+            //showsMyLocationButton={props.takingTour && props.showUser}
+            //followsUserLocation={props.takingTour && props.showUser}
+            //showsCompass={props.takingTour && props.showUser}
             loadingEnabled={true}
             //ref={map => {this.map = map}}
             initialRegion={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421}} 
@@ -251,7 +251,7 @@ const MapComponent = props => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 5,
+        marginTop: 0,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -263,15 +263,15 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         borderWidth: 2,
         padding: 2,
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
     },
     mapTopButtons: {
         zIndex: 1,
-        marginBottom: -50,
+        position:'absolute',
         alignSelf: 'flex-end',
         flexDirection: 'row',
         justifyContent:'space-between',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     mapBottomButtons: {
         zIndex: 1,

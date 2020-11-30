@@ -32,11 +32,12 @@ const TourTakingScreen = props => {
 		{location != null && 
     <SafeAreaView >
       <View style={styles.searchBar}>
-      <TextInput style={globalStyles.inputField} 
+      <TextInput style={{...globalStyles.inputField, width: Dimensions.get('window').width * 0.9}} 
       onChangeText={text => setSearchTerm(text)}
       inlineImageLeft='search_icon'
       placeholder='Search Tours'
       />
+      
       </View>
       <MapComponent location={location} style={styles.map} showUser={true} takingTour={true} /> 
     </SafeAreaView>
@@ -63,9 +64,13 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
   searchBar: {
-    alignItems: 'center',
-    height: 0,
-    bottom: -50,
+    zIndex: 1,
+    position:'absolute',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems: 'flex-end',
+    top: 30,
   }
 });
 
