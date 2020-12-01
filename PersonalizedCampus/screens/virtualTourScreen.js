@@ -12,12 +12,14 @@ const VirtualTourScreen = props => {
     const [tourName, setTourName] = useState(null)
     const [tourThumbnail, setTourThumbnail] = useState(null);
     const [selectedRoute, setSelectedRoute] = useState(0);
+    const [routeNames, setRouteNames] = useState([]);
+    const [routeDesc, setRouteDesc] = useState([]);
     const default_image = require("../assets/default_thumbnail.png");
     const [queryComplete, setQueryComplete] = useState(false);
 
     // Setting these values manually for testing purposes
     const userID = 'PwmdxqoTkecZs9zT6cYmwnZ7g333';
-    const tourID = '-MNQNjP-mbH-4m3suOjF';
+    const tourID = '-MNUzjNunc15Im9gO-NT';
 
     useEffect(() => {
         if (tour != null && tour.key != tourID) 
@@ -33,6 +35,9 @@ const VirtualTourScreen = props => {
             setTour(snapshot);
             setTourName(snapshot.child('tourName').val());
             setTourThumbnail(snapshot.child('thumbnail').val());
+            const tempRoutes = snapshot.child('routes').val();
+            setRouteNames(tempRoutes.map((tempRoute) => tempRoute['name']));
+            setRouteDesc(tempRoutes.map((tempRoute) => tempRoute['description']));
             setQueryComplete(true);
         }
     }
@@ -61,7 +66,14 @@ const VirtualTourScreen = props => {
     const debug = () => {
         //console.log(tour)
         //console.log(tour.child('tourName').val());
+        console.log('BEGIN DEBUG');
+        //console.log(routeNames);
+        //console.log(routeDesc);
         console.log(selectedRoute)
+        //console.log(routes.length)
+        console.log('END DEBUG');
+        //const mapped = routes.map((route) => route.child('name').val());
+        //console.log(mapped);
     }
 
     return (
@@ -71,7 +83,7 @@ const VirtualTourScreen = props => {
                 <View style={styles.imageSelectionContainer}>
                     <Text style={styles.title}>Tour selected: {queryComplete == false ? 'Loading...' : tourName}</Text>
                     <View style={styles.imageHolder}>
-                        {queryComplete == true && tourThumbnail !== null ? (
+                        {queryComplete == true && tourThumbnail !== null && tourThumbnail !== 'default' ? (
                             <Image
                                 source={{ uri: 'data:image/jpeg;base64,' + tourThumbnail }}
                                 style={styles.thumbnail}
@@ -87,11 +99,24 @@ const VirtualTourScreen = props => {
                         onValueChange={(itemValue, itemIndex) => 
                             setSelectedRoute(itemValue)
                         }>
-                        <Picker.Item label='Route 1' value={0} />
-                        <Picker.Item label='Route 2' value={1} />
+                        {queryComplete == false ? 
+                            <Picker.Item label='Loading routes...' value={0} /> 
+                            :
+                            routeNames.map((name, key) => {
+                                return (
+                                    <Picker.Item label={name} value={key} />
+                                );
+                            })
+                        }
                     </Picker>
                     <Text style={styles.title}>Route description: </Text>
-                    <Text style={styles.description}>Route description placeholder</Text>
+                    <Text style={styles.description}>
+                        {queryComplete == false ?
+                            'Loading description...'
+                            :
+                            routeDesc[selectedRoute]
+                        }
+                    </Text>
                     <Button title='Begin virtual tour' onPress={() => debug()}></Button>
                 </View>
             </View>
