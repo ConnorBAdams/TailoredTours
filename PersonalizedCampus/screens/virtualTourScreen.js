@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, Image, TouchableOpacity, View, SafeAreaView, ActivityIndicator, Dimensions } from 'react-native';
 import 'react-native-gesture-handler';
 import { useNavigation  } from '@react-navigation/native';
-import DrawerHeader from '../components/drawerHeader'
-import Button from '../components/button'
+import DrawerHeader from '../components/drawerHeader';
+import Button from '../components/button';
 import firebase, { auth } from 'firebase';
+import { Picker } from '@react-native-community/picker';
 
 const VirtualTourScreen = props => {    
     const [tour, setTour] = useState(null)
     const [tourName, setTourName] = useState(null)
     const [tourThumbnail, setTourThumbnail] = useState(null);
+    const [selectedRoute, setSelectedRoute] = useState(0);
     const default_image = require("../assets/default_thumbnail.png");
     const [queryComplete, setQueryComplete] = useState(false);
 
@@ -57,8 +59,9 @@ const VirtualTourScreen = props => {
     );
 
     const debug = () => {
-        console.log(tour)
-        console.log(tour.child('tourName').val());
+        //console.log(tour)
+        //console.log(tour.child('tourName').val());
+        console.log(selectedRoute)
     }
 
     return (
@@ -77,6 +80,16 @@ const VirtualTourScreen = props => {
                                 no_img_selected
                             )}
                     </View>
+                    <Text style={styles.title}>Route selected: </Text>
+                    <Picker
+                        selectedValue={selectedRoute}
+                        style={{height: 50, width: 250}}
+                        onValueChange={(itemValue, itemIndex) => 
+                            setSelectedRoute(itemValue)
+                        }>
+                        <Picker.Item label='Route 1' value={0} />
+                        <Picker.Item label='Route 2' value={1} />
+                    </Picker>
                     <Button title='Begin virtual tour' onPress={() => debug()}></Button>
                 </View>
             </View>
