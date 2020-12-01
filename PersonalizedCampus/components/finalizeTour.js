@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Image, TouchableOpacity, StyleSheet, SafeAreaView, View, Text, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
 import firebase from 'firebase'
-import { RadioButton } from 'react-native-paper';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
-import { CardStyleInterpolators } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
-import DrawerHeader from '../components/drawerHeader'
 
+const Drawer = createDrawerNavigator();
 
 const FinalizeTourScreen = props => {
     const [selectedImage, setSelectedImage] = React.useState(null);
 
-    const tourName = props.route.params.tourName;
-    const userID = props.route.params.userID;
     const default_image = require('../assets/default_thumbnail.png');
     const navigation = useNavigation();
-    const [checked, setChecked] = React.useState('first');
 
     let openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -41,10 +36,11 @@ const FinalizeTourScreen = props => {
 
     const finishTour = async () => {
         if (selectedImage == null) {
-            Alert.alert('Tour uploaded successfully!');
-            props.navigation.popToTop();
-            return;
+            props.finishTour({selectedImage: 'default'})
+        } else {
+            props.finishTour({selectedImage: selectedImage.base64})
         }
+        return;
         try {
             console.log(userID);
             console.log(tourName);
@@ -79,22 +75,7 @@ const FinalizeTourScreen = props => {
 
     return (
       <SafeAreaView style={styles.container}>
-        <DrawerHeader name="Finalize Tour"  openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>
             <View style={styles.internalContainer}>
-                <Text>Private</Text>
-                <RadioButton.Android
-                    value = 'first'
-                    status = { checked == 'first' ? 'checked' : 'unchecked' }
-                    //uncheckedColor = 'blue'
-                    onPress = { () => setChecked('first') }
-                />
-                <Text>Public</Text>
-                <RadioButton.Android
-                    value = 'second'
-                    status = { checked == 'second' ? 'checked' : 'unchecked' }
-                    //uncheckedColor = 'blue'
-                    onPress = { () => setChecked('second') }
-                />
                 <View style={styles.container}>
                     <Text style={styles.text}>Select a photo for your tour or use the default image.</Text>
                 </View>
@@ -113,9 +94,9 @@ const FinalizeTourScreen = props => {
                 </View>
             </View>
       </SafeAreaView>
+    
     );
 }
-
 
 const styles = StyleSheet.create({
   container: {

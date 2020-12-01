@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, Text, Image, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
 import 'react-native-gesture-handler';
+import { useNavigation  } from '@react-navigation/native';
 import DrawerHeader from '../components/drawerHeader'
 import Button from '../components/button'
 import firebase, { auth } from 'firebase';
 
 const MyToursScreen = props => {    
-    const [selectedId, setSelectedId] = useState(null);
     const [userID, setUserID] = useState(null);
     const [tours, setTours] = useState([]);
 
     useEffect(() => {getuserID();}, []);
     useEffect(() => {getTours();});
+    
+    const default_image = require('../assets/default_thumbnail.png');
+	const navigation = useNavigation();
 
     const getuserID = () => {
         firebase.auth().onAuthStateChanged(function(user) {
@@ -28,49 +31,48 @@ const MyToursScreen = props => {
             const tours_str = '/tours/' + userID;
             firebase.database().ref(tours_str).once('value', function(snapshot) {
                 var arr = [];
-                console.log(snapshot)
+                console.log('Processing snapshot of user tour data')
                 snapshot.forEach(element => { 
-                    arr.push({id:element.key, title:element.child('tourName').val()});})
+                    arr.push({id:element.key, title:element.child('tourName').val(), thumbnail:element.child('thumbnail').val()});})
                 if (arr.length > tours.length)
                 {
                     setTours(arr);
-                    console.log(arr)
                 }
                 console.log('done')
             })
         }
     }
 
-    const Item = ({ item, onPress, style }) => (
-        <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-            <Text style={styles.title}>{item.title}</Text>
+    const elementPressed = item => {
+        navigation.navigate('EditScreen', 
+        {tourID: item.id,
+        userID: userID})
+    }
+
+    const Item = ({ item, onPress }) => (
+        <TouchableOpacity onPress={() => elementPressed(item)} style={styles.item}>
+            <Image 
+                style = {styles.tourImg}
+                source = {item.thumbnail == 'default' ? default_image : {uri: 'data:image/jpeg;base64,' + item.thumbnail}}
+            />
+            <Text
+            numberOfLines={ 1 }
+            style={styles.title}>{item.title}</Text>
         </TouchableOpacity>
     );
-    
 
-    const renderItem = ({ item }) => {
-        const backgroundColor = item.id === selectedId ? "#2b5687" : "#2380eb";
-
-        return (
-            <Item
-                item={item}
-                onPress={() => setSelectedId(item.id)}
-                style={{ backgroundColor }}
-            />
-        );
-    };
-
-    const toursNotFound = /*<ActivityIndicator size='large' />*/ <Text style={{fontSize: 24}}>No tours found.</Text>
+    const toursNotFound = <Text style={{fontSize: 24}}>No tours found.</Text>
     const toursFound =  <FlatList
-                            data={tours}
-                            renderItem={renderItem}
-                            keyExtractor={(item) => item.id}
-                            extraData={selectedId} />
+                        data={tours}
+                        renderItem={Item}
+                        keyExtractor={(item) => item.id}
+                        contentContainerStyle={{ paddingBottom: 200}}
+                        />
 
     return (
         <SafeAreaView style={styles.container}>
-        <DrawerHeader name="My Tours" openDrawer={props.navigation.openDrawer}/>
-            <View style={styles.internalContainer}>
+        <DrawerHeader name="My Tours" openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>            
+        <View style={styles.internalContainer}>
                 {tours.length == 0 ? toursNotFound : toursFound}
             </View>
       </SafeAreaView>
@@ -79,10 +81,9 @@ const MyToursScreen = props => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 25,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 110 
         },
     internalContainer: {
         height: '100%',
@@ -95,20 +96,32 @@ const styles = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"space-between",
         alignItems:"center",
-        paddingHorizontal:20
+        paddingHorizontal:20,
+    },
+    itemIcon: {
+        height: 50,
+        width: 50
     },
     item: {
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        flexDirection: 'row',
         borderRadius: 7,
-        padding: 10,
+        padding: 20,
         margin: 5,
         elevation: 2,
         width: 350,
+        backgroundColor: '#00c9db'
     },
     title: {
-        fontSize: 32,
+        fontSize: 28,
     },
+    tourImg: {
+        width: 75,
+        height: 75,
+        borderRadius: 10
+    },
+
 });
 
 
