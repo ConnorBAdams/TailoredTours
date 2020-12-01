@@ -7,7 +7,7 @@ import Button from '../components/button';
 import firebase, { auth } from 'firebase';
 import { Picker } from '@react-native-community/picker';
 
-const VirtualTourScreen = props => {    
+const VirtualTourSplashScreen = props => {    
     const [tour, setTour] = useState(null)
     const [tourName, setTourName] = useState(null)
     const [tourThumbnail, setTourThumbnail] = useState(null);
@@ -187,4 +187,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default VirtualTourScreen;
+export default VirtualTourSplashScreen;
