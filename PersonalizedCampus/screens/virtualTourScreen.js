@@ -8,8 +8,10 @@ import firebase, { auth } from 'firebase';
 
 const VirtualTourScreen = props => {    
     const [tour, setTour] = useState(null)
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [tourName, setTourName] = useState(null)
+    const [tourThumbnail, setTourThumbnail] = useState(null);
     const default_image = require("../assets/default_thumbnail.png");
+    const [queryComplete, setQueryComplete] = useState(false);
 
     // Setting these values manually for testing purposes
     const userID = 'PwmdxqoTkecZs9zT6cYmwnZ7g333';
@@ -26,7 +28,10 @@ const VirtualTourScreen = props => {
 
     const processSnapshot = snapshot => {
         if (snapshot != null) {
-            setTour(snapshot)
+            setTour(snapshot);
+            setTourName(snapshot.child('tourName').val());
+            setTourThumbnail(snapshot.child('thumbnail').val());
+            setQueryComplete(true);
         }
     }
 
@@ -61,11 +66,11 @@ const VirtualTourScreen = props => {
             <DrawerHeader name='Virtual Tour' openDrawer={(props.navigation != null) ? props.navigation.openDrawer : false} />
             <View style={styles.internalContainer}>
                 <View style={styles.imageSelectionContainer}>
-                    <Text style={styles.title}>Tour selected: {tour.child('tourName').val()}</Text>
+                    <Text style={styles.title}>Tour selected: {queryComplete == false ? 'Loading...' : tourName}</Text>
                     <View style={styles.imageHolder}>
-                        {selectedImage !== null ? (
+                        {queryComplete == true && tourThumbnail !== null ? (
                             <Image
-                                source={{ uri: selectedImage.localUri }}
+                                source={{ uri: 'data:image/jpeg;base64,' + tourThumbnail }}
                                 style={styles.thumbnail}
                             />
                         ) : (
