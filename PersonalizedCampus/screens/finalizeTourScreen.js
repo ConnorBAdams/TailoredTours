@@ -81,6 +81,19 @@ const FinalizeTourScreen = props => {
       <SafeAreaView style={styles.container}>
         <DrawerHeader name="Finalize Tour"  openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>
             <View style={styles.internalContainer}>
+                <View style={styles.container}>
+                    <Text style={styles.text}>Select a photo for your tour or use the default image.</Text>
+                </View>
+                <View style={styles.container}>
+                    <Text style={styles.text}>Currently selected image: Here</Text>
+                    {selectedImage !== null ? 
+                        <Image 
+                            source={{uri: selectedImage.localUri}} 
+                            style={styles.thumbnail} 
+                        /> : no_img_selected}
+                    <Button title="Pick a photo" onPress={openImagePickerAsync} />
+                    <Button title="Use default" onPress={setImageToDefault} />
+                </View>
                 <Text>Private</Text>
                 <RadioButton.Android
                     value = 'first'
@@ -95,19 +108,6 @@ const FinalizeTourScreen = props => {
                     //uncheckedColor = 'blue'
                     onPress = { () => setChecked('second') }
                 />
-                <View style={styles.container}>
-                    <Text style={styles.text}>Select a photo for your tour or use the default image.</Text>
-                </View>
-                <View style={styles.container}>
-                    <Text style={styles.text}>Currently selected image:</Text>
-                    {selectedImage !== null ? 
-                        <Image 
-                            source={{uri: selectedImage.localUri}} 
-                            style={styles.thumbnail} 
-                        /> : no_img_selected}
-                    <Button title="Pick a photo" onPress={openImagePickerAsync} />
-                    <Button title="Use default" onPress={setImageToDefault} />
-                </View>
                 <View style={styles.container} style={{marginTop:40}}>
                     <Button title="Finish tour" onPress={finishTour} />
                 </View>
