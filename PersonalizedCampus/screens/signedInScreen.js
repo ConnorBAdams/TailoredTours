@@ -74,7 +74,7 @@ const SignedInScreen = props => {
 			}}>
 			<Drawer.Screen name="My Tours" component={MyToursScreen} />
 			<Drawer.Screen name="Tour Creator" component={TourCreationScreen} />
-			<Drawer.Screen name="EditScreen" component={TourEditScreen} />
+			<Drawer.Screen name="Edit Tour" component={TourEditScreen} />
 			<Drawer.Screen name="Finalize Tour" component={FinalizeTourScreen} />
 		</Drawer.Navigator>
 		</NavigationContainer>

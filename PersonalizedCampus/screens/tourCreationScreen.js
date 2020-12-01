@@ -68,6 +68,7 @@ const TourCreationScreen = props => {
             .push({
                 tourName: tourData.title,
                 owner: userID, // Redundant
+                publicTour: false,
                 createdAt: Date.now(),
                 lastModified: Date.now(),
                 anchor: tourData.anchor,

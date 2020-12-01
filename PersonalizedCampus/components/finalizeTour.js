@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
 import firebase from 'firebase'
+import { RadioButton } from 'react-native-paper';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 
@@ -14,6 +15,7 @@ const FinalizeTourScreen = props => {
 
     const default_image = require('../assets/default_thumbnail.png');
     const navigation = useNavigation();
+    const [checked, setChecked] = React.useState('first');
 
     let openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -40,6 +42,10 @@ const FinalizeTourScreen = props => {
         } else {
             props.finishTour({selectedImage: selectedImage.base64})
         }
+        /*firebase.database().ref('/tours/' + firebase.auth().currentUser.uid)
+            .set({
+                publicTour: 'false'
+            })*/
         return;
         try {
             console.log(userID);
@@ -66,6 +72,18 @@ const FinalizeTourScreen = props => {
             Alert.alert(e.message)
             console.error(e.message)
         }
+
+        function setDisabled() {
+            var userId = firebase.auth().currentUser.uid;
+            var verify = firebase.database().ref('/users/' + userId).once('verified').then((snapshot) => {
+                if (verify != "X") {
+                    return 'true';
+                }
+                else {
+                    return 'false';
+                }
+            });
+        };
     }
 
     const no_img_selected = <Image 
@@ -89,6 +107,20 @@ const FinalizeTourScreen = props => {
                     <Button title="Pick a photo" onPress={openImagePickerAsync} />
                     <Button title="Use default" onPress={setImageToDefault} />
                 </View>
+                <Text></Text>
+                
+                <Text>Private</Text>
+                <RadioButton.Android
+                    value = 'false'
+                    status = { checked == 'first' ? 'checked' : 'unchecked' }
+                    onPress = { () => setChecked('first') }
+                />
+                <Text>Public</Text>
+                <RadioButton.Android
+                    value = 'true'
+                    status = { checked == 'second' ? 'checked' : 'unchecked' }
+                    onPress = { () => setChecked('second') }
+                />
                 <View style={styles.container} style={{marginTop:40}}>
                     <Button title="Finish tour" onPress={finishTour} />
                 </View>
@@ -106,7 +138,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       },
   internalContainer: {
-      height: '100%',
+      height: '105%',
       alignItems: 'center',
       justifyContent: 'flex-start',
       },
@@ -131,8 +163,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   thumbnail: {
-    width: 300,
-    height: 300,
+    width: 175,
+    height: 175,
     resizeMode: "contain",
     marginTop: 10,
     marginBottom: 10,
