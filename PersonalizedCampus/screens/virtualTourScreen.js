@@ -90,6 +90,8 @@ const VirtualTourScreen = props => {
                         <Picker.Item label='Route 1' value={0} />
                         <Picker.Item label='Route 2' value={1} />
                     </Picker>
+                    <Text style={styles.title}>Route description: </Text>
+                    <Text style={styles.description}>Route description placeholder</Text>
                     <Button title='Begin virtual tour' onPress={() => debug()}></Button>
                 </View>
             </View>
@@ -153,6 +155,9 @@ const styles = StyleSheet.create({
         borderColor: '#4633af',
         borderWidth: 2,
         width: Dimensions.get('window').width * 0.75
+    },
+    description: {
+        fontSize: 16,
     },
 });
 
