@@ -17,6 +17,8 @@ const VirtualTourSplashScreen = props => {
     const default_image = require("../assets/default_thumbnail.png");
     const [queryComplete, setQueryComplete] = useState(false);
 
+	const navigation = useNavigation();
+
     // Setting these values manually for testing purposes
     const userID = 'PwmdxqoTkecZs9zT6cYmwnZ7g333';
     const tourID = '-MNUzjNunc15Im9gO-NT';
@@ -57,6 +59,10 @@ const VirtualTourSplashScreen = props => {
         } catch (ex) {
             console.log(ex)
         }
+    }
+
+    const beginTourButtonPressed = () => {
+        navigation.navigate('Virtual Tour');
     }
     
     const no_img_selected = (
@@ -117,7 +123,7 @@ const VirtualTourSplashScreen = props => {
                             routeDesc[selectedRoute]
                         }
                     </Text>
-                    <Button title='Begin virtual tour' onPress={() => debug()}></Button>
+                    <Button title='Begin virtual tour' onPress={() => beginTourButtonPressed()}></Button>
                 </View>
             </View>
         </SafeAreaView>
