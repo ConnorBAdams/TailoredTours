@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, Image, TouchableOpacity, View, SafeAreaView, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, Text, Image, TouchableOpacity, View, SafeAreaView, ActivityIndicator, Dimensions } from 'react-native';
 import 'react-native-gesture-handler';
 import { useNavigation  } from '@react-navigation/native';
 import DrawerHeader from '../components/drawerHeader'
@@ -8,6 +8,8 @@ import firebase, { auth } from 'firebase';
 
 const VirtualTourScreen = props => {    
     const [tour, setTour] = useState(null)
+    const [selectedImage, setSelectedImage] = useState(null);
+    const default_image = require("../assets/default_thumbnail.png");
 
     // Setting these values manually for testing purposes
     const userID = 'PwmdxqoTkecZs9zT6cYmwnZ7g333';
@@ -44,14 +46,36 @@ const VirtualTourScreen = props => {
             console.log(ex)
         }
     }
+    
+    const no_img_selected = (
+        <Image source={default_image} style={styles.thumbnail} />
+    );
+
+    const debug = () => {
+        console.log(tour)
+        console.log(tour.child('tourName').val());
+    }
 
     return (
         <SafeAreaView style={styles.container}>
-        <DrawerHeader name="Virtual Tour" openDrawer={(props.navigation != null)? props.navigation.openDrawer : false}/>            
+            <DrawerHeader name='Virtual Tour' openDrawer={(props.navigation != null) ? props.navigation.openDrawer : false} />
             <View style={styles.internalContainer}>
-                <Text>Virtual Tour placeholder</Text>
+                <View style={styles.imageSelectionContainer}>
+                    <Text style={styles.title}>Tour selected: {tour.child('tourName').val()}</Text>
+                    <View style={styles.imageHolder}>
+                        {selectedImage !== null ? (
+                            <Image
+                                source={{ uri: selectedImage.localUri }}
+                                style={styles.thumbnail}
+                            />
+                        ) : (
+                                no_img_selected
+                            )}
+                    </View>
+                    <Button title='Begin virtual tour' onPress={() => debug()}></Button>
+                </View>
             </View>
-      </SafeAreaView>
+        </SafeAreaView>
     );
 }
 
@@ -90,14 +114,28 @@ const styles = StyleSheet.create({
         backgroundColor: '#00c9db'
     },
     title: {
-        fontSize: 28,
+        fontSize: 20,
     },
     tourImg: {
         width: 75,
         height: 75,
         borderRadius: 10
     },
-
+    thumbnail: {
+        height: 250,
+        aspectRatio: 1,
+        resizeMode: "contain",
+    },
+    imageSelectionContainer: {
+        margin: 25,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 20,
+        borderColor: '#4633af',
+        borderWidth: 2,
+        width: Dimensions.get('window').width * 0.75
+    },
 });
 
 
