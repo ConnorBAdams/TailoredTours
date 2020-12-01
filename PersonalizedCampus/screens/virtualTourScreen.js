@@ -66,7 +66,7 @@ const VirtualTourScreen = props => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <DrawerHeader name='Virtual Tour' openDrawer={(props.navigation != null) ? props.navigation.openDrawer : false} />
+            <DrawerHeader name='Take Virtual Tour' openDrawer={(props.navigation != null) ? props.navigation.openDrawer : false} />
             <View style={styles.internalContainer}>
                 <View style={styles.imageSelectionContainer}>
                     <Text style={styles.title}>Tour selected: {queryComplete == false ? 'Loading...' : tourName}</Text>
