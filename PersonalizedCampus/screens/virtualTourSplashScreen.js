@@ -89,7 +89,7 @@ const VirtualTourSplashScreen = props => {
                 <View style={styles.imageSelectionContainer}>
                     <Text style={styles.title}>Tour selected: {queryComplete == false ? 'Loading...' : tourName}</Text>
                     <View style={styles.imageHolder}>
-                        {queryComplete == true && tourThumbnail !== null && tourThumbnail !== 'default' ? (
+                        {queryComplete == true && tourThumbnail != null && tourThumbnail != 'default' ? (
                             <Image
                                 source={{ uri: 'data:image/jpeg;base64,' + tourThumbnail }}
                                 style={styles.thumbnail}
