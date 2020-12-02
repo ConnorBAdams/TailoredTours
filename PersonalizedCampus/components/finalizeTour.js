@@ -90,21 +90,24 @@ const FinalizeTourScreen = props => {
                     <Button title="Pick a photo" onPress={openImagePickerAsync} />
                     <Button title="Use default" onPress={setImageToDefault} />
                 </View>
-                <Text></Text>
-                <Text>Private</Text>
-                <RadioButton.Android
-                    value = 'false'
-                    label = 'Private'
-                    status = { publicTour == 'false' ? 'checked' : 'unchecked' }
-                    onPress = { () => setPublic('false') }
-                />
-                <Text>Public</Text>
-                <RadioButton.Android
-                    value = 'true'
-                    label = 'Public'
-                    status = { publicTour == 'true' ? 'checked' : 'unchecked' }
-                    onPress = { () => setPublic('true') }
-                />
+                <View style={styles.container}>
+                    <View style={styles.buttons}>
+                        <Text>Private</Text>
+                        <RadioButton.Android
+                            value = 'false'
+                            label = 'Private'
+                            status = { publicTour == 'false' ? 'checked' : 'unchecked' }
+                            onPress = { () => setPublic('false') }
+                        />
+                        <Text style={{marginLeft: 10}}>Public</Text>
+                        <RadioButton.Android
+                            value = 'true'
+                            label = 'Public'
+                            status = { publicTour == 'true' ? 'checked' : 'unchecked' }
+                            onPress = { () => setPublic('true') }
+                        />
+                    </View>
+                </View>
                 <View style={styles.container} style={{marginTop:40}}>
                     <Button title="Finish tour" onPress={finishTour} />
                 </View>
@@ -115,44 +118,48 @@ const FinalizeTourScreen = props => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-      paddingTop: 25,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-      },
-  internalContainer: {
-      height: '105%',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      },
-  header:{
-      width:"100%",
-      height:60,
-      flexDirection:"row",
-      justifyContent:"space-between",
-      alignItems:"center",
-      paddingHorizontal:20
-  },
-  item: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 7,
-      padding: 10,
-      margin: 5,
-      elevation: 2,
-      width: 350,
-  },
-  text: {
-    fontSize: 16,
-  },
-  thumbnail: {
-    width: 175,
-    height: 175,
-    resizeMode: "contain",
-    marginTop: 10,
-    marginBottom: 10,
-  },
+    container: {
+        paddingTop: 25,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttons: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    internalContainer: {
+        height: '105%',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    header:{
+        width:"100%",
+        height:60,
+        flexDirection:"row",
+        justifyContent:"space-between",
+        alignItems:"center",
+        paddingHorizontal:20
+    },
+    item: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 7,
+        padding: 10,
+        margin: 5,
+        elevation: 2,
+        width: 350,
+    },
+    text: {
+        fontSize: 16,
+    },
+    thumbnail: {
+        width: 175,
+        height: 175,
+        resizeMode: "contain",
+        marginTop: 10,
+        marginBottom: 10,
+    },
 });
 
 export default FinalizeTourScreen;
