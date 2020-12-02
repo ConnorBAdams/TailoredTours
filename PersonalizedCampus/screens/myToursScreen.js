@@ -134,7 +134,7 @@ const MyToursScreen = (props) => {
                 data={tours}
                 renderItem={Item}
                 keyExtractor={(item) => item.id}
-                contentContainerStyle={{ paddingBottom: 200 }}
+                contentContainerStyle={{ paddingBottom: 50 }}
             />
         </View>
     );

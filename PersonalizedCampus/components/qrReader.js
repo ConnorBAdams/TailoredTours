@@ -41,7 +41,6 @@ const QRReader = (props) => {
             .database()
             .ref(tours_str)
             .once("value", function (snapshot) {
-                var arr = [];
                 console.log("Processing snapshot of user tour data");
                 setScanData({
                     tourName: snapshot.child('tourName').val(), 

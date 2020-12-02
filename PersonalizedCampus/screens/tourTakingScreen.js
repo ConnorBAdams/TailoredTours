@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import {
     StyleSheet,
     Text,
-    SafeAreaView,
+    TouchableOpacity,
     View,
     ActivityIndicator,
     Dimensions,
     TextInput,
-    FlatList,
+	FlatList,
+	Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../components/button";
@@ -16,6 +17,7 @@ import * as Location from "expo-location";
 import globalStyles from "../styles";
 import { FontAwesome } from "@expo/vector-icons";
 import QRReader from '../components/qrReader'
+import firebase from "firebase";
 
 const searchTerms = [
     {
@@ -78,6 +80,24 @@ const TourTakingScreen = (props) => {
             />
         </View>
 	);
+
+	const queryAllPublic = () => {
+		console.log("Starting query...")
+        firebase
+            .database()
+            .ref('/publicTours/')
+            .once("value", function (snapshot) {
+				console.log("Processing snapshot of user tour data");
+				console.log(snapshot)
+				// snapshot.forEach((element) => {
+				// 	console.log(element.key)
+				// 	element.forEach((tour) => {
+				// 		console.log(tour.child('publicTour').val())
+				// 	})
+				// })
+                console.log("done");
+            });
+	}
 	
 	const toggleQRReader = () => {
 		console.log("Pressed QR Read")
@@ -96,7 +116,8 @@ const TourTakingScreen = (props) => {
                                 ...globalStyles.inputField,
                                 elevation: 2,
                                 width: Dimensions.get("window").width * 0.9,
-                            }}
+							}}
+							onSubmitEditing={() => queryAllPublic()}
                             onChangeText={(text) => setSearchTerm(text)}
                             inlineImageLeft="search_icon"
                             placeholder="Search Tours"
@@ -127,6 +148,10 @@ const TourTakingScreen = (props) => {
 					modalVisible={readQR}
 					toggleSelf={() => setReadQR(!readQR)}
 					/>
+					{Platform.OS === 'ios' && 
+				<TouchableOpacity style={styles.icon} onPress={() => props.navigation.pop() } >
+                <FontAwesome name="arrow-left" style={{width: 38, textAlign:'center'}} size={32} />
+                </TouchableOpacity>}
                 </View>
             )}
         </View>
@@ -140,6 +165,17 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",
+	},
+	icon: {
+        borderRadius: 20,
+		borderWidth: 1,
+		width: 45,
+        borderColor: 'black',
+        padding: 2,
+		backgroundColor: '#fff',
+		position:'absolute',
+		left: 15,
+		bottom: 30
     },
     button: {
         flex: 1,
@@ -156,7 +192,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         flexDirection: "column",
         justifyContent: "space-between",
-        alignItems: "flex-end",
+        alignItems: "center",
         top: 30,
     },
     item: {
@@ -169,7 +205,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
         elevation: 5,
         position: "absolute",
-        right: 20,
+        right: 30,
         top: 17,
     },
 });
