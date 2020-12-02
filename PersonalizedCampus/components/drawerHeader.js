@@ -6,7 +6,7 @@ import "react-native-gesture-handler";
 const DrawerHeader = ({ name, openDrawer }) => (
   <View style={styles.header}>
     <View style={styles.icon}>
-      <TouchableOpacity onPress={() => openDrawer()}>
+      <TouchableOpacity style={{width: 50}} onPress={() => openDrawer()}>
         <Ionicons name="ios-menu" size={36} color={"#fff"} />
       </TouchableOpacity>
     </View>

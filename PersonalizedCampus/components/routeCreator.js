@@ -312,7 +312,14 @@ const styles = StyleSheet.create({
     },
     topOverlay: {
 		backgroundColor: "#fff",
-		elevation: 20,
+        elevation: 20,
+        zIndex: 20,
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.33,
+        shadowRadius: 4,
 		position: "absolute",
 		top: 10,
 		alignItems: "center",

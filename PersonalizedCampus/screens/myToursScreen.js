@@ -76,7 +76,7 @@ const MyToursScreen = (props) => {
 
     const shareTour = (item) => {
 		setShareName(item.title)
-        setQRValue(userID + item.id);
+        setQRValue(userID + " _ " + item.id);
         setShareModalVisible(true);
     };
 
@@ -145,12 +145,11 @@ const MyToursScreen = (props) => {
                 animationType="slide"
                 transparent={true}
                 visible={shareModalVisible}
-                onRequestCLose={() => setShareModalVisible(false)}
-            >
+                onRequestCLose={() => setShareModalVisible(false)}>
                 <TouchableOpacity
+                    activeOpacity={1}
                     style={styles.centeredView}
-                    onPress={() => setShareModalVisible(false)}
-                >
+                    onPress={() => setShareModalVisible(false)}>
                     <View>
 						<TouchableWithoutFeedback>
 						<View style={styles.modalView}>

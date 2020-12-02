@@ -144,6 +144,11 @@ const MapComponent = props => {
                 {placementMode=='route' && <FontAwesome5 name="route" size={32} style={{marginLeft:4, marginRight:4}} />}
                 </TouchableOpacity>
             }
+            {props.enableQRReader != null &&
+                <TouchableOpacity style={styles.icon} onPress={() => props.enableQRReader() } >
+                <FontAwesome5 name="qrcode" style={{width: 38, textAlign:'center'}} size={32} />
+                </TouchableOpacity>
+            }
             </View>
             <View style={styles.mapStyleButton}>
                 <TouchableOpacity style={styles.icon} onPress={() => toggleMapViewMode()} >
@@ -286,7 +291,7 @@ const styles = StyleSheet.create({
         marginBottom: 4.5
     },
     mapModeButton: {
-        marginRight: Dimensions.get('window').width * 0.73, // sigh
+        marginRight: Dimensions.get('window').width * 0.72, // sigh
     },
     mapStyleButton: {
         marginRight: 10,
