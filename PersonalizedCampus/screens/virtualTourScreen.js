@@ -91,7 +91,8 @@ const VirtualTourScreen = props => {
     }
 
     const debug = () => {
-        console.log(currentNodeMedia);
+        console.log(currentNodeName);
+        console.log(currentNodeDesc);
     }
 
     return (
@@ -101,13 +102,17 @@ const VirtualTourScreen = props => {
                 <Text style={styles.title}>Current stop:</Text>
                 <Text style={styles.description}>
                     {queryComplete == true ?
-                        currentNodeName : 'Loading...'
+                        currentNodeName != null ?
+                            currentNodeName : 'No name provided'
+                        : 'Loading...'
                     }
                 </Text>
                 <Text style={styles.title}>Description:</Text>
                 <Text style={styles.description}>
                     {queryComplete == true ?
-                        currentNodeDesc : 'Loading...'
+                        currentNodeDesc != null ?
+                            currentNodeDesc : 'No description provided'
+                        : 'Loading...'
                     }
                 </Text>
                 <Text style={styles.title}>Images and videos:</Text>
@@ -124,12 +129,12 @@ const VirtualTourScreen = props => {
                                 style={{ height: 200 }}
                             /> 
                             :
-                            <Text style={{ fontSize: 18 }}>There is no media on this node</Text>)
+                            <Text style={{ fontSize: 18 }}>No media provided</Text>)
                         :
                         (<Text style={{ fontSize: 18 }}>Loading...</Text>)
                     }
                 </View>
-                <Button title='Debug' onPress={() => getCurrentNodeInfo()}></Button>
+                <Button title='Debug' onPress={() => debug()}></Button>
                 <View style={styles.arrows}>
                     {numNodes == 0 ?
                         <Button title='Previous stop'></Button>
