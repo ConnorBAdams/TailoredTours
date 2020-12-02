@@ -8,8 +8,8 @@ import firebase, { auth } from 'firebase';
 import { Picker } from '@react-native-community/picker';
 
 const VirtualTourSplashScreen = props => {    
-    const [tour, setTour] = useState(null)
-    const [tourName, setTourName] = useState(null)
+    const [tour, setTour] = useState(null);
+    const [tourName, setTourName] = useState(null);
     const [tourThumbnail, setTourThumbnail] = useState(null);
     const [selectedRoute, setSelectedRoute] = useState(0);
     const [routeNames, setRouteNames] = useState([]);
