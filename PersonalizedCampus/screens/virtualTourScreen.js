@@ -9,14 +9,18 @@ import { Picker } from '@react-native-community/picker';
 
 const VirtualTourScreen = props => {    
     const [tour, setTour] = useState(null)
-    const [selectedRoute, setSelectedRoute] = useState(0);
+    const [route, setRoute] = useState(null);
+    const [queryComplete, setQueryComplete] = useState(false);
 
     useEffect(() => {
-        console.log('Taking virtual tour...');
+        setTour(props.route.params.tour);
+        setRoute(props.route.params.route);
+        setQueryComplete(true);
     });
 
     const debug = () => {
-
+        console.log(tour);
+        console.log(route)
     }
 
     return (
@@ -24,6 +28,7 @@ const VirtualTourScreen = props => {
             <DrawerHeader name='Take Virtual Tour' openDrawer={(props.navigation != null) ? props.navigation.openDrawer : false} />
             <View style={styles.internalContainer}>
                 <Text>Virtual tour placeholder</Text>
+                <Button title='Debug' onPress={() => debug()}></Button>
             </View>
         </SafeAreaView>
     );
