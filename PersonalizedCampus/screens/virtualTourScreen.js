@@ -31,11 +31,13 @@ const VirtualTourScreen = props => {
         const node = tour.child('nodes').child(currentNodeIndex).child('item');
         setCurrentNodeName(node.child('name').val());
         setCurrentNodeDesc(node.child('description').val());
-        setCurrentNodeMedia(node.child('images').val());
+        const images = node.child('images');
+        if (images.hasChildren()) {
+            setCurrentNodeMedia(images.val());
+        } else {
+            setCurrentNodeMedia(null);
+        }
         setQueryComplete(true);
-        //console.log(currentNodeName);
-        //console.log(currentNodeDesc);
-        //console.log(currentNodeMedia);
     }
 
     const carouselImage = ({item, index}) => {
@@ -89,9 +91,7 @@ const VirtualTourScreen = props => {
     }
 
     const debug = () => {
-        //console.log(tour);
-        //console.log(route)
-        console.log(numNodes);
+        console.log(currentNodeMedia);
     }
 
     return (
@@ -113,7 +113,7 @@ const VirtualTourScreen = props => {
                 <Text style={styles.title}>Images and videos:</Text>
                 <View style={styles.imageCarouselContainer}>
                     {queryComplete == true ?
-                        (currentNodeMedia.length != 0 ?
+                        (currentNodeMedia != null ?
                             <Carousel
                                 ref={(c) => setCarousel(c)}
                                 data={currentNodeMedia}
