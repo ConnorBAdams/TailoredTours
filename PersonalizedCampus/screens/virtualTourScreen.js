@@ -5,12 +5,15 @@ import { useNavigation  } from '@react-navigation/native';
 import DrawerHeader from '../components/drawerHeader';
 import Button from '../components/button';
 import firebase, { auth } from 'firebase';
-import { Picker } from '@react-native-community/picker';
+import Carousel from 'react-native-snap-carousel';
 
 const VirtualTourScreen = props => {    
     const [tour, setTour] = useState(null)
     const [route, setRoute] = useState(null);
     const [queryComplete, setQueryComplete] = useState(false);
+    const [currentNode, setCurrentNode] = useState(0);
+    const [currentNodeMedia, setCurrentNodeMedia] = useState([]);
+	const [carousel, setCarousel] = useState(null)
 
     useEffect(() => {
         setTour(props.route.params.tour);
@@ -18,16 +21,39 @@ const VirtualTourScreen = props => {
         setQueryComplete(true);
     });
 
+    const carouselImage = ({item, index}) => {
+		return ( 
+		<View>
+		<Image style={{width: 200, height: 200, 
+			borderWidth: 1, aspectRatio: 1}} 
+			source={item}
+			/>
+		</View> 
+	)}
+
     const debug = () => {
-        console.log(tour);
-        console.log(route)
+        //console.log(tour);
+        //console.log(route)
+        console.log(currentNodeMedia);
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <DrawerHeader name='Take Virtual Tour' openDrawer={(props.navigation != null) ? props.navigation.openDrawer : false} />
             <View style={styles.internalContainer}>
-                <Text>Virtual tour placeholder</Text>
+                <View style={styles.imageCarouselContainer}>
+                    {currentNodeMedia.length != 0 ?
+                        <Carousel
+                            ref={(c) => setCarousel(c)}
+                            data={currentNodeMedia}
+                            renderItem={carouselImage}
+                            sliderWidth={Dimensions.get('window').width * 0.8}
+                            itemWidth={200}
+                            itemHeight={200}
+                            style={{ height: 200 }}
+                        /> :
+                        <Text style={{ fontSize: 18 }}>There is no media on this node</Text>}
+                </View>
                 <Button title='Debug' onPress={() => debug()}></Button>
             </View>
         </SafeAreaView>
@@ -94,6 +120,11 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 16,
     },
+    imageCarouselContainer: {
+		alignItems: 'center',
+		margin: 20,
+		height: 200,
+	}, 
 });
 
 
