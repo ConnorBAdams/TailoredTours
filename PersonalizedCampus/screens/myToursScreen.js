@@ -3,7 +3,6 @@ import { FlatList, StyleSheet, Text, Image, TouchableOpacity, View, SafeAreaView
 import 'react-native-gesture-handler';
 import { useNavigation  } from '@react-navigation/native';
 import DrawerHeader from '../components/drawerHeader'
-import Button from '../components/button'
 import firebase, { auth } from 'firebase';
 
 const MyToursScreen = props => {    

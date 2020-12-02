@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LoginModule from '../components/login'
-import Button from '../components/button'
 
 const LoginScreen = props => {
 
