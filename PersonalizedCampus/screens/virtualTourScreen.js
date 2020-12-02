@@ -6,6 +6,7 @@ import DrawerHeader from '../components/drawerHeader';
 import Button from '../components/button';
 import firebase, { auth } from 'firebase';
 import Carousel from 'react-native-snap-carousel';
+import { Video } from 'expo-av';
 
 const VirtualTourScreen = props => {    
     const [tour, setTour] = useState(null);
@@ -43,15 +44,30 @@ const VirtualTourScreen = props => {
         setQueryComplete(true);
     }
 
-    const carouselImage = ({item, index}) => {
+	const carouselImage = ({item, index}) => {
 		return ( 
 		<View>
-		<Image style={{width: 200, height: 200, 
-			borderWidth: 1, aspectRatio: 1}} 
-			source={item}
-			/>
+			{item.media_type == 'image' ? 
+				<Image 
+					style={{width: 200, height: 200, 
+					borderWidth: 1, aspectRatio: 1}} 
+					source={item}
+				/> 
+				: 
+				<Video
+	 				source={item}
+	  				rate={1.0}
+	  				volume={1.0}
+	 				isMuted={false}
+	 				resizeMode="cover"
+	  				shouldPlay
+					isLooping
+					//useNativeControls
+	  				style={{ width: 200, height: 200 }}
+				/>
+			}
 		</View> 
-    )}
+	)}
     
     const gotoNextStop = () => {
         if (currentNodeIndex == numNodes - 1) {
@@ -105,7 +121,7 @@ const VirtualTourScreen = props => {
                 <Text style={styles.title}>Current stop:</Text>
                 <Text style={styles.description}>
                     {queryComplete == true ?
-                        currentNodeName != null ?
+                        currentNodeName != null && currentNodeName != '' ?
                             currentNodeName : 'No name provided'
                         : 'Loading...'
                     }
@@ -113,7 +129,7 @@ const VirtualTourScreen = props => {
                 <Text style={styles.title}>Description:</Text>
                 <Text style={styles.description}>
                     {queryComplete == true ?
-                        currentNodeDesc != null ?
+                        currentNodeDesc != null && currentNodeDesc != '' ?
                             currentNodeDesc : 'No description provided'
                         : 'Loading...'
                     }
