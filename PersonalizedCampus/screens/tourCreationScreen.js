@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import 'react-native-gesture-handler';
-import globalStyles from '../styles';
-import Button from '../components/button'
 import * as Location from 'expo-location'
 import DrawerHeader from '../components/drawerHeader'
 import firebase, { auth } from 'firebase';
 import TourSetupComponent from '../components/tourSetup'
 import RouteCreationComponent from '../components/routeCreator'
 import FinalizeTourComponent from '../components/finalizeTour'
-import { RadioButton } from 'react-native-paper';
 
 const TourCreationScreen = props => {
     const [tourData, setTourData] = useState(null);

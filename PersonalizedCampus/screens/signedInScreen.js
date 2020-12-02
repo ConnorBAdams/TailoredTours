@@ -3,10 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { CardStyleInterpolators } from '@react-navigation/stack';
-// import RadioButton from './components/RadioButton';
 import 'react-native-gesture-handler';
-import Button from '../components/button'
-import DrawerHeader from '../components/drawerHeader'
 import MyToursScreen from './myToursScreen'
 import TourCreationScreen from './tourCreationScreen'
 import firebase from 'firebase'
@@ -33,25 +30,6 @@ const SignedInScreen = props => {
 		props.navigation.navigate('Home')
 	}
 
-	{/*const PROP = [
-		{ 
-			key: 'private',
-			text: 'Private'
-		},
-		{
-			key: 'public',
-			text: 'Public'
-		},
-	];
-
-	const render() {
-		return (
-			<View style={styles.container}>
-				<RadioButton PROP={PROP} />
-			</View>
-		);
-	} */}
-
 	return (
 		<NavigationContainer independent={true}>
 		<Drawer.Navigator initialRouteName="My Tours" drawerContent={props => {
@@ -59,9 +37,6 @@ const SignedInScreen = props => {
 			// that are controlled by this navigator
 			const {state, ...rest} = props;
 			const newState = {...state};
-			/*<View style={styles.container}>
-				<RadioButton PROP={PROP} />
-			</View>*/
 			newState.routes = newState.routes.filter(item => item.name != ['Finalize Tour'])
 		return (
 			<DrawerContentScrollView {...props}>
