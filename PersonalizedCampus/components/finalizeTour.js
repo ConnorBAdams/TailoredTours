@@ -12,10 +12,9 @@ const Drawer = createDrawerNavigator();
 
 const FinalizeTourScreen = props => {
     const [selectedImage, setSelectedImage] = React.useState(null);
-
     const default_image = require('../assets/default_thumbnail.png');
     const navigation = useNavigation();
-    const [checked, setChecked] = React.useState('first');
+    const [publicTour, setPublic] = useState('false');
 
     let openImagePickerAsync = async () => {
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -38,14 +37,10 @@ const FinalizeTourScreen = props => {
 
     const finishTour = async () => {
         if (selectedImage == null) {
-            props.finishTour({selectedImage: 'default'})
+            props.finishTour({selectedImage: 'default', publicTour: publicTour})
         } else {
-            props.finishTour({selectedImage: selectedImage.base64})
+            props.finishTour({selectedImage: selectedImage.base64, publicTour: publicTour})
         }
-        /*firebase.database().ref('/tours/' + firebase.auth().currentUser.uid)
-            .set({
-                publicTour: 'false'
-            })*/
         return;
         try {
             console.log(userID);
@@ -72,18 +67,6 @@ const FinalizeTourScreen = props => {
             Alert.alert(e.message)
             console.error(e.message)
         }
-
-        function setDisabled() {
-            var userId = firebase.auth().currentUser.uid;
-            var verify = firebase.database().ref('/users/' + userId).once('verified').then((snapshot) => {
-                if (verify != "X") {
-                    return 'true';
-                }
-                else {
-                    return 'false';
-                }
-            });
-        };
     }
 
     const no_img_selected = <Image 
@@ -108,18 +91,19 @@ const FinalizeTourScreen = props => {
                     <Button title="Use default" onPress={setImageToDefault} />
                 </View>
                 <Text></Text>
-                
                 <Text>Private</Text>
                 <RadioButton.Android
                     value = 'false'
-                    status = { checked == 'first' ? 'checked' : 'unchecked' }
-                    onPress = { () => setChecked('first') }
+                    label = 'Private'
+                    status = { publicTour == 'false' ? 'checked' : 'unchecked' }
+                    onPress = { () => setPublic('false') }
                 />
                 <Text>Public</Text>
                 <RadioButton.Android
                     value = 'true'
-                    status = { checked == 'second' ? 'checked' : 'unchecked' }
-                    onPress = { () => setChecked('second') }
+                    label = 'Public'
+                    status = { publicTour == 'true' ? 'checked' : 'unchecked' }
+                    onPress = { () => setPublic('true') }
                 />
                 <View style={styles.container} style={{marginTop:40}}>
                     <Button title="Finish tour" onPress={finishTour} />

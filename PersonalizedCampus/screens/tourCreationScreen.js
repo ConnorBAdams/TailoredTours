@@ -10,6 +10,7 @@ import firebase, { auth } from 'firebase';
 import TourSetupComponent from '../components/tourSetup'
 import RouteCreationComponent from '../components/routeCreator'
 import FinalizeTourComponent from '../components/finalizeTour'
+import { RadioButton } from 'react-native-paper';
 
 const TourCreationScreen = props => {
     const [tourData, setTourData] = useState(null);
@@ -68,7 +69,7 @@ const TourCreationScreen = props => {
             .push({
                 tourName: tourData.title,
                 owner: userID, // Redundant
-                publicTour: false,
+                publicTour: data.publicTour,
                 createdAt: Date.now(),
                 lastModified: Date.now(),
                 anchor: tourData.anchor,
