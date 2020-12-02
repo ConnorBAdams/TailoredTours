@@ -21,7 +21,7 @@ const VirtualTourSplashScreen = props => {
 
     // Setting these values manually for testing purposes
     const userID = 'PwmdxqoTkecZs9zT6cYmwnZ7g333';
-    const tourID = '-MNUzjNunc15Im9gO-NT';
+    const tourID = '-MNQNjP-mbH-4m3suOjF';
 
     useEffect(() => {
         if (tour != null && tour.key != tourID) 
@@ -62,7 +62,7 @@ const VirtualTourSplashScreen = props => {
     }
 
     const beginTourButtonPressed = () => {
-        navigation.navigate('Virtual Tour');
+        navigation.navigate('Virtual Tour', {tour: tour, route: selectedRoute});
     }
     
     const no_img_selected = (
@@ -123,7 +123,11 @@ const VirtualTourSplashScreen = props => {
                             routeDesc[selectedRoute]
                         }
                     </Text>
-                    <Button title='Begin virtual tour' onPress={() => beginTourButtonPressed()}></Button>
+                    {queryComplete == true ?
+                        <Button title='Begin virtual tour' onPress={() => beginTourButtonPressed()}></Button>
+                        :
+                        <Button title='Loading tour...'></Button>
+                    }
                 </View>
             </View>
         </SafeAreaView>
