@@ -9,26 +9,29 @@ import Carousel from 'react-native-snap-carousel';
 
 const VirtualTourScreen = props => {    
     const [tour, setTour] = useState(null);
-    const [route, setRoute] = useState(null);
     const [numNodes, setNumNodes] = useState(0);
+    const [routeNodes, setRouteNodes] = useState([]);
+    const [hasExecuted, setHasExecuted] = useState(false);
     const [currentNodeIndex, setCurrentNodeIndex] = useState(0);
     const [currentNodeName, setCurrentNodeName] = useState(null);
     const [currentNodeDesc, setCurrentNodeDesc] = useState(null);
     const [currentNodeMedia, setCurrentNodeMedia] = useState([]);
-	const [carousel, setCarousel] = useState(null);
     const [queryComplete, setQueryComplete] = useState(false);
+	const [carousel, setCarousel] = useState(null);
 
     const navigation = useNavigation();
 
     useEffect(() => {
-        setTour(props.route.params.tour);
-        setRoute(props.route.params.route);
-        setNumNodes(props.route.params.tour.child('nodes').numChildren());
-        //getCurrentNodeInfo();
+        if (!hasExecuted) {
+            setTour(props.route.params.tour);
+            setNumNodes(props.route.params.tour.child('routes').child(props.route.params.route).child('nodes').numChildren());
+            setRouteNodes(props.route.params.tour.child('routes').child(props.route.params.route).child('nodes').val());
+            setHasExecuted(true);
+        }
     });
 
     const getCurrentNodeInfo = () => {
-        const node = tour.child('nodes').child(currentNodeIndex).child('item');
+        const node = tour.child('nodes').child(routeNodes[currentNodeIndex]).child('item');
         setCurrentNodeName(node.child('name').val());
         setCurrentNodeDesc(node.child('description').val());
         const images = node.child('images');
@@ -91,8 +94,8 @@ const VirtualTourScreen = props => {
     }
 
     const debug = () => {
-        console.log(currentNodeName);
-        console.log(currentNodeDesc);
+        console.log(routeNodes);
+        console.log(currentNodeIndex);
     }
 
     return (
@@ -134,7 +137,7 @@ const VirtualTourScreen = props => {
                         (<Text style={{ fontSize: 18 }}>Loading...</Text>)
                     }
                 </View>
-                <Button title='Debug' onPress={() => debug()}></Button>
+                <Text style={styles.title}>Stop {currentNodeIndex + 1} / {numNodes}</Text>
                 <View style={styles.arrows}>
                     {numNodes == 0 ?
                         <Button title='Previous stop'></Button>
@@ -147,6 +150,7 @@ const VirtualTourScreen = props => {
                         <Button title='Next stop' onPress={() => gotoNextStop()}></Button>
                     }
                 </View>
+                <Button title='Debug' onPress={() => getCurrentNodeInfo()}></Button>
             </View>
         </SafeAreaView>
     );
