@@ -158,7 +158,7 @@ const MyToursScreen = (props) => {
                         <QRCode
                             value={qrValue}
                             logo={require("../assets/Logo-Icon.png")}
-                            logoSize={55}
+                            logoSize={45}
                             size={200}
                             color={"#413d52"}
                             logoBackgroundColor="transparent"

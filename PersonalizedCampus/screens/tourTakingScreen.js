@@ -32,23 +32,23 @@ const searchTerms = [
     },
     {
         id: "1",
-        text: "Virtual Tour",
-    },
-    {
-        id: "2",
         text: "Popular",
     },
     {
-        id: "3",
+        id: "2",
         text: "Parks",
     },
     {
-        id: "5",
-        text: "Museum",
+        id: "3",
+        text: "Museums",
     },
     {
-        id: "6",
+        id: "4",
         text: "Universities",
+	},
+	{
+        id: "5",
+        text: "At least 4 Stars",
     },
 ];
 
@@ -169,14 +169,25 @@ const TourTakingScreen = (props) => {
     };
 
     const showSearchDetails = () => {
-        console.log("Showing search details");
-        slidingPanelRef.show();
+		console.log("Showing search details");
+		slidingPanelRef.show();
     };
 
     const confirmSearch = () => {
+		// Run the search on DB
+		var results = []
+		allTours.forEach((tour) => {
+			if (tour.tourName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			tour.description != null && tour.description.toLowerCase().includes(searchTerm.toLowerCase()) || 
+			tour.tourTags != null && tour.tourTags.find(tag => tag.trim().toLowerCase().includes(searchTerm.toLowerCase()))){
+				results.push(tour)
+			}
+		})
+		results.forEach(tour => console.log(tour.tourName))
+		setSearchResults(results)
         // Just in case it isn't open yet
-        showSearchDetails();
-        // Run the search on DB
+        //showSearchDetails();
+		
     };
 
     const userLocationChange = (location) => {
@@ -193,10 +204,10 @@ const TourTakingScreen = (props) => {
                 var closestNode = closestNode;
                 allNodes.forEach((node, index) => {
                     if (
-                        userLocation.coordinate.latitude - node.latitude <=
-                            0.000005 ||
-                        userLocation.coordinate.longitude - node.longitude <=
-                            0.000005
+                        Math.abs(userLocation.coordinate.latitude - node.latitude) <=
+                            0.00025 &&
+                        Math.abs(userLocation.coordinate.longitude - node.longitude) <=
+                            0.00025
                     ) {
                         console.log("In the range of index ", index, node.name);
                         if (
@@ -379,7 +390,7 @@ const TourTakingScreen = (props) => {
                         </TouchableOpacity>
                     )}
                     <SearchInfo
-                        tourList={allTours}
+                        tourList={(searchResults != null && (searchTerm != null ||searchTerm != '')? searchResults : allTours)}
                         searching={searching}
                         scannedTour={qrResult}
                         takeTourInPerson={(tour) => takeTourInPerson(tour)}
