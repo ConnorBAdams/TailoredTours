@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, Animated, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Animated, ScrollView, Keyboard } from 'react-native';
 import { FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import { Marker, Circle, Polyline, fitToSuppliedMarkers } from 'react-native-maps';
@@ -106,6 +106,7 @@ const MapComponent = props => {
 
     const mapPress = (e) => {
         console.log('Map press')
+        Keyboard.dismiss()
         if (props.carouselEnabled) {
             //setSelectedIndex(-1)
             setInspectObject(null)
@@ -161,6 +162,7 @@ const MapComponent = props => {
             <MapView 
             style={(props.style != null) ? props.style : styles.mapStyle} 
             mapType={mapType}
+            onUserLocationChange={(location)=>props.onUserLocationChange(location)}
             showsUserLocation={props.takingTour && props.showUser}
             //showsMyLocationButton={props.takingTour && props.showUser}
             //followsUserLocation={props.takingTour && props.showUser}
