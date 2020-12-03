@@ -95,6 +95,7 @@ const SearchInfo = (props) => {
 
     const takeInPerson = () => {
         console.log("Take in person")
+        props.takeTourInPerson(selectedTour)
     }
 
     const takeVirtually = () => {

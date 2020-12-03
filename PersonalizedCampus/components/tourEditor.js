@@ -95,11 +95,11 @@ const TourEditorModule = props => {
             if (item.type == 'Node') {
                 console.log('Received a Node')
                 var nodeRef = firebase.database().ref(`tours/${user.uid}/${tourID}/nodes/${item.id}/`)
-                nodeRef.set({item})
+                nodeRef.set(item)
             } else if (item.type == 'Route') {
                 console.log('Received a Route')
                 var reouteRef = firebase.database().ref(`tours/${user.uid}/${tourID}/routes/${item.id}/`)
-                reouteRef.set( item)
+                reouteRef.set(item)
                 .then((snapshot)=>{
                     console.log('Returned: ', snapshot)
                 })
