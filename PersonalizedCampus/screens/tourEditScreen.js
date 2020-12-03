@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
 import DrawerHeader from '../components/drawerHeader'
 import TourEditorModule from '../components/tourEditor'
-import globalStyles from '../styles'
 import firebase from 'firebase'
 
 const TourEditScreen = props => {

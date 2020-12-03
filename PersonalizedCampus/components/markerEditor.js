@@ -27,10 +27,10 @@ const MarkerEditorComponent = props => {
                 onPress={() => { props.toggle(); props.onSubmit(title, description) }} />
                 <Button title="Cancel"
                 onPress={() => { props.toggle() }} />
-                {/* <Button title="Delete"
-                onPress={() => { props.toggle() }} /> 
-                This option needs to be added since I often add a node by accident
-                and have no way of deleting it. */}
+                <Button title="Delete" />
+                {/* onPress={() => { props.toggle(); props.onSubmit(title, description) }} /> */}
+                {/* This option needs to be added since I often add a node by 
+                accident and have no way of deleting it. */}
             </View>
             </View>
         </Modal>

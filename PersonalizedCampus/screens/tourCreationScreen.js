@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import 'react-native-gesture-handler';
-import globalStyles from '../styles';
-import Button from '../components/button'
 import * as Location from 'expo-location'
 import DrawerHeader from '../components/drawerHeader'
 import firebase, { auth } from 'firebase';
@@ -68,6 +66,7 @@ const TourCreationScreen = props => {
             .push({
                 tourName: tourData.title,
                 owner: userID, // Redundant
+                publicTour: data.publicTour,
                 createdAt: Date.now(),
                 lastModified: Date.now(),
                 anchor: tourData.anchor,

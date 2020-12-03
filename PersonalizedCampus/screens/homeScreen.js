@@ -64,7 +64,7 @@ takeTourText: {
 },
 makeTourButton: {
 	height: '20%',
-	marginTop: '40%',
+	marginTop: '30%',
 	marginBottom: '10%'
 },
 makeTourText: {

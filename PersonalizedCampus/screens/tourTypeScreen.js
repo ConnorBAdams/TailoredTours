@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../components/button'
-import firebase from 'firebase'
 
 const TourTypeScreen = props => {
     const navigation = useNavigation();

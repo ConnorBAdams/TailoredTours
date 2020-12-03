@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import LoginModule from '../components/login'
-import Button from '../components/button'
 
 const LoginScreen = props => {
 
@@ -29,7 +28,7 @@ const LoginScreen = props => {
 		justifyContent: 'center',
 	}, 
 	titleText: {
-		marginBottom: '5%', 
+		marginBottom: '-3%', 
 		fontSize: 20
 	}
 	});
