@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Feather } from "@expo/vector-icons";
 import "react-native-gesture-handler";
 
-const DrawerHeader = ({ name, openDrawer }) => (
+const DrawerHeader = ({ name, openDrawer, backButton }) => (
   <View style={styles.header}>
     <View style={styles.icon}>
       <TouchableOpacity style={{width: 50}} onPress={() => openDrawer()}>
-        <Ionicons name="ios-menu" size={36} color={"#fff"} />
+        { (backButton != null && backButton)? <Feather name="arrow-left" size={36} color={"#fff"} /> :<Ionicons name="ios-menu" size={36} color={"#fff"} />}
       </TouchableOpacity>
     </View>
     <View style={styles.textContainer}>

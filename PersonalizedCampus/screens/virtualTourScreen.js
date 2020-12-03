@@ -7,6 +7,7 @@ import Button from '../components/button';
 import firebase, { auth } from 'firebase';
 import Carousel from 'react-native-snap-carousel';
 import { Video } from 'expo-av';
+import { Ionicons } from '@expo/vector-icons'; 
 
 const VirtualTourScreen = props => {    
     const [tour, setTour] = useState(null);
@@ -19,25 +20,35 @@ const VirtualTourScreen = props => {
     const [currentNodeMedia, setCurrentNodeMedia] = useState([]);
     const [queryComplete, setQueryComplete] = useState(false);
 	const [carousel, setCarousel] = useState(null);
-
+    const [rating, setRating] = useState(null)
     const navigation = useNavigation();
 
     useEffect(() => {
         if (!hasExecuted) {
             setTour(props.route.params.tour);
-            setNumNodes(props.route.params.tour.child('routes').child(props.route.params.route).child('nodes').numChildren());
-            setRouteNodes(props.route.params.tour.child('routes').child(props.route.params.route).child('nodes').val());
+            setNumNodes(props.route.params.tour.routes[props.route.params.route].nodes.length)
+            console.log(props.route.params.tour.routes[props.route.params.route].nodes.length)
+            //setNumNodes(props.route.params.tour.child('routes').child(props.route.params.route).child('nodes').numChildren());
+            setRouteNodes(props.route.params.tour.routes[props.route.params.route].nodes)
+            //setRouteNodes(props.route.params.tour.child('routes').child(props.route.params.route).child('nodes').val());
             setHasExecuted(true);
         }
     });
 
     const getCurrentNodeInfo = () => {
-        const node = tour.child('nodes').child(routeNodes[currentNodeIndex]).child('item');
-        setCurrentNodeName(node.child('name').val());
-        setCurrentNodeDesc(node.child('description').val());
-        const images = node.child('images');
-        if (images.hasChildren()) {
-            setCurrentNodeMedia(images.val());
+        //const node = tour.child('nodes').child(routeNodes[currentNodeIndex]).child('item');
+        if (currentNodeIndex+1 >= numNodes){
+            return;
+        }
+        const node = tour.nodes[currentNodeIndex];
+        //setCurrentNodeName(node.child('name').val());
+        setCurrentNodeName(node.name);
+        //setCurrentNodeDesc(node.child('description').val());
+        setCurrentNodeDesc(node.description);
+        //const images = node.child('images');
+        const images = node.images;
+        if (images != null) {
+            setCurrentNodeMedia(images);
         } else {
             setCurrentNodeMedia(null);
         }
@@ -67,27 +78,24 @@ const VirtualTourScreen = props => {
 				/>
 			}
 		</View> 
-	)}
+    )}
+    
+    const rateTour = (val) => {
+        if (val == rating) {
+            setRating(0)
+        } else {
+            setRating(val)
+        }
+    }
     
     const gotoNextStop = () => {
-        if (currentNodeIndex == numNodes - 1) {
-            Alert.alert(
-                "End of tour",
-                "You have reached the last stop!",
-                [
-                    {
-                        text: "Go to main menu",
-                        onPress: () => navigation.popToTop()
-                    },
-                    {
-                        text: "Resume tour"
-                    }
-                ]
-            );
+        if (currentNodeIndex >= numNodes) {
+            console.log("It should be stopping here")
             return;
         }
         setQueryComplete(false);
         setCurrentNodeIndex(currentNodeIndex + 1);
+        console.log(currentNodeIndex)
         getCurrentNodeInfo();
     }
 
@@ -106,7 +114,8 @@ const VirtualTourScreen = props => {
         }
         setQueryComplete(false);
         setCurrentNodeIndex(currentNodeIndex - 1);
-        getCurrentNodeInfo();
+        if (currentNodeIndex < numNodes)
+            getCurrentNodeInfo();
     }
 
     const debug = () => {
@@ -114,10 +123,57 @@ const VirtualTourScreen = props => {
         console.log(currentNodeIndex);
     }
 
+    const backToRoutes = () => {
+        if (rating != null) {
+            firebase.database().ref('tours/'+tour.owner+"/"+tour.id+"/ratings/").push({rating: rating})
+        }
+        firebase.database().ref('tours/'+tour.owner+"/"+tour.id+"/takenCount/").once("value", function(snapshot) {  
+            if (snapshot.val() != null ) {
+                firebase.database().ref('tours/'+tour.owner+"/"+tour.id+"/takenCount/").set(
+                {
+                    takenCount: snapshot.val() + 1
+                })
+            } else {
+            firebase.database().ref('tours/'+tour.owner+"/"+tour.id+"/takenCount/").set(
+                {
+                    takenCount: 1
+                })
+            }})
+        navigation.pop()
+    }
+
+    const backHome = () => {
+        if (rating != null) {
+            firebase.database().ref('tours/'+tour.owner+"/"+tour.id+"/ratings/").push({rating: rating})
+        }
+        firebase.database().ref('tours/'+tour.owner+"/"+tour.id+"/takenCount/").once("value", function(snapshot) {  
+            if (snapshot.val() != null ) {
+                firebase.database().ref('tours/'+tour.owner+"/"+tour.id+"/takenCount/").set(
+                {
+                    takenCount: snapshot.val() + 1
+                })
+            } else {
+            firebase.database().ref('tours/'+tour.owner+"/"+tour.id+"/takenCount/").set(
+                {
+                    takenCount: 1
+                })
+            }})
+        navigation.popToTop()
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <DrawerHeader name='Take Virtual Tour' openDrawer={(props.navigation != null) ? props.navigation.openDrawer : false} />
+            <DrawerHeader
+                name="Take Virtual Tour"
+                backButton={true}
+                openDrawer={
+                    props.navigation != null ? props.navigation.pop : false
+                }
+            />
+            
             <View style={styles.internalContainer}>
+                { currentNodeIndex < numNodes && 
+                <View style={{height: '80%'}}>
                 <Text style={styles.title}>Current stop:</Text>
                 <Text style={styles.description}>
                     {queryComplete == true ?
@@ -153,20 +209,58 @@ const VirtualTourScreen = props => {
                         (<Text style={{ fontSize: 18 }}>Loading...</Text>)
                     }
                 </View>
-                <Text style={styles.title}>Stop {currentNodeIndex + 1} / {numNodes}</Text>
+                </View>}
+                { currentNodeIndex == numNodes &&
+                <View style={{height: '80%', alignItems:'center',}}>
+                    <Text style={{fontSize: 28, margin: 25}}>Route Finished!</Text>
+                    <Text style={{fontSize: 20}}>Would you like to take another route?</Text>
+                    <Button title="Take another route" onPress={() => backToRoutes()} />
+                    <Text style={{fontSize: 20, marginTop: 25}}>Or return to home</Text>
+                    <Button title="Return to home" onPress={() => backHome()} />
+                    <Text style={{fontSize: 20, marginTop: 100}}>If you enjoyed this route, rate the tour below!</Text>
+                    <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity onPress={() => rateTour(1)}>
+                        {(rating != null && rating >= 1) ?
+                        <Ionicons name="md-star" size={50} color='#00c9db' />
+                        :
+                        <Ionicons name="md-star-outline" size={50} color='#4633af' />}
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => rateTour(2)}>
+                        {(rating != null && rating >= 2) ?
+                        <Ionicons name="md-star" size={50} color='#00c9db' />
+                        :
+                        <Ionicons name="md-star-outline" size={50} color='#4633af' />}</TouchableOpacity>
+                        <TouchableOpacity onPress={() => rateTour(3)}>
+                        {(rating != null && rating >= 3) ?
+                        <Ionicons name="md-star" size={50} color='#00c9db' />
+                        :
+                        <Ionicons name="md-star-outline" size={50} color='#4633af' />}</TouchableOpacity>
+                        <TouchableOpacity onPress={() => rateTour(4)}>
+                        {(rating != null && rating >= 4) ?
+                        <Ionicons name="md-star" size={50} color='#00c9db' />
+                        :
+                        <Ionicons name="md-star-outline" size={50} color='#4633af' />}</TouchableOpacity>
+                        <TouchableOpacity onPress={() => rateTour(5)}>
+                        {(rating != null && rating >= 5) ?
+                        <Ionicons name="md-star" size={50} color='#00c9db' />
+                        :
+                        <Ionicons name="md-star-outline" size={50} color='#4633af' />}</TouchableOpacity>
+                    </View>
+                </View>}
+                <Text style={styles.title}>Stop {(currentNodeIndex+1 > numNodes)?numNodes : currentNodeIndex + 1} / {numNodes}</Text>
                 <View style={styles.arrows}>
-                    {numNodes == 0 ?
-                        <Button title='Previous stop'></Button>
+                    {currentNodeIndex == 0 ?
+                        <Text></Text>
                         :
                         <Button title='Previous stop' onPress={() => gotoPreviousStop()}></Button>
                     }
-                    {numNodes == 0 ?
-                        <Button title='Next stop'></Button>
+                    {currentNodeIndex == numNodes ?
+                        <Text></Text>
                         :
-                        <Button title='Next stop' onPress={() => gotoNextStop()}></Button>
+                        <Button title={ currentNodeIndex == numNodes - 1 ? 'Finish Tour' : 'Next stop'} onPress={() => gotoNextStop()}></Button>
                     }
                 </View>
-                <Button title='Debug' onPress={() => getCurrentNodeInfo()}></Button>
+                {/* <Button title='Debug' onPress={() => getCurrentNodeInfo()}></Button> */}
             </View>
         </SafeAreaView>
     );

@@ -43,7 +43,9 @@ const QRReader = (props) => {
             .once("value", function (snapshot) {
                 console.log("Processing snapshot of user tour data");
                 setScanData({
+                    id: snapshot.key,
                     tourName: snapshot.child('tourName').val(), 
+                    owner: snapshot.child('owner').val(),
                     img: snapshot.child('thumbnail').val()
                 })
                 console.log("done");
@@ -58,6 +60,9 @@ const QRReader = (props) => {
     }
 
     const confirmTour = () => {
+        props.confirmTour(scanData)
+        setScanData('')
+        setScanned(false)
         props.toggleSelf()
     }
 

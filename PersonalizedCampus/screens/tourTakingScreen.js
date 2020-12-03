@@ -53,6 +53,7 @@ const TourTakingScreen = (props) => {
     const [errorMsg, setErrorMsg] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [readQR, setReadQR] = useState(false)
+    const [qrResult, setQRResult] = useState(null)
 	const [slidingPanelRef, setSlidingPanelRef] = useState(null)
 	const [allTours, setAllTours] = useState(null)
 	const [searchResults, setSearchResults] = useState(null)
@@ -177,6 +178,11 @@ const TourTakingScreen = (props) => {
 		setReadQR(true)
 	}
 
+	const showQRData = (tour) => {
+		setQRResult(tour)
+		slidingPanelRef.show()
+	}
+
     return (
         <View style={styles.container}>
             {location === null && <ActivityIndicator size="large" />}
@@ -229,6 +235,7 @@ const TourTakingScreen = (props) => {
 					<QRReader
 					modalVisible={readQR}
 					toggleSelf={() => setReadQR(!readQR)}
+					confirmTour={(tour) => showQRData(tour) }
 					/>
 					{Platform.OS === 'ios' && 
 				<TouchableOpacity style={styles.icon} onPress={() => props.navigation.pop() } >
@@ -237,6 +244,8 @@ const TourTakingScreen = (props) => {
 				<SearchInfo 
 				tourList={allTours}
 				searching={searching}
+				scannedTour={qrResult}
+				resetScanData={() => setQRResult(null)}
 				onRef={ref => setSlidingPanelRef(ref)}/>
                 </View>
             )}

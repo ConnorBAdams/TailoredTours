@@ -8,11 +8,12 @@ import {
     ActivityIndicator,
     Image,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { FlatList, ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import Button from "./button";
 import Carousel from "react-native-snap-carousel";
+import { useNavigation  } from '@react-navigation/native';
 import MarkerEditorComponent from "./markerEditor";
 import firebase from "firebase";
 
@@ -28,6 +29,7 @@ const SearchInfo = (props) => {
 
     // Local references
     const [slidingPanel, setSlidingPanel] = useState(null);
+	const navigation = useNavigation();
 
 
     const { top, bottom } = draggableRange;
@@ -36,6 +38,10 @@ const SearchInfo = (props) => {
 
     useEffect(() => {
         props.onRef(slidingPanel);
+        if (props.scannedTour != null && selectedTour != props.scannedTour) {
+            queryAllTourInfo(props.scannedTour)
+            props.resetScanData()
+        }
     });
 
     const textTranslateY = _draggedValue.interpolate({
@@ -63,9 +69,21 @@ const SearchInfo = (props) => {
             var fullTourData = tour
             fullTourData.routes = snapshot.child('routes').val()
             fullTourData.nodes = snapshot.child('nodes').val()
+            if (snapshot.child('ratings').val() != null) {
+                var avgRating = 0
+                var count = 0
+                snapshot.child('ratings').forEach((rating) =>
+                {
+                    console.log(rating,  rating.child('rating').val())
+                    avgRating += rating.child('rating').val()
+                    count +=1
+                });
+                console.log(avgRating, count)
+                fullTourData.ratings = (avgRating/count)
+
+            }
             setSelectedTour(fullTourData)
             setShowTourInfo(true)
-
         })
     }
 
@@ -79,6 +97,10 @@ const SearchInfo = (props) => {
 
     const takeVirtually = () => {
         console.log("Take virtually")
+        // setShowTourInfo(false)
+        navigation.navigate('Virtual Tour Splash', {
+            tour: selectedTour
+        })
     }
 
     const routePreview = ({item, index}) => {
@@ -136,7 +158,7 @@ const SearchInfo = (props) => {
                     {showTourInfo && 
                     <View>
                         <TouchableOpacity style={styles.icon} onPress={() => setShowTourInfo(false) } >
-                        <FontAwesome name="arrow-left" style={{width: 38, textAlign:'center'}} size={32} />
+                        <Feather name="arrow-left" style={{width: 38, textAlign:'center'}} size={32} />
                         </TouchableOpacity>
                         <View style={{alignItems:'center', paddingHorizontal: 20}}>
                         <Text style={{paddingBottom: 10, fontSize: 28, fontWeight: 'bold'}}>{selectedTour.tourName}</Text>
@@ -149,7 +171,7 @@ const SearchInfo = (props) => {
                         <Text style={styles.fieldHeader}>Times taken:</Text>
                         <Text>{selectedTour.takenCount == null? "Nobody has taken this tour yet, be the first!" : selectedTour.takenCount}</Text>
                         <Text style={styles.fieldHeader}>Rating:</Text>
-                        <Text>{selectedTour.ratings == null? "No ratings yet" : selectedTour.ratings.avg}</Text>
+                        <Text>{selectedTour.ratings == null? "No ratings yet" : selectedTour.ratings} / 5</Text>
                         <View style={styles.previewToursBox}>
                         <Text style={{fontSize: 18, marginVertical: 20}}> Preview Routes </Text>
                         <Carousel
