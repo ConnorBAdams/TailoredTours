@@ -69,6 +69,8 @@ const SearchInfo = (props) => {
             var fullTourData = tour
             fullTourData.routes = snapshot.child('routes').val()
             fullTourData.nodes = snapshot.child('nodes').val()
+            console.log('---------------------------------*',snapshot.child('takenCount'))
+            fullTourData.takenCount = snapshot.child('takenCount').child('takenCount').val()
             if (snapshot.child('ratings').val() != null) {
                 var avgRating = 0
                 var count = 0
@@ -171,7 +173,7 @@ const SearchInfo = (props) => {
                         <Text style={styles.fieldHeader}>Times taken:</Text>
                         <Text>{selectedTour.takenCount == null? "Nobody has taken this tour yet, be the first!" : selectedTour.takenCount}</Text>
                         <Text style={styles.fieldHeader}>Rating:</Text>
-                        <Text>{selectedTour.ratings == null? "No ratings yet" : selectedTour.ratings} / 5</Text>
+                        <Text>{selectedTour.ratings == null? "No ratings yet" : `${selectedTour.ratings} / 5`}</Text>
                         <View style={styles.previewToursBox}>
                         <Text style={{fontSize: 18, marginVertical: 20}}> Preview Routes </Text>
                         <Carousel
