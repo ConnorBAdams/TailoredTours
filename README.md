@@ -1,4 +1,4 @@
-# PersonalizedCampus
+# TailoredTours
 A project for CS 495 focused on giving personalized tours of locations. 
 
 After pulling the repo the following steps can be used to run the React Native app:
