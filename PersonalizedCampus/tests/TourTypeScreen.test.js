@@ -8,9 +8,12 @@ import { act } from "react-dom/test-utils";
 import TourTypeScreen from '../screens/tourTypeScreen';
 import * as firebase from 'firebase'
 require('firebase/auth')
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount, configure, render } from 'enzyme';
+import Enzyme from 'enzyme';
 import sinon from 'sinon';
+import Adapter from 'enzyme-adapter-react-16';
 
+Enzyme.configure({ adapter: new Adapter() });
 jest.mock('@react-navigation/native');
 
 jest.mock('firebase', () => {

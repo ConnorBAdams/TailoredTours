@@ -5,13 +5,18 @@
 import React from 'react';
 import { unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import SignedInScreen from '../screens/signedInScreen'
 import TourCreationScreen from '../screens/tourCreationScreen';
 import * as firebase from 'firebase'
 require('firebase/auth')
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount, configure, render } from 'enzyme';
+import Enzyme from 'enzyme';
 import sinon from 'sinon';
+import Adapter from 'enzyme-adapter-react-16';
+import 'react-native-gesture-handler/jestSetup';
 
+Enzyme.configure({ adapter: new Adapter() });
+
+jest.mock('@react-navigation/native');
 
 jest.mock('firebase', () => {
   return {
@@ -81,6 +86,7 @@ jest.mock('firebase', () => {
     })
   };
 });
+
 
 it("Snapshot of TourCreation Screen", () => {
   const wrapper = shallow(<TourCreationScreen />);

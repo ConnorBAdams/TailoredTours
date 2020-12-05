@@ -5,13 +5,15 @@
 import React from 'react';
 import { unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import FinalizeTourScreen from '../screens/finalizeTourScreen';
-import SignedInScreen from '../screens/signedInScreen'
+import VirtualTourSplashScreen from '../screens/virtualTourSplashScreen';
 import * as firebase from 'firebase'
 require('firebase/auth')
-import { shallow, mount, render } from 'enzyme';
+import { shallow, mount, configure, render } from 'enzyme';
+import Enzyme from 'enzyme';
 import sinon from 'sinon';
+import Adapter from 'enzyme-adapter-react-16';
 
+Enzyme.configure({ adapter: new Adapter() });
 jest.mock('@react-navigation/native');
 
 jest.mock('firebase', () => {
@@ -83,20 +85,8 @@ jest.mock('firebase', () => {
   };
 });
 
-jest.mock('@react-navigation/drawer', () => {
-    return { createDrawerNavigator: jest.fn(() => {
-        return;
-    })
-    }
-});
 
-
-jest.doMock('../screens/signedInScreen', () => {
-    const signedInMock = () => <div />;
-    return signedInMock;
-});
-
-it("Snapshot of Finalize Tour Screen", () => {
-  const wrapper = shallow(<FinalizeTourScreen />);
+it("Snapshot of Virtual Tour Splash Screen", () => {
+  const wrapper = shallow(<VirtualTourSplashScreen />);
   expect(wrapper).toMatchSnapshot();
 });
