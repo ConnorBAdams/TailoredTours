@@ -4,8 +4,13 @@
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { shallow, mount, render } from 'enzyme';
 import ManualCreateAccountModule from '../components/manualCreateAccount'
+import { shallow, mount, configure, render } from 'enzyme';
+import Enzyme from 'enzyme';
+import sinon from 'sinon';
+import Adapter from 'enzyme-adapter-react-16';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 it('Testing Password Matching', () => {
     const context = { name: 'foo' };
