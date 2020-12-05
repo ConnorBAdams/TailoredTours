@@ -18,7 +18,8 @@
     ],
     "android": {
       "package": "com.cs495.tailoredtours",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "ios": {
       "supportsTablet": true,
@@ -26,7 +27,8 @@
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.584187795626-fdfap9h2efpe10hob7tg5m03ikbdah59"
         }
-      }
+      },
+      "bundleIdentifier": "com.cs495.tailoredtours"
     },
     "web": {
       "favicon": "./assets/favicon.png"

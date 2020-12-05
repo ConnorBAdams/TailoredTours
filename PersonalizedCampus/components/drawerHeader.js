@@ -1,44 +1,46 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from "react-native";
+import { Ionicons, Feather } from "@expo/vector-icons";
+import "react-native-gesture-handler";
 
-const DrawerHeader =({name, openDrawer})=> (
+const DrawerHeader = ({ name, openDrawer, backButton }) => (
   <View style={styles.header}>
-      <View style={styles.icon}>
-      <TouchableOpacity onPress={()=>openDrawer()}>
-          <Ionicons name="ios-menu" size={36} />
+    <View style={styles.icon}>
+      <TouchableOpacity style={{width: 50}} onPress={() => openDrawer()}>
+        { (backButton != null && backButton)? <Feather name="arrow-left" size={36} color={"#fff"} /> :<Ionicons name="ios-menu" size={36} color={"#fff"} />}
       </TouchableOpacity>
-      </View>
-      <View style={styles.textContainer}>
-          <Text style={styles.text}>{name}</Text>
-      </View>
+    </View>
+    <View style={styles.textContainer}>
+      <Text style={styles.text}>{name}</Text>
+    </View>
   </View>
-)
+);
 
 const styles = StyleSheet.create({
-  header:{
-      width:"100%",
-      height: 150,
-      backgroundColor: '#4633af',
-      zIndex: 100
-    },
-    icon: {
-      flexDirection:"row",
-      justifyContent:"space-between",
-      alignItems:"center",
-      paddingHorizontal:20,
-      marginTop: 100,
-    },
-    textContainer: {
-      marginTop: -36,
-      flexDirection:"row",
-      justifyContent:"center",
-      alignItems:"center",
-    },
-    text: {
-        fontSize: 24
-    }
+  header: {
+    marginTop: (Dimensions.get('window').height * 0.1),
+    width: "100%",
+    height: Dimensions.get('window').height * 0.1,
+    backgroundColor: "#4633af",
+    zIndex: 1000,
+  },
+  icon: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    top: (Dimensions.get('window').height * 0.1)/3
+  },
+  textContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    bottom: 10
+  },
+  text: {
+    color: "#fff",
+    fontSize: 24,
+  },
 });
 
-  export default DrawerHeader;
+export default DrawerHeader;

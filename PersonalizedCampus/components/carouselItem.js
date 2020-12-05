@@ -4,9 +4,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import Button from './button'
+import Button from './button';
 import Carousel from 'react-native-snap-carousel';
-import MarkerEditorComponent from './markerEditor'
+import MarkerEditorComponent from './markerEditor';
+import { Video } from 'expo-av';
 
 const { height } = Dimensions.get("window") ;
 
@@ -14,6 +15,9 @@ const CarouselItem = props => {
 	const [draggableRange, setDraggableRange] = useState({top: height + 40 , bottom: 180})
 	const [photos, setPhotos] = useState([])
 	const [modalVisible, setModalVisible] = useState(false)
+	// Local references
+	const [slidingPanel, setSlidingPanel] = useState(null)
+	const [carousel, setCarousel] = useState(null)
 	const { top, bottom } = draggableRange;
 	const _draggedValue = new Animated.Value(180);
 
@@ -53,18 +57,38 @@ const CarouselItem = props => {
 			alert("Permission to access camera roll is required!");
 			return;
 		}
-		let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: true});
+		let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: false});
 		if (pickerResult.cancelled === true) {
 			return;
-	}
-	if (props.contents.images == undefined || props.contents.images.length == 0) {
-		props.contents.images=[{base64: pickerResult.base64}]
-		//setPhotos([{base64: pickerResult.base64}])
-	} else {
-		props.contents.images=[{base64: pickerResult.base64}, ...props.contents.images]
-		//setPhotos([{base64: pickerResult.base64}, ...photos])
-	}
-	setPhotos([...photos, pickerResult.base64]) // this is just to get the UI to update
+		}
+		if (props.contents.images == undefined || props.contents.images.length == 0) {
+			props.contents.images=[{uri: pickerResult.uri, media_type: 'image'}]
+		} else {
+			props.contents.images=[{uri: pickerResult.uri, media_type: 'image'}, ...props.contents.images]
+		}
+		setPhotos([...photos, {uri: pickerResult.uri, media_type: 'image'}]) // this is just to get the UI to update
+		// Send update call to parent component
+		props.updateComponent(props.contents)
+	};
+
+	const openVideoPickerAsync = async () => {
+		let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+		if (permissionResult.granted === false) {
+			alert("Permission to access camera roll is required!");
+			return;
+		}
+		let pickerResult = await ImagePicker.launchImageLibraryAsync({base64: false, mediaTypes: ImagePicker.MediaTypeOptions.Videos});
+		if (pickerResult.cancelled === true) {
+			return;
+		}
+		if (props.contents.images == undefined || props.contents.images.length == 0) {
+			props.contents.images=[{uri: pickerResult.uri, media_type: 'video'}]
+		} else {
+			props.contents.images=[{uri: pickerResult.uri, media_type: 'video'}, ...props.contents.images]
+		}
+		setPhotos([...photos, {uri: pickerResult.uri, media_type: 'video'}]) // this is just to get the UI to update
+		// Send update call to parent component
+		props.updateComponent(props.contents)
 	};
 
 	const toggleModal = () => {
@@ -77,8 +101,9 @@ const CarouselItem = props => {
 	
 	const updateNode = (title, descr) => {
 		props.contents.name = title
-		if (props.contents.type=='Node')
-        props.contents.description = descr
+		props.contents.description = descr
+		// Send update call to parent component
+		props.updateComponent(props.contents)
     }
 
 	const deleteSelected = () => {
@@ -96,23 +121,40 @@ const CarouselItem = props => {
 		{ cancelable: true }
 	)}
 
+	//Rendered jsx inside the image carousel
 	const carouselImage = ({item, index}) => {
 		return ( 
 		<View>
-		<Image style={{width: 200, height: 200, 
-			borderWidth: 1, aspectRatio: 1}} 
-			source={{uri: `data:image/gif;base64,${item.base64}` }}
-			/>
+			{item.media_type == 'image' ? 
+				<Image 
+					style={{width: 200, height: 200, 
+					borderWidth: 1, aspectRatio: 1}} 
+					source={item}
+				/> 
+				: 
+				<Video
+	 				source={item}
+	  				rate={1.0}
+	  				volume={1.0}
+	 				isMuted={false}
+	 				resizeMode="cover"
+	  				shouldPlay
+					isLooping
+					//useNativeControls
+	  				style={{ width: 200, height: 200 }}
+				/>
+			}
 		</View> 
 	)}
 
+	// Empty contents
 	if (props.contents == null){
 		return (<View></View>)
 	}
 
 	return (
 		<SlidingUpPanel
-		ref={c => (panel = c)}
+		ref={c => (setSlidingPanel(c) )}
 		draggableRange={draggableRange}
 		animatedValue={_draggedValue}
 		snappingPoints={[360]}
@@ -158,7 +200,7 @@ const CarouselItem = props => {
 				<TouchableOpacity onPress={() => toggleModal()}>
 				<FontAwesome name="pencil" size={30} color="black" />
 			</TouchableOpacity></View>
-			<Text style={styles.descriptionText}>{(props.contents.desc != null)? props.contents.desc : props.contents.description}</Text>
+			<Text style={styles.descriptionText}>{props.contents.description}</Text>
 			
 			<Text style={styles.photosHeader}>Photos:</Text>
 
@@ -167,7 +209,7 @@ const CarouselItem = props => {
 			<View style={styles.imageCarouselContainer}>
 				{(props.contents.images != undefined) ? 
 				<Carousel 
-					ref={(c) => carousel = c}
+					ref={(c) => setCarousel(c) }
 					data={props.contents.images}
 					renderItem={carouselImage}
 					sliderWidth={Dimensions.get('window').width * 0.8}
@@ -178,6 +220,7 @@ const CarouselItem = props => {
 				<Text style={{fontSize: 18}}>There are no images on this {props.contents.type}</Text> }
 			</View>
 			<Button title="Upload Photos" onPress={openImagePickerAsync} />
+			<Button title="Upload Videos" onPress={openVideoPickerAsync} />
 
 
 			</View>

@@ -32,7 +32,7 @@ const HomeScreen = props => {
           <Image source={logo} style={styles.logo} />
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Take Tour" buttonStyle={styles.takeTourButton} textStyle={styles.takeTourText} onPress={() => navigation.navigate('Tour Type')} />
+          <Button title="Take Tour" buttonStyle={styles.takeTourButton} textStyle={styles.takeTourText} onPress={() => navigation.navigate('Tour Taking')} />
           <Button title="Make Tour" buttonStyle={styles.makeTourButton} textStyle={styles.makeTourText} onPress={() => checkIfLoggedIn()} />
         </View>
     </SafeAreaView>

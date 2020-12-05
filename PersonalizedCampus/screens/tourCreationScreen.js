@@ -72,13 +72,31 @@ const TourCreationScreen = props => {
                 anchor: tourData.anchor,
                 routes: routeData.routes,
                 nodes: routeData.nodes,
-                thumbnail: data.selectedImage
+                thumbnail: data.selectedImage,
+                publicTour: data.publicTour,
+                tourTags: data.tourTags,
+                tourDescription: data.tourDescription
             })                
-            .then(
+            .then((snapshot) => {
                 Alert.alert('Successfully saved!'),
                 navigation.popToTop()
-            )
-            
+                if (data.publicTour == true) {
+                firebase.database().ref('/publicTours/' + userID + "/" + snapshot.key )
+                .set({
+                    tourName: tourData.title,
+                    createdAt: Date.now(),
+                    lastModified: Date.now(),
+                    anchor: tourData.anchor,
+                    thumbnail: data.selectedImage,
+                    tourTags: data.tourTags,
+                    tourDescription: data.tourDescription
+                })                
+                .then(
+                    console.log('saved to public tours too')
+                )
+                }    
+
+            })        
         } catch (e) {
             Alert.alert(e.message)
             console.error(e.message)

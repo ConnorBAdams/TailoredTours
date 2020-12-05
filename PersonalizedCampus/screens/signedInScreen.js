@@ -36,7 +36,7 @@ const SignedInScreen = props => {
 			// that are controlled by this navigator
 			const {state, ...rest} = props;
 			const newState = {...state};
-			newState.routes = newState.routes.filter(item => item.name != ['Finalize Tour'])
+			newState.routes = newState.routes.filter(item => !['Finalize Tour', 'EditScreen'].includes(item.name))
 		return (
 			<DrawerContentScrollView {...props}>
 			<DrawerItem label="Main Screen" onPress={() => returnHome()} />
@@ -48,7 +48,7 @@ const SignedInScreen = props => {
 			}}>
 			<Drawer.Screen name="My Tours" component={MyToursScreen} />
 			<Drawer.Screen name="Tour Creator" component={TourCreationScreen} />
-			<Drawer.Screen name="Edit Tour" component={TourEditScreen} />
+			<Drawer.Screen name="EditScreen" component={TourEditScreen} />
 		</Drawer.Navigator>
 		</NavigationContainer>
 	);

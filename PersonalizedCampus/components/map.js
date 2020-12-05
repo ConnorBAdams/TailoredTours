@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions, Animated, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Animated, ScrollView, Keyboard } from 'react-native';
 import { FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import MapView from 'react-native-maps';
 import { Marker, Circle, Polyline, fitToSuppliedMarkers } from 'react-native-maps';
@@ -106,6 +106,7 @@ const MapComponent = props => {
 
     const mapPress = (e) => {
         console.log('Map press')
+        Keyboard.dismiss()
         if (props.carouselEnabled) {
             //setSelectedIndex(-1)
             setInspectObject(null)
@@ -117,7 +118,6 @@ const MapComponent = props => {
         props.deleteComponent(item);
         setInspectObject(null)
         setSelectedIndex(-1)
-
     }
 
     const carouselItem = ({item, index}) => {
@@ -137,12 +137,17 @@ const MapComponent = props => {
                 toggle={toggleModal} 
                 node={selectedNode} 
                 visible={modalVisible} />}
-            <View style={styles.mapTopButtons} pointerEvents="box-none">
+            <View style={{...styles.mapTopButtons, top: (props.takingTour)?150:15}} pointerEvents="box-none">
             <View style={styles.mapModeButton} pointerEvents="box-none">
             {placementMode != null &&
                 <TouchableOpacity style={styles.icon} onPress={() => togglePlacementMode() } >
                 {placementMode=='node' && <FontAwesome5 name="map-marker" size={32} />}
                 {placementMode=='route' && <FontAwesome5 name="route" size={32} style={{marginLeft:4, marginRight:4}} />}
+                </TouchableOpacity>
+            }
+            {props.enableQRReader != null &&
+                <TouchableOpacity style={styles.icon} onPress={() => props.enableQRReader() } >
+                <FontAwesome5 name="qrcode" style={{width: 38, textAlign:'center'}} size={32} />
                 </TouchableOpacity>
             }
             </View>
@@ -157,16 +162,22 @@ const MapComponent = props => {
             <MapView 
             style={(props.style != null) ? props.style : styles.mapStyle} 
             mapType={mapType}
+            onUserLocationChange={(location)=>props.onUserLocationChange(location)}
+            showsUserLocation={props.takingTour && props.showUser}
+            //showsMyLocationButton={props.takingTour && props.showUser}
+            //followsUserLocation={props.takingTour && props.showUser}
+            //showsCompass={props.takingTour && props.showUser}
+            loadingEnabled={true}
             //ref={map => {this.map = map}}
             initialRegion={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421}} 
             onPress={e => {props.onPress != null && !overviewEnabled ? props.onPress(e, placementMode) : mapPress(e)}}
             > 
-            { (props.showUser != null && props.showUser === true || props.showUser == null) && 
+            {/* { (props.showUser != null && props.showUser === true || props.showUser == null) && 
             <Marker key={1000.1} 
             coordinate={{latitude:props.location.coords.latitude, longitude:props.location.coords.longitude}}
             title="Your Location" >
                 <MaterialIcons name="person-pin-circle" size={42} color="crimson" />
-            </Marker> }
+            </Marker> } */}
             {/* {console.log(props.nodes)} */}
             {( props.nodes != undefined && props.nodes.length > 0 && props.nodes[0] != null) ? 
             props.nodes.map((marker, index) => { 
@@ -211,7 +222,7 @@ const MapComponent = props => {
                         coords.push({latitude: props.nodes[i].latitude, longitude:props.nodes[i].longitude})
                 }
                 return <Polyline
-                key={marker.id}
+                key={marker.id + 0.5}
                 tappable={true}
                 onPress={() => {polylinePressed(marker)}}
                 strokeColor={`rgb(${marker.routeColor.r}, ${marker.routeColor.g}, ${marker.routeColor.b})`}
@@ -232,75 +243,11 @@ const MapComponent = props => {
             </View>} 
             { (props.routes != undefined && props.carouselEnabled ) ? 
             <View style={styles.carouselContainer} pointerEvents="box-none">
-            {/* <ScrollView
-            ref={(scrollView) => {scrollView = scrollView}}
-            horizontal={true}
-            removeClippedSubviews={true}
-            directionalLockEnabled={false}
-            contentContainerStyle={styles.carousel}
-            decelerationRate={0}
-            snapToInterval={200}
-            onContentSizeChange={onContentSizeChange}
-            style={{backgroundColor:'lightblue'}}
-            snapToAlignment={'center'}>
-        <View style={{flex: 1, flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-        backgroundColor:'red',
-        margin: 10, height: 200,
-        flexGrow: 1, width:300}}>
-        <CarouselItem
-        contents={{name:'test',desc:'test test'}}
-        type={'route'} 
-        overviewToggle={setOverviewEnabled} /></View>
-                <View style={{flex: 1, flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-        backgroundColor:'red',
-        margin: 10, height: 200,
-        flexGrow: 1, width:300}}>
-        <CarouselItem
-        contents={{name:'test',desc:'test test'}}
-        type={'route'} 
-        overviewToggle={setOverviewEnabled} /></View>
-                <View style={{flex: 1, flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-        backgroundColor:'red',
-        margin: 10, height: 200,
-        flexGrow: 1, width:300}}>
-        <CarouselItem
-        contents={{name:'test',desc:'test test'}}
-        type={'route'} 
-        overviewToggle={setOverviewEnabled} /></View>
-                <View style={{flex: 1, flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 10,
-        backgroundColor:'red',
-        margin: 10, height: 200,
-        flexGrow: 1, width:300}}>
-        <CarouselItem
-        contents={{name:'test',desc:'test test'}}
-        type={'route'} 
-        overviewToggle={setOverviewEnabled} /></View>
-            </ScrollView> */}
-            {/* <Carousel
-            ref={(c) => { carousel = c; }}
-            data={props.routes}
-            renderItem={carouselItem}
-            sliderWidth={Dimensions.get('window').width}
-            itemWidth={Dimensions.get('window').width * 0.8}
-            onSnapToItem={index => changeSelectedIndex(index)}
-            containerCustomStyle={styles.carousel}
-            />  */}
             <CarouselItem
             contents={inspectObject}
             type={'route'} 
             deleteComponent={handleDelete}
+            updateComponent={props.updateComponent}
             editComponent={editMarker}
             overviewToggle={setOverviewEnabled} />    
             </View>
@@ -311,7 +258,7 @@ const MapComponent = props => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 5,
+        marginTop: 0,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -320,22 +267,25 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').height*.9,
     },
     icon: {
-        borderRadius: 12,
+        borderRadius: 20,
         borderWidth: 2,
+        borderColor: 'black',
         padding: 2,
-        backgroundColor: 'white',
+        elevation: 5,
+        backgroundColor: '#fff',
     },
     mapTopButtons: {
         zIndex: 1,
-        marginBottom: -50,
+        position:'absolute',
         alignSelf: 'flex-end',
         flexDirection: 'row',
         justifyContent:'space-between',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
     },
     mapBottomButtons: {
         zIndex: 1,
-        marginTop: -50,
+        bottom: 75,
+        //marginTop: -50,
         alignSelf: 'flex-end',
         flexDirection: 'row',
         justifyContent:'space-between',
@@ -343,7 +293,7 @@ const styles = StyleSheet.create({
         marginBottom: 4.5
     },
     mapModeButton: {
-        marginRight: Dimensions.get('window').width * 0.73, // sigh
+        marginRight: Dimensions.get('window').width * 0.72, // sigh
     },
     mapStyleButton: {
         marginRight: 10,
