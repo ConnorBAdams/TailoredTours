@@ -5,7 +5,7 @@
 import React from 'react';
 import { unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import SignedInScreen from '../screens/signedInScreen'
+import TourTakingScreen from '../screens/tourTakingScreen';
 import * as firebase from 'firebase'
 require('firebase/auth')
 import { shallow, mount, configure, render } from 'enzyme';
@@ -15,6 +15,7 @@ import Adapter from 'enzyme-adapter-react-16';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+jest.mock('@react-navigation/native');
 
 jest.mock('firebase', () => {
   return {
@@ -86,12 +87,8 @@ jest.mock('firebase', () => {
 });
 
 
-jest.doMock('../screens/signedInScreen', () => {
-  const SignedInScreen = () => <div />;
-  return SignedInScreen;
-});
-
-it("Snapshot of SignedIn Screen", () => {
-  const wrapper = shallow(<SignedInScreen />);
+it("Snapshot of Tour Taking Screen", () => {
+  const wrapper = shallow(<TourTakingScreen />);
   expect(wrapper).toMatchSnapshot();
 });
+
